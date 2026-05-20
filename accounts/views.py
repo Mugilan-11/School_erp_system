@@ -93,10 +93,14 @@ def teacher_dashboard(request):
     if request.user.role != 'TEACHER':
         return redirect('login')
 
+    from students.models import Student
+
     total_students = Student.objects.count()
 
     context = {
-        'total_students': total_students
+
+        'total_students': total_students,
+
     }
 
     return render(

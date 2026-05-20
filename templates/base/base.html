@@ -11,7 +11,9 @@
     >
 
     <title>
-        School ERP
+
+        Bethal ERP
+
     </title>
 
     <!-- Bootstrap -->
@@ -39,13 +41,16 @@
 
         * {
 
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+
             font-family: 'Poppins', sans-serif;
         }
 
         body {
 
-            margin: 0;
-            background-color: #f4f7fe;
+            background: #f1f5f9;
         }
 
         /* SIDEBAR */
@@ -53,108 +58,219 @@
         .sidebar {
 
             position: fixed;
-            width: 260px;
+
+            top: 0;
+            left: 0;
+
+            width: 270px;
             height: 100vh;
+
             background: linear-gradient(
                 180deg,
-                #1e1e2f,
-                #25273c
+                #4f46e5,
+                #7c3aed
             );
 
-            color: white;
-            padding-top: 20px;
+            padding: 30px 20px;
+
             overflow-y: auto;
+
+            z-index: 1000;
         }
 
-        .logo {
+        .brand {
+
+            color: white;
+
+            font-size: 32px;
+            font-weight: 700;
+
+            margin-bottom: 50px;
 
             text-align: center;
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 30px;
-            color: #ffffff;
         }
 
-        .sidebar a {
+        .menu-title {
+
+            color: rgba(255,255,255,0.7);
+
+            font-size: 13px;
+
+            margin-bottom: 15px;
+
+            text-transform: uppercase;
+
+            letter-spacing: 1px;
+        }
+
+        .sidebar-menu {
+
+            list-style: none;
+
+            padding: 0;
+        }
+
+        .sidebar-menu li {
+
+            margin-bottom: 10px;
+        }
+
+        .sidebar-menu a {
 
             display: flex;
             align-items: center;
-            gap: 12px;
 
-            color: #d1d1d1;
+            gap: 15px;
+
+            padding: 14px 18px;
+
+            color: white;
+
             text-decoration: none;
 
-            padding: 14px 20px;
-
-            margin: 5px 15px;
-
-            border-radius: 12px;
+            border-radius: 14px;
 
             transition: 0.3s;
         }
 
-        .sidebar a:hover {
+        .sidebar-menu a:hover {
 
-            background-color: #3b3f5c;
-            color: white;
-
-            transform: translateX(5px);
+            background: rgba(255,255,255,0.15);
         }
 
-        .sidebar a i {
-
-            font-size: 18px;
-        }
-
-        /* MAIN AREA */
-
-        .main-content {
-
-            margin-left: 260px;
-            min-height: 100vh;
-        }
-
-        /* NAVBAR */
-
-        .top-navbar {
+        .sidebar-menu a.active {
 
             background: white;
 
-            padding: 18px 30px;
+            color: #4f46e5;
 
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-
-            box-shadow: 0 2px 10px rgba(
-                0,
-                0,
-                0,
-                0.05
-            );
+            font-weight: 600;
         }
 
-        .top-navbar h4 {
+        .sidebar-menu i {
+
+            font-size: 20px;
+        }
+
+        /* MAIN CONTENT */
+
+        .main-content {
+
+            margin-left: 270px;
+
+            min-height: 100vh;
+        }
+
+        /* TOPBAR */
+
+        .topbar {
+
+            height: 85px;
+
+            background: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 40px;
+
+            box-shadow:
+                0 2px 10px rgba(
+                    0,
+                    0,
+                    0,
+                    0.03
+                );
+        }
+
+        .topbar-left h4 {
 
             margin: 0;
-            font-weight: 600;
+
+            font-weight: 700;
+
+            color: #1e293b;
+        }
+
+        .topbar-left p {
+
+            margin: 0;
+
+            color: #64748b;
+
+            font-size: 14px;
+        }
+
+        .topbar-right {
+
+            display: flex;
+            align-items: center;
+
+            gap: 20px;
+        }
+
+        .notification-btn {
+
+            width: 45px;
+            height: 45px;
+
+            border-radius: 50%;
+
+            background: #f8fafc;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            cursor: pointer;
+
+            position: relative;
+        }
+
+        .notification-btn::after {
+
+            content: '';
+
+            position: absolute;
+
+            top: 10px;
+            right: 10px;
+
+            width: 8px;
+            height: 8px;
+
+            border-radius: 50%;
+
+            background: red;
         }
 
         .profile-box {
 
             display: flex;
             align-items: center;
-            gap: 10px;
+
+            gap: 12px;
         }
 
-        .profile-circle {
+        .profile-box img {
 
-            width: 40px;
-            height: 40px;
+            width: 45px;
+            height: 45px;
 
             border-radius: 50%;
 
-            background: #4e73df;
+            object-fit: cover;
+        }
+
+        .profile-avatar {
+
+            width: 45px;
+            height: 45px;
+
+            border-radius: 50%;
+
+            background: #4f46e5;
 
             color: white;
 
@@ -162,14 +278,14 @@
             align-items: center;
             justify-content: center;
 
-            font-weight: bold;
+            font-weight: 700;
         }
 
-        /* CONTENT */
+        /* PAGE CONTENT */
 
-        .content {
+        .page-content {
 
-            padding: 30px;
+            padding: 40px;
         }
 
         /* CARDS */
@@ -177,72 +293,46 @@
         .dashboard-card {
 
             border: none;
-            border-radius: 18px;
+
+            border-radius: 22px;
 
             background: white;
 
-            box-shadow: 0 5px 20px rgba(
-                0,
-                0,
-                0,
-                0.05
-            );
-
-            transition: 0.3s;
-        }
-
-        .dashboard-card:hover {
-
-            transform: translateY(-5px);
-        }
-
-        /* TABLES */
-
-        .table {
-
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-        }
-
-        /* BUTTONS */
-
-        .btn-primary {
-
-            background: #4e73df;
-            border: none;
-            border-radius: 10px;
-        }
-
-        .btn-success {
-
-            border-radius: 10px;
-        }
-
-        .btn-danger {
-
-            border-radius: 10px;
-        }
-
-        .btn-warning {
-
-            border-radius: 10px;
+            box-shadow:
+                0 5px 20px rgba(
+                    0,
+                    0,
+                    0,
+                    0.04
+                );
         }
 
         /* MOBILE */
 
-        @media(max-width: 768px) {
+        @media(max-width: 991px) {
 
             .sidebar {
 
                 width: 100%;
+
                 height: auto;
+
                 position: relative;
             }
 
             .main-content {
 
                 margin-left: 0;
+            }
+
+            .topbar {
+
+                padding: 20px;
+            }
+
+            .page-content {
+
+                padding: 20px;
             }
         }
 
@@ -256,157 +346,123 @@
 
 <div class="sidebar">
 
-    <div class="logo">
+    <div class="brand">
 
-        School ERP
+        Bethal ERP
 
     </div>
 
-    <!-- ADMIN -->
+    <div class="menu-title">
 
-    {% if request.user.role == 'ADMIN' %}
+        Main Menu
 
-        <a href="{% url 'admin_dashboard' %}">
+    </div>
 
-            <i class="bi bi-grid-fill"></i>
+    <ul class="sidebar-menu">
 
-            Dashboard
+        <!-- DASHBOARD -->
 
-        </a>
+        <li>
 
-        <a href="{% url 'student_list' %}">
+            <a href="#">
 
-            <i class="bi bi-mortarboard-fill"></i>
+                <i class="bi bi-grid-fill"></i>
 
-            Students
+                Dashboard
 
-        </a>
+            </a>
 
-        <a href="{% url 'attendance_list' %}">
+        </li>
 
-            <i class="bi bi-calendar-check-fill"></i>
+        <!-- STUDENTS -->
 
-            Attendance
+        {% if request.user.role == 'ADMIN' or request.user.role == 'TEACHER' %}
 
-        </a>
+        <li>
 
-        <a href="{% url 'fee_list' %}">
+            <a href="{% url 'student_list' %}">
 
-            <i class="bi bi-cash-stack"></i>
+                <i class="bi bi-mortarboard-fill"></i>
 
-            Fees
+                Students
 
-        </a>
+            </a>
 
-        <a href="{% url 'result_list' %}">
+        </li>
 
-            <i class="bi bi-bar-chart-fill"></i>
+        {% endif %}
 
-            Results
+        <!-- ATTENDANCE -->
 
-        </a>
+        <li>
 
-        <a href="{% url 'timetable_list' %}">
+            <a href="{% url 'attendance_list' %}">
 
-            <i class="bi bi-clock-fill"></i>
+                <i class="bi bi-calendar-check-fill"></i>
 
-            Timetable
+                Attendance
 
-        </a>
+            </a>
 
-    {% endif %}
+        </li>
 
-    <!-- TEACHER -->
+        <!-- RESULTS -->
 
-    {% if request.user.role == 'TEACHER' %}
+        <li>
 
-        <a href="{% url 'teacher_dashboard' %}">
+            <a href="{% url 'result_list' %}">
 
-            <i class="bi bi-grid-fill"></i>
+                <i class="bi bi-award-fill"></i>
 
-            Dashboard
+                Results
 
-        </a>
+            </a>
 
-        <a href="{% url 'student_list' %}">
+        </li>
 
-            <i class="bi bi-mortarboard-fill"></i>
+        <!-- TIMETABLE -->
 
-            Students
+        <li>
 
-        </a>
+            <a href="{% url 'timetable_list' %}">
 
-        <a href="{% url 'attendance_list' %}">
+                <i class="bi bi-clock-fill"></i>
 
-            <i class="bi bi-calendar-check-fill"></i>
+                Timetable
 
-            Attendance
+            </a>
 
-        </a>
+        </li>
 
-        <a href="{% url 'result_list' %}">
+        <!-- FEES -->
 
-            <i class="bi bi-bar-chart-fill"></i>
+        <li>
 
-            Results
+            <a href="#">
 
-        </a>
+                <i class="bi bi-cash-stack"></i>
 
-        <a href="{% url 'timetable_list' %}">
+                Fees
 
-            <i class="bi bi-clock-fill"></i>
+            </a>
 
-            Timetable
+        </li>
 
-        </a>
+        <!-- LOGOUT -->
 
-    {% endif %}
+        <li class="mt-4">
 
-    <!-- STUDENT -->
+            <a href="{% url 'logout' %}">
 
-    {% if request.user.role == 'STUDENT' %}
+                <i class="bi bi-box-arrow-right"></i>
 
-        <a href="{% url 'student_dashboard' %}">
+                Logout
 
-            <i class="bi bi-grid-fill"></i>
+            </a>
 
-            Dashboard
+        </li>
 
-        </a>
-
-        <a href="{% url 'timetable_list' %}">
-
-            <i class="bi bi-clock-fill"></i>
-
-            Timetable
-
-        </a>
-
-    {% endif %}
-
-    <!-- PARENT -->
-
-    {% if request.user.role == 'PARENT' %}
-
-        <a href="{% url 'parent_dashboard' %}">
-
-            <i class="bi bi-grid-fill"></i>
-
-            Dashboard
-
-        </a>
-
-    {% endif %}
-
-    <!-- LOGOUT -->
-
-    <a href="{% url 'logout' %}">
-
-        <i class="bi bi-box-arrow-right"></i>
-
-        Logout
-
-    </a>
+    </ul>
 
 </div>
 
@@ -414,22 +470,68 @@
 
 <div class="main-content">
 
-    <!-- TOP NAVBAR -->
+    <!-- TOPBAR -->
 
-    <div class="top-navbar">
+    <div class="topbar">
 
-        <h4>
+        <div class="topbar-left">
 
-            Welcome,
-            {{ request.user.username }}
+            <h4>
 
-        </h4>
+                Welcome,
+                {{ request.user.username }}
 
-        <div class="profile-box">
+            </h4>
 
-            <div class="profile-circle">
+            <p>
 
-                {{ request.user.username|slice:":1" }}
+                Bethal ERP Management System
+
+            </p>
+
+        </div>
+
+        <div class="topbar-right">
+
+            <div class="notification-btn">
+
+                <i class="bi bi-bell-fill"></i>
+
+            </div>
+
+            <div class="profile-box">
+
+                {% if request.user.profile_picture %}
+
+                    <img
+                        src="{{ request.user.profile_picture.url }}"
+                    >
+
+                {% else %}
+
+                    <div class="profile-avatar">
+
+                        {{ request.user.username|slice:":1" }}
+
+                    </div>
+
+                {% endif %}
+
+                <div>
+
+                    <div class="fw-bold">
+
+                        {{ request.user.username }}
+
+                    </div>
+
+                    <small class="text-muted">
+
+                        {{ request.user.role }}
+
+                    </small>
+
+                </div>
 
             </div>
 
@@ -437,9 +539,9 @@
 
     </div>
 
-    <!-- CONTENT -->
+    <!-- PAGE CONTENT -->
 
-    <div class="content">
+    <div class="page-content">
 
         {% block content %}
 

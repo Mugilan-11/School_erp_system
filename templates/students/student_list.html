@@ -8,27 +8,38 @@
 
     <div>
 
-        <h2 class="fw-bold mb-1">
-            Students
+        <h2 class="fw-bold">
+
+            Student Management
+
         </h2>
 
         <p class="text-muted">
+
             Manage all student records
+
         </p>
 
     </div>
 
+    {% if request.user.role == 'ADMIN' or request.user.role == 'TEACHER' %}
+
     <a
         href="{% url 'add_student' %}"
-        class="btn btn-primary"
+        class="btn btn-primary px-4 py-2 rounded-4"
     >
+
         <i class="bi bi-person-plus-fill"></i>
+
         Add Student
+
     </a>
+
+    {% endif %}
 
 </div>
 
-<!-- SEARCH CARD -->
+<!-- SEARCH + FILTER -->
 
 <div class="card dashboard-card mb-4">
 
@@ -38,17 +49,31 @@
 
             <div class="row g-3">
 
+                <!-- SEARCH -->
+
                 <div class="col-md-5">
 
-                    <input
-                        type="text"
-                        name="search"
-                        class="form-control"
-                        placeholder="Search students..."
-                        value="{{ request.GET.search }}"
-                    >
+                    <div class="input-group">
+
+                        <span class="input-group-text bg-white border-end-0">
+
+                            <i class="bi bi-search"></i>
+
+                        </span>
+
+                        <input
+                            type="text"
+                            name="search"
+                            class="form-control border-start-0"
+                            placeholder="Search students..."
+                            value="{{ request.GET.search }}"
+                        >
+
+                    </div>
 
                 </div>
+
+                <!-- CLASS FILTER -->
 
                 <div class="col-md-3">
 
@@ -58,7 +83,9 @@
                     >
 
                         <option value="">
+
                             All Classes
+
                         </option>
 
                         {% for i in "123456789101112" %}
@@ -75,14 +102,17 @@
 
                 </div>
 
+                <!-- BUTTON -->
+
                 <div class="col-md-2">
 
                     <button
                         type="submit"
                         class="btn btn-primary w-100"
                     >
-                        <i class="bi bi-search"></i>
-                        Search
+
+                        Filter
+
                     </button>
 
                 </div>
@@ -109,7 +139,7 @@
 
                     <tr>
 
-                        <th>Photo</th>
+                        <th>Profile</th>
                         <th>Name</th>
                         <th>Admission No</th>
                         <th>Class</th>
@@ -126,24 +156,28 @@
 
                     <tr>
 
+                        <!-- PROFILE -->
+
                         <td>
 
                             {% if student.profile_picture %}
 
                                 <img
                                     src="{{ student.profile_picture.url }}"
-                                    width="50"
-                                    height="50"
+                                    width="55"
+                                    height="55"
                                     class="rounded-circle"
+                                    style="object-fit: cover;"
                                 >
 
                             {% else %}
 
                                 <div
-                                    class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
+                                    class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
                                     style="
-                                        width:50px;
-                                        height:50px;
+                                        width:55px;
+                                        height:55px;
+                                        font-size:20px;
                                     "
                                 >
 
@@ -155,54 +189,76 @@
 
                         </td>
 
+                        <!-- NAME -->
+
                         <td>
 
-                            <strong>
+                            <div class="fw-bold">
 
                                 {{ student.first_name }}
                                 {{ student.last_name }}
 
-                            </strong>
+                            </div>
 
                         </td>
 
+                        <!-- ADMISSION -->
+
                         <td>
+
                             {{ student.admission_no }}
+
                         </td>
+
+                        <!-- CLASS -->
 
                         <td>
 
-                            <span class="badge bg-primary">
+                            <span class="badge bg-primary px-3 py-2 rounded-pill">
 
-                                {{ student.student_class }}
+                                Class {{ student.student_class }}
 
                             </span>
 
                         </td>
 
+                        <!-- GENDER -->
+
                         <td>
+
                             {{ student.gender }}
+
                         </td>
 
+                        <!-- ACTIONS -->
+
                         <td>
 
-                            {% if request.user.role == 'ADMIN' %}
+                            <div class="d-flex gap-2">
 
-                            <a
-                                href="{% url 'edit_student' student.id %}"
-                                class="btn btn-warning btn-sm"
-                            >
-                                <i class="bi bi-pencil-fill"></i>
-                            </a>
+                                {% if request.user.role == 'ADMIN' %}
 
-                            <a
-                                href="{% url 'delete_student' student.id %}"
-                                class="btn btn-danger btn-sm"
-                            >
-                                <i class="bi bi-trash-fill"></i>
-                            </a>
+                                <a
+                                    href="{% url 'edit_student' student.id %}"
+                                    class="btn btn-warning btn-sm rounded-3"
+                                >
 
-                            {% endif %}
+                                    <i class="bi bi-pencil-fill"></i>
+
+                                </a>
+
+                                <a
+                                    href="{% url 'delete_student' student.id %}"
+                                    class="btn btn-danger btn-sm rounded-3"
+                                >
+
+                                    <i class="bi bi-trash-fill"></i>
+
+                                </a>
+
+                                {% endif %}
+
+                            </div>
 
                         </td>
 
@@ -212,9 +268,19 @@
 
                     <tr>
 
-                        <td colspan="6" class="text-center">
+                        <td colspan="6" class="text-center py-5">
 
-                            No students found
+                            <div class="text-muted">
+
+                                <i class="bi bi-emoji-frown fs-1"></i>
+
+                                <p class="mt-3">
+
+                                    No students found
+
+                                </p>
+
+                            </div>
 
                         </td>
 
@@ -234,7 +300,9 @@
 
 <!-- PAGINATION -->
 
-<div class="mt-4 d-flex justify-content-center">
+{% if page_obj.has_other_pages %}
+
+<div class="d-flex justify-content-center mt-4">
 
     <nav>
 
@@ -248,7 +316,9 @@
                     class="page-link"
                     href="?page={{ page_obj.previous_page_number }}"
                 >
+
                     Previous
+
                 </a>
 
             </li>
@@ -273,7 +343,9 @@
                     class="page-link"
                     href="?page={{ page_obj.next_page_number }}"
                 >
+
                     Next
+
                 </a>
 
             </li>
@@ -285,5 +357,7 @@
     </nav>
 
 </div>
+
+{% endif %}
 
 {% endblock %}
