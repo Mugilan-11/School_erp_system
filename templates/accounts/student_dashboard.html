@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Dashboard</title>
+</head>
+
+<body>
+
+    <h1>Student Dashboard</h1>
+
+    <h2>Welcome {{ request.user.username }}</h2>
+
+    {% if request.user.profile_picture %}
+    
+        <img 
+            src="{{ request.user.profile_picture.url }}" 
+            width="200"
+            height="200"
+            alt="Profile Picture"
+        >
+
+    {% else %}
+
+        <p>No profile picture uploaded.</p>
+
+    {% endif %}
+
+    <br><br>
+
+    <a href="{% url 'logout' %}">
+        Logout
+    </a>
+
+</body>
+</html>

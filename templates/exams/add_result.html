@@ -1,0 +1,157 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="row justify-content-center">
+
+    <div class="col-md-8">
+
+        <div class="card shadow">
+
+            <div class="card-header">
+
+                <h3>
+                    Add Result
+                </h3>
+
+            </div>
+
+            <div class="card-body">
+
+                <form method="POST">
+
+                    {% csrf_token %}
+
+                    {{ form.as_p }}
+
+                    <hr>
+
+                    <h4>
+                        Subject Marks
+                    </h4>
+
+                    <div id="subjects-container">
+
+                        <div class="row mb-3">
+
+                            <div class="col-md-4">
+
+                                <input
+                                    type="text"
+                                    name="subject_name"
+                                    class="form-control"
+                                    placeholder="Subject Name"
+                                >
+
+                            </div>
+
+                            <div class="col-md-3">
+
+                                <input
+                                    type="number"
+                                    name="mark_obtained"
+                                    class="form-control"
+                                    placeholder="Marks Obtained"
+                                >
+
+                            </div>
+
+                            <div class="col-md-3">
+
+                                <input
+                                    type="number"
+                                    name="maximum_mark"
+                                    class="form-control"
+                                    placeholder="Maximum Marks"
+                                    value="100"
+                                >
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <button
+                        type="button"
+                        class="btn btn-secondary mb-3"
+                        onclick="addSubjectRow()"
+                    >
+                        Add Subject
+                    </button>
+
+                    <br>
+
+                    <button
+                        type="submit"
+                        class="btn btn-success"
+                    >
+                        Save Result
+                    </button>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+function addSubjectRow() {
+
+    let container = document.getElementById(
+        'subjects-container'
+    );
+
+    let row = document.createElement('div');
+
+    row.classList.add('row', 'mb-3');
+
+    row.innerHTML = `
+
+        <div class="col-md-4">
+
+            <input
+                type="text"
+                name="subject_name"
+                class="form-control"
+                placeholder="Subject Name"
+            >
+
+        </div>
+
+        <div class="col-md-3">
+
+            <input
+                type="number"
+                name="mark_obtained"
+                class="form-control"
+                placeholder="Marks Obtained"
+            >
+
+        </div>
+
+        <div class="col-md-3">
+
+            <input
+                type="number"
+                name="maximum_mark"
+                class="form-control"
+                placeholder="Maximum Marks"
+                value="100"
+            >
+
+        </div>
+
+    `;
+
+    container.appendChild(row);
+}
+
+</script>
+
+{% endblock %}

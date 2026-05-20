@@ -1,0 +1,203 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<style>
+
+@media print {
+
+    .sidebar,
+    .navbar,
+    .btn,
+    .no-print {
+
+        display: none !important;
+    }
+
+    .print-area {
+
+        width: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+
+        background-color: white;
+    }
+}
+
+</style>
+
+<div class="print-area">
+
+    <div class="card shadow">
+
+        <div class="card-header bg-primary text-white">
+
+            <h2>
+                Student Report Card
+            </h2>
+
+        </div>
+
+        <div class="card-body">
+
+            <!-- STUDENT DETAILS -->
+
+            <div class="row mb-4">
+
+                <div class="col-md-6">
+
+                    <h5>
+                        Student Name:
+                    </h5>
+
+                    <p>
+                        {{ result.student }}
+                    </p>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <h5>
+                        Exam Name:
+                    </h5>
+
+                    <p>
+                        {{ result.exam_name }}
+                    </p>
+
+                </div>
+
+            </div>
+
+            <!-- SUBJECT TABLE -->
+
+            <table class="table table-bordered">
+
+                <thead class="table-dark">
+
+                    <tr>
+
+                        <th>Subject</th>
+                        <th>Marks Obtained</th>
+                        <th>Maximum Marks</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for subject in subjects %}
+
+                    <tr>
+
+                        <td>
+                            {{ subject.subject_name }}
+                        </td>
+
+                        <td>
+                            {{ subject.mark_obtained }}
+                        </td>
+
+                        <td>
+                            {{ subject.maximum_mark }}
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+            <!-- RESULT SUMMARY -->
+
+            <div class="row mt-4">
+
+                <div class="col-md-4">
+
+                    <div class="card border-primary">
+
+                        <div class="card-body">
+
+                            <h5>
+                                Total Marks
+                            </h5>
+
+                            <h3>
+                                {{ result.total_marks }}
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="card border-success">
+
+                        <div class="card-body">
+
+                            <h5>
+                                Percentage
+                            </h5>
+
+                            <h3>
+                                {{ result.percentage }} %
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <div class="card border-danger">
+
+                        <div class="card-body">
+
+                            <h5>
+                                Grade
+                            </h5>
+
+                            <h3>
+                                {{ result.grade }}
+                            </h3>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- PRINT BUTTON -->
+
+            <div class="mt-4 no-print">
+
+                <button
+                    onclick="window.print()"
+                    class="btn btn-dark"
+                >
+                    Print Report Card
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,289 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<!-- PAGE HEADER -->
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2 class="fw-bold mb-1">
+            Students
+        </h2>
+
+        <p class="text-muted">
+            Manage all student records
+        </p>
+
+    </div>
+
+    <a
+        href="{% url 'add_student' %}"
+        class="btn btn-primary"
+    >
+        <i class="bi bi-person-plus-fill"></i>
+        Add Student
+    </a>
+
+</div>
+
+<!-- SEARCH CARD -->
+
+<div class="card dashboard-card mb-4">
+
+    <div class="card-body">
+
+        <form method="GET">
+
+            <div class="row g-3">
+
+                <div class="col-md-5">
+
+                    <input
+                        type="text"
+                        name="search"
+                        class="form-control"
+                        placeholder="Search students..."
+                        value="{{ request.GET.search }}"
+                    >
+
+                </div>
+
+                <div class="col-md-3">
+
+                    <select
+                        name="class"
+                        class="form-select"
+                    >
+
+                        <option value="">
+                            All Classes
+                        </option>
+
+                        {% for i in "123456789101112" %}
+
+                        <option value="{{ i }}">
+
+                            Class {{ i }}
+
+                        </option>
+
+                        {% endfor %}
+
+                    </select>
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary w-100"
+                    >
+                        <i class="bi bi-search"></i>
+                        Search
+                    </button>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- STUDENT TABLE -->
+
+<div class="card dashboard-card">
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Photo</th>
+                        <th>Name</th>
+                        <th>Admission No</th>
+                        <th>Class</th>
+                        <th>Gender</th>
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for student in page_obj %}
+
+                    <tr>
+
+                        <td>
+
+                            {% if student.profile_picture %}
+
+                                <img
+                                    src="{{ student.profile_picture.url }}"
+                                    width="50"
+                                    height="50"
+                                    class="rounded-circle"
+                                >
+
+                            {% else %}
+
+                                <div
+                                    class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center"
+                                    style="
+                                        width:50px;
+                                        height:50px;
+                                    "
+                                >
+
+                                    {{ student.first_name|slice:":1" }}
+
+                                </div>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            <strong>
+
+                                {{ student.first_name }}
+                                {{ student.last_name }}
+
+                            </strong>
+
+                        </td>
+
+                        <td>
+                            {{ student.admission_no }}
+                        </td>
+
+                        <td>
+
+                            <span class="badge bg-primary">
+
+                                {{ student.student_class }}
+
+                            </span>
+
+                        </td>
+
+                        <td>
+                            {{ student.gender }}
+                        </td>
+
+                        <td>
+
+                            {% if request.user.role == 'ADMIN' %}
+
+                            <a
+                                href="{% url 'edit_student' student.id %}"
+                                class="btn btn-warning btn-sm"
+                            >
+                                <i class="bi bi-pencil-fill"></i>
+                            </a>
+
+                            <a
+                                href="{% url 'delete_student' student.id %}"
+                                class="btn btn-danger btn-sm"
+                            >
+                                <i class="bi bi-trash-fill"></i>
+                            </a>
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="6" class="text-center">
+
+                            No students found
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- PAGINATION -->
+
+<div class="mt-4 d-flex justify-content-center">
+
+    <nav>
+
+        <ul class="pagination">
+
+            {% if page_obj.has_previous %}
+
+            <li class="page-item">
+
+                <a
+                    class="page-link"
+                    href="?page={{ page_obj.previous_page_number }}"
+                >
+                    Previous
+                </a>
+
+            </li>
+
+            {% endif %}
+
+            <li class="page-item active">
+
+                <span class="page-link">
+
+                    {{ page_obj.number }}
+
+                </span>
+
+            </li>
+
+            {% if page_obj.has_next %}
+
+            <li class="page-item">
+
+                <a
+                    class="page-link"
+                    href="?page={{ page_obj.next_page_number }}"
+                >
+                    Next
+                </a>
+
+            </li>
+
+            {% endif %}
+
+        </ul>
+
+    </nav>
+
+</div>
+
+{% endblock %}

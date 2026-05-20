@@ -1,0 +1,90 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2 class="fw-bold">
+            Timetable Classes
+        </h2>
+
+        <p class="text-muted">
+            Select a class to view timetable
+        </p>
+
+    </div>
+
+    {% if request.user.role == 'ADMIN' %}
+
+    <a
+        href="{% url 'add_timetable' %}"
+        class="btn btn-primary"
+    >
+        <i class="bi bi-plus-circle-fill"></i>
+        Add Timetable
+    </a>
+
+    {% endif %}
+
+</div>
+
+<div class="row g-4">
+
+    {% for class in classes %}
+
+    <div class="col-md-3">
+
+        <a
+            href="{% url 'class_timetable' class.class_name class.section %}"
+            class="text-decoration-none"
+        >
+
+            <div class="card dashboard-card p-4">
+
+                <div class="text-center">
+
+                    <div class="fs-1 text-primary mb-3">
+
+                        <i class="bi bi-easel-fill"></i>
+
+                    </div>
+
+                    <h4 class="fw-bold">
+
+                        Class {{ class.class_name }}
+
+                    </h4>
+
+                    <p class="text-muted">
+
+                        Section {{ class.section }}
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </a>
+
+    </div>
+
+    {% empty %}
+
+    <div class="col-12">
+
+        <div class="alert alert-warning">
+
+            No timetable classes available
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}
