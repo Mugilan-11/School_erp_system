@@ -110,7 +110,7 @@ school_erp/
 ## 1. Clone Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/bethal-erp.git
+git clone https://github.com/Mugilan-11/bethal-erp.git
 ```
 
 ## 2. Move Into Project
