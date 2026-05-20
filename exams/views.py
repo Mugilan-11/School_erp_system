@@ -4,6 +4,90 @@ from django.contrib.auth.decorators import login_required
 from .models import ExamResult, SubjectMark
 from .forms import ExamResultForm
 
+import pandas as pd
+
+from students.models import Student
+
+from .forms import (
+    ExamResultForm,
+    ResultExcelUploadForm
+)
+
+@login_required
+def view_result(request, id):
+
+    result = ExamResult.objects.get(id=id)
+
+    context = {
+
+        'result': result
+
+    }
+
+    return render(
+        request,
+        'exams/view_result.html',
+        context
+    )
+@login_required
+def import_results(request):
+
+    if request.user.role not in [
+        'ADMIN',
+        'TEACHER'
+    ]:
+        return redirect('login')
+
+    if request.method == 'POST':
+
+        form = ResultExcelUploadForm(
+            request.POST,
+            request.FILES
+        )
+
+        if form.is_valid():
+
+            excel_file = request.FILES['excel_file']
+
+            df = pd.read_excel(excel_file)
+
+            for index, row in df.iterrows():
+
+                student = Student.objects.get(
+                    admission_no=row['admission_no']
+                )
+
+                ExamResult.objects.create(
+
+                    student=student,
+
+                    exam_name=row['exam_name'],
+
+                    total_marks=row['total_marks'],
+
+                    percentage=row['percentage'],
+
+                    grade=row['grade']
+
+                )
+
+            return redirect('result_list')
+
+    else:
+
+        form = ResultExcelUploadForm()
+
+    context = {
+
+        'form': form
+
+    }
+
+    return render(
+        request,
+        'exams/import_results.html',
+        context
+    )
 
 @login_required
 def result_list(request):

@@ -4,6 +4,72 @@ from django.contrib.auth.decorators import login_required
 from .models import Fee
 from .forms import FeeForm
 
+import pandas as pd
+
+from students.models import Student
+
+from .forms import (
+    FeeForm,
+    FeeExcelUploadForm
+)
+
+@login_required
+def import_fees(request):
+
+    if request.user.role not in [
+        'ADMIN',
+        'TEACHER'
+    ]:
+        return redirect('login')
+
+    if request.method == 'POST':
+
+        form = FeeExcelUploadForm(
+            request.POST,
+            request.FILES
+        )
+
+        if form.is_valid():
+
+            excel_file = request.FILES['excel_file']
+
+            df = pd.read_excel(excel_file)
+
+            for index, row in df.iterrows():
+
+                student = Student.objects.get(
+                    admission_no=row['admission_no']
+                )
+
+                Fee.objects.create(
+
+                    student=student,
+
+                    amount=row['amount'],
+
+                    status=row['status'],
+
+                    date=row['date']
+
+                )
+
+            return redirect('fee_list')
+
+    else:
+
+        form = FeeExcelUploadForm()
+
+    context = {
+
+        'form': form
+
+    }
+
+    return render(
+        request,
+        'fees/import_fees.html',
+        context
+    )
 
 @login_required
 def fee_list(request):

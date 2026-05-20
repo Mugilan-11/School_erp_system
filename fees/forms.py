@@ -12,9 +12,42 @@ class FeeForm(forms.ModelForm):
 
         widgets = {
 
-            'payment_date': forms.DateInput(
+            'student': forms.Select(
                 attrs={
+                    'class': 'form-select'
+                }
+            ),
+
+            'amount': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+
+            'status': forms.Select(
+                attrs={
+                    'class': 'form-select'
+                }
+            ),
+
+            'date': forms.DateInput(
+                attrs={
+                    'class': 'form-control',
                     'type': 'date'
                 }
             ),
+
         }
+
+
+class FeeExcelUploadForm(forms.Form):
+
+    excel_file = forms.FileField(
+
+        widget=forms.FileInput(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+
+    )

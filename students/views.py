@@ -1,34 +1,42 @@
-from django.shortcuts import render, redirect
-from django.core.paginator import Paginator
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-from .models import Student
-from .forms import StudentForm
+
+from django.core.paginator import Paginator
+
 import pandas as pd
 
-from .forms import ExcelUploadForm
+from .models import Student
+
+from .forms import (
+    StudentForm,
+    ExcelUploadForm
+)
 
 
 @login_required
 def student_list(request):
 
-    if request.user.role not in ['ADMIN', 'TEACHER']:
+    if request.user.role not in [
+        'ADMIN',
+        'TEACHER'
+    ]:
         return redirect('login')
 
-    students = Student.objects.all()
+    students = Student.objects.all().order_by('first_name')
+
+    # SEARCH
 
     search_query = request.GET.get('search')
-
-    class_filter = request.GET.get('class')
 
     if search_query:
 
         students = students.filter(
             first_name__icontains=search_query
-        ) | students.filter(
-            last_name__icontains=search_query
-        ) | students.filter(
-            admission_no__icontains=search_query
         )
+
+    # CLASS FILTER
+
+    class_filter = request.GET.get('class')
 
     if class_filter:
 
@@ -36,14 +44,21 @@ def student_list(request):
             student_class=class_filter
         )
 
-    paginator = Paginator(students, 5)
+    # PAGINATION
+
+    paginator = Paginator(
+        students,
+        10
+    )
 
     page_number = request.GET.get('page')
 
     page_obj = paginator.get_page(page_number)
 
     context = {
+
         'page_obj': page_obj
+
     }
 
     return render(
@@ -56,7 +71,10 @@ def student_list(request):
 @login_required
 def add_student(request):
 
-    if request.user.role not in ['ADMIN', 'TEACHER']:
+    if request.user.role not in [
+        'ADMIN',
+        'TEACHER'
+    ]:
         return redirect('login')
 
     if request.method == 'POST':
@@ -77,7 +95,9 @@ def add_student(request):
         form = StudentForm()
 
     context = {
+
         'form': form
+
     }
 
     return render(
@@ -93,7 +113,10 @@ def edit_student(request, id):
     if request.user.role != 'ADMIN':
         return redirect('login')
 
-    student = Student.objects.get(id=id)
+    student = get_object_or_404(
+        Student,
+        id=id
+    )
 
     if request.method == 'POST':
 
@@ -111,15 +134,19 @@ def edit_student(request, id):
 
     else:
 
-        form = StudentForm(instance=student)
+        form = StudentForm(
+            instance=student
+        )
 
     context = {
+
         'form': form
+
     }
 
     return render(
         request,
-        'students/edit_student.html',
+        'students/add_student.html',
         context
     )
 
@@ -130,11 +157,15 @@ def delete_student(request, id):
     if request.user.role != 'ADMIN':
         return redirect('login')
 
-    student = Student.objects.get(id=id)
+    student = get_object_or_404(
+        Student,
+        id=id
+    )
 
     student.delete()
 
     return redirect('student_list')
+
 
 @login_required
 def import_students(request):
@@ -163,11 +194,19 @@ def import_students(request):
                 Student.objects.create(
 
                     first_name=row['first_name'],
+
                     last_name=row['last_name'],
+
                     admission_no=row['admission_no'],
-                    student_class=str(row['student_class']),
+
+                    student_class=str(
+                        row['student_class']
+                    ),
+
                     gender=row['gender'],
+
                     date_of_birth=row['date_of_birth'],
+
                     address=row['address']
 
                 )

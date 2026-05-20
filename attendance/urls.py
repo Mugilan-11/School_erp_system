@@ -15,4 +15,9 @@ urlpatterns = [
         mark_attendance,
         name='mark_attendance'
     ),
+    path(
+    'import-attendance/',
+    import_attendance,
+    name='import_attendance'
+),
 ]

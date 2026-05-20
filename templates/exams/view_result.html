@@ -1,0 +1,55 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="card dashboard-card p-5">
+
+    <h2 class="fw-bold mb-4">
+
+        Result Details
+
+    </h2>
+
+    <p>
+
+        <strong>Student:</strong>
+
+        {{ result.student }}
+
+    </p>
+
+    <p>
+
+        <strong>Exam:</strong>
+
+        {{ result.exam_name }}
+
+    </p>
+
+    <p>
+
+        <strong>Total Marks:</strong>
+
+        {{ result.total_marks }}
+
+    </p>
+
+    <p>
+
+        <strong>Percentage:</strong>
+
+        {{ result.percentage }}%
+
+    </p>
+
+    <p>
+
+        <strong>Grade:</strong>
+
+        {{ result.grade }}
+
+    </p>
+
+</div>
+
+{% endblock %}

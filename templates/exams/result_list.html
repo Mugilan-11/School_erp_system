@@ -24,16 +24,35 @@
 
     {% if request.user.role == 'ADMIN' or request.user.role == 'TEACHER' %}
 
-    <a
-        href="{% url 'add_result' %}"
-        class="btn btn-primary px-4 py-2 rounded-4"
-    >
+    <div class="d-flex gap-2">
 
-        <i class="bi bi-plus-circle-fill"></i>
+        <!-- ADD RESULT -->
 
-        Add Result
+        <a
+            href="{% url 'add_result' %}"
+            class="btn btn-primary px-4 py-2 rounded-4"
+        >
 
-    </a>
+            <i class="bi bi-plus-circle-fill"></i>
+
+            Add Result
+
+        </a>
+
+        <!-- IMPORT EXCEL -->
+
+        <a
+            href="{% url 'import_results' %}"
+            class="btn btn-success px-4 py-2 rounded-4"
+        >
+
+            <i class="bi bi-file-earmark-excel-fill"></i>
+
+            Import Excel
+
+        </a>
+
+    </div>
 
     {% endif %}
 
@@ -59,7 +78,7 @@
 
                     </h6>
 
-                    <h2 class="fw-bold">
+                    <h2 class="fw-bold text-primary">
 
                         {{ results|length }}
 
@@ -306,33 +325,27 @@
 
                             <div class="d-flex gap-2">
 
-                                <button
+                                <!-- VIEW RESULT -->
+
+                                <a
+                                    href="{% url 'view_result' result.id %}"
                                     class="btn btn-primary btn-sm rounded-3"
                                 >
 
                                     <i class="bi bi-eye-fill"></i>
 
-                                </button>
+                                </a>
+
+                                <!-- PRINT -->
 
                                 <button
+                                    onclick="window.print()"
                                     class="btn btn-success btn-sm rounded-3"
                                 >
 
                                     <i class="bi bi-printer-fill"></i>
 
                                 </button>
-
-                                {% if request.user.role == 'ADMIN' or request.user.role == 'TEACHER' %}
-
-                                <button
-                                    class="btn btn-warning btn-sm rounded-3"
-                                >
-
-                                    <i class="bi bi-pencil-fill"></i>
-
-                                </button>
-
-                                {% endif %}
 
                             </div>
 

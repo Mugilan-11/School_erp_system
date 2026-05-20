@@ -1,7 +1,6 @@
 from django.urls import path
 from .views import *
 
-
 urlpatterns = [
 
     path(
@@ -17,8 +16,15 @@ urlpatterns = [
     ),
 
     path(
-        'report-card/<int:id>/',
-        report_card,
-        name='report_card'
+        'view-result/<int:id>/',
+        view_result,
+        name='view_result'
     ),
+
+    path(
+        'import-results/',
+        import_results,
+        name='import_results'
+    ),
+
 ]

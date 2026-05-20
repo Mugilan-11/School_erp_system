@@ -1,0 +1,250 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<!-- PAGE HEADER -->
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <div>
+
+        <h2 class="fw-bold">
+
+            Teacher Management
+
+        </h2>
+
+        <p class="text-muted">
+
+            Manage all teacher records
+
+        </p>
+
+    </div>
+
+    <a
+        href="{% url 'add_teacher' %}"
+        class="btn btn-primary px-4 py-2 rounded-4"
+    >
+
+        <i class="bi bi-person-plus-fill"></i>
+
+        Add Teacher
+
+    </a>
+
+</div>
+
+<!-- SUMMARY CARDS -->
+
+<div class="row g-4 mb-4">
+
+    <!-- TOTAL TEACHERS -->
+
+    <div class="col-md-4">
+
+        <div class="card dashboard-card p-4">
+
+            <h6 class="text-muted">
+
+                Total Teachers
+
+            </h6>
+
+            <h2 class="fw-bold text-primary">
+
+                {{ teachers|length }}
+
+            </h2>
+
+        </div>
+
+    </div>
+
+    <!-- SUBJECTS -->
+
+    <div class="col-md-4">
+
+        <div class="card dashboard-card p-4">
+
+            <h6 class="text-muted">
+
+                Active Subjects
+
+            </h6>
+
+            <h2 class="fw-bold text-success">
+
+                Running
+
+            </h2>
+
+        </div>
+
+    </div>
+
+    <!-- STATUS -->
+
+    <div class="col-md-4">
+
+        <div class="card dashboard-card p-4">
+
+            <h6 class="text-muted">
+
+                Faculty Status
+
+            </h6>
+
+            <h2 class="fw-bold text-warning">
+
+                Active
+
+            </h2>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- TEACHERS TABLE -->
+
+<div class="card dashboard-card">
+
+    <div class="card-body">
+
+        <div class="table-responsive">
+
+            <table class="table align-middle">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Profile</th>
+                        <th>Name</th>
+                        <th>Employee ID</th>
+                        <th>Subject</th>
+                        <th>Phone</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    {% for teacher in teachers %}
+
+                    <tr>
+
+                        <!-- PROFILE -->
+
+                        <td>
+
+                            {% if teacher.profile_picture %}
+
+                                <img
+                                    src="{{ teacher.profile_picture.url }}"
+                                    width="55"
+                                    height="55"
+                                    class="rounded-circle"
+                                    style="object-fit: cover;"
+                                >
+
+                            {% else %}
+
+                                <div
+                                    class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                                    style="
+                                        width:55px;
+                                        height:55px;
+                                        font-size:20px;
+                                    "
+                                >
+
+                                    {{ teacher.first_name|slice:":1" }}
+
+                                </div>
+
+                            {% endif %}
+
+                        </td>
+
+                        <!-- NAME -->
+
+                        <td>
+
+                            <div class="fw-bold">
+
+                                {{ teacher.first_name }}
+                                {{ teacher.last_name }}
+
+                            </div>
+
+                        </td>
+
+                        <!-- EMPLOYEE ID -->
+
+                        <td>
+
+                            {{ teacher.employee_id }}
+
+                        </td>
+
+                        <!-- SUBJECT -->
+
+                        <td>
+
+                            <span class="badge bg-success px-3 py-2 rounded-pill">
+
+                                {{ teacher.subject }}
+
+                            </span>
+
+                        </td>
+
+                        <!-- PHONE -->
+
+                        <td>
+
+                            {{ teacher.phone }}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="5" class="text-center py-5">
+
+                            <div class="text-muted">
+
+                                <i class="bi bi-person-workspace fs-1"></i>
+
+                                <p class="mt-3">
+
+                                    No teachers found
+
+                                </p>
+
+                            </div>
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

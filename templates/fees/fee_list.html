@@ -2,6 +2,8 @@
 
 {% block content %}
 
+<!-- PAGE HEADER -->
+
 <div class="d-flex justify-content-between align-items-center mb-4">
 
     <div>
@@ -22,22 +24,113 @@
 
     {% if request.user.role == 'ADMIN' or request.user.role == 'TEACHER' %}
 
-    <a
-        href="{% url 'add_fee' %}"
-        class="btn btn-primary px-4 py-2 rounded-4"
-    >
+    <div class="d-flex gap-2">
 
-        <i class="bi bi-plus-circle-fill"></i>
+        <!-- ADD FEE -->
 
-        Add Fee
+        <a
+            href="{% url 'add_fee' %}"
+            class="btn btn-primary px-4 py-2 rounded-4"
+        >
 
-    </a>
+            <i class="bi bi-plus-circle-fill"></i>
+
+            Add Fee
+
+        </a>
+
+        <!-- IMPORT EXCEL -->
+
+        <a
+            href="{% url 'import_fees' %}"
+            class="btn btn-success px-4 py-2 rounded-4"
+        >
+
+            <i class="bi bi-file-earmark-excel-fill"></i>
+
+            Import Excel
+
+        </a>
+
+    </div>
 
     {% endif %}
 
 </div>
 
-<!-- TABLE -->
+<!-- SUMMARY CARDS -->
+
+<div class="row g-4 mb-4">
+
+    <!-- TOTAL RECORDS -->
+
+    <div class="col-md-4">
+
+        <div class="card dashboard-card p-4">
+
+            <h6 class="text-muted">
+
+                Total Fee Records
+
+            </h6>
+
+            <h2 class="fw-bold text-primary">
+
+                {{ fees|length }}
+
+            </h2>
+
+        </div>
+
+    </div>
+
+    <!-- COLLECTION -->
+
+    <div class="col-md-4">
+
+        <div class="card dashboard-card p-4">
+
+            <h6 class="text-muted">
+
+                Fee Collection
+
+            </h6>
+
+            <h2 class="fw-bold text-success">
+
+                Active
+
+            </h2>
+
+        </div>
+
+    </div>
+
+    <!-- STATUS -->
+
+    <div class="col-md-4">
+
+        <div class="card dashboard-card p-4">
+
+            <h6 class="text-muted">
+
+                Payment Status
+
+            </h6>
+
+            <h2 class="fw-bold text-warning">
+
+                Updated
+
+            </h2>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- FEES TABLE -->
 
 <div class="card dashboard-card">
 
@@ -66,11 +159,19 @@
 
                     <tr>
 
+                        <!-- STUDENT -->
+
                         <td>
 
-                            {{ fee.student }}
+                            <div class="fw-bold">
+
+                                {{ fee.student }}
+
+                            </div>
 
                         </td>
+
+                        <!-- AMOUNT -->
 
                         <td>
 
@@ -78,11 +179,13 @@
 
                         </td>
 
+                        <!-- STATUS -->
+
                         <td>
 
                             {% if fee.status == 'Paid' %}
 
-                                <span class="badge bg-success">
+                                <span class="badge bg-success px-3 py-2 rounded-pill">
 
                                     Paid
 
@@ -90,7 +193,7 @@
 
                             {% else %}
 
-                                <span class="badge bg-danger">
+                                <span class="badge bg-danger px-3 py-2 rounded-pill">
 
                                     Pending
 
@@ -99,6 +202,8 @@
                             {% endif %}
 
                         </td>
+
+                        <!-- DATE -->
 
                         <td>
 
@@ -114,7 +219,17 @@
 
                         <td colspan="4" class="text-center py-5">
 
-                            No fee records found
+                            <div class="text-muted">
+
+                                <i class="bi bi-cash-stack fs-1"></i>
+
+                                <p class="mt-3">
+
+                                    No fee records found
+
+                                </p>
+
+                            </div>
 
                         </td>
 

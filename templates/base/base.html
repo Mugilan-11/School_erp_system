@@ -399,6 +399,24 @@
 
         {% endif %}
 
+        <!-- TEACHERS -->
+
+        {% if request.user.role == 'ADMIN' %}
+
+        <li>
+
+            <a href="{% url 'teacher_list' %}">
+
+                <i class="bi bi-person-workspace"></i>
+
+                Teachers
+
+            </a>
+
+        </li>
+
+        {% endif %}
+
         <!-- ATTENDANCE -->
 
         <li>

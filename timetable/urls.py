@@ -21,4 +21,9 @@ urlpatterns = [
         add_timetable,
         name='add_timetable'
     ),
+    path(
+    'import-timetable/',
+    import_timetable,
+    name='import_timetable'
+),
 ]

@@ -15,4 +15,9 @@ urlpatterns = [
         add_fee,
         name='add_fee'
     ),
+    path(
+    'import-fees/',
+    import_fees,
+    name='import_fees'
+),
 ]

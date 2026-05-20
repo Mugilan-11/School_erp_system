@@ -8,7 +8,51 @@ class ExamResultForm(forms.ModelForm):
 
         model = ExamResult
 
-        fields = [
-            'student',
-            'exam_name',
-        ]
+        fields = '__all__'
+
+        widgets = {
+
+            'student': forms.Select(
+                attrs={
+                    'class': 'form-select'
+                }
+            ),
+
+            'exam_name': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+
+            'total_marks': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+
+            'percentage': forms.NumberInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+
+            'grade': forms.TextInput(
+                attrs={
+                    'class': 'form-control'
+                }
+            ),
+
+        }
+
+
+class ResultExcelUploadForm(forms.Form):
+
+    excel_file = forms.FileField(
+
+        widget=forms.FileInput(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+
+    )

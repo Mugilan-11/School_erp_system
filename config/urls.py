@@ -19,6 +19,8 @@ urlpatterns = [
     path('', include('exams.urls')),
 
     path('', include('timetable.urls')),
+
+    path('', include('teachers.urls')),
 ]
 
 
