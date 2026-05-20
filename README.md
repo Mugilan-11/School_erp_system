@@ -110,13 +110,13 @@ school_erp/
 ## 1. Clone Repository
 
 ```bash
-git clone https://github.com/Mugilan-11/bethal-erp.git
+git clone https://github.com/Mugilan-11/School_erp_system.git
 ```
 
 ## 2. Move Into Project
 
 ```bash
-cd bethal-erp
+cd school_erp
 ```
 
 ## 3. Create Virtual Environment
