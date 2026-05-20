@@ -8,13 +8,20 @@ from .forms import FeeForm
 @login_required
 def fee_list(request):
 
-    if request.user.role not in ['ADMIN', 'TEACHER']:
+    if request.user.role not in [
+        'ADMIN',
+        'TEACHER',
+        'STUDENT',
+        'PARENT'
+    ]:
         return redirect('login')
 
-    fees = Fee.objects.all().order_by('-payment_date')
+    fees = Fee.objects.all()
 
     context = {
+
         'fees': fees
+
     }
 
     return render(
@@ -27,7 +34,10 @@ def fee_list(request):
 @login_required
 def add_fee(request):
 
-    if request.user.role not in ['ADMIN', 'TEACHER']:
+    if request.user.role not in [
+        'ADMIN',
+        'TEACHER'
+    ]:
         return redirect('login')
 
     if request.method == 'POST':
@@ -45,7 +55,9 @@ def add_fee(request):
         form = FeeForm()
 
     context = {
+
         'form': form
+
     }
 
     return render(

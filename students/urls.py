@@ -27,4 +27,9 @@ urlpatterns = [
         delete_student,
         name='delete_student'
     ),
+    path(
+    'import-students/',
+    import_students,
+    name='import_students'
+),
 ]

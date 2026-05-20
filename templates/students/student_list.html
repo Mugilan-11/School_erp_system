@@ -24,16 +24,35 @@
 
     {% if request.user.role == 'ADMIN' or request.user.role == 'TEACHER' %}
 
-    <a
-        href="{% url 'add_student' %}"
-        class="btn btn-primary px-4 py-2 rounded-4"
-    >
+    <div class="d-flex gap-2">
 
-        <i class="bi bi-person-plus-fill"></i>
+        <!-- ADD STUDENT -->
 
-        Add Student
+        <a
+            href="{% url 'add_student' %}"
+            class="btn btn-primary px-4 py-2 rounded-4"
+        >
 
-    </a>
+            <i class="bi bi-person-plus-fill"></i>
+
+            Add Student
+
+        </a>
+
+        <!-- IMPORT EXCEL -->
+
+        <a
+            href="{% url 'import_students' %}"
+            class="btn btn-success px-4 py-2 rounded-4"
+        >
+
+            <i class="bi bi-file-earmark-excel-fill"></i>
+
+            Import Excel
+
+        </a>
+
+    </div>
 
     {% endif %}
 
@@ -90,7 +109,10 @@
 
                         {% for i in "123456789101112" %}
 
-                        <option value="{{ i }}">
+                        <option
+                            value="{{ i }}"
+                            {% if request.GET.class == i %}selected{% endif %}
+                        >
 
                             Class {{ i }}
 
@@ -236,7 +258,19 @@
 
                             <div class="d-flex gap-2">
 
+                                <!-- VIEW -->
+
+                                <button
+                                    class="btn btn-primary btn-sm rounded-3"
+                                >
+
+                                    <i class="bi bi-eye-fill"></i>
+
+                                </button>
+
                                 {% if request.user.role == 'ADMIN' %}
+
+                                <!-- EDIT -->
 
                                 <a
                                     href="{% url 'edit_student' student.id %}"
@@ -246,6 +280,8 @@
                                     <i class="bi bi-pencil-fill"></i>
 
                                 </a>
+
+                                <!-- DELETE -->
 
                                 <a
                                     href="{% url 'delete_student' student.id %}"

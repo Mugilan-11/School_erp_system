@@ -8,15 +8,30 @@ from .forms import ExamResultForm
 @login_required
 def result_list(request):
 
-    if request.user.role not in ['ADMIN', 'TEACHER']:
+    if request.user.role not in [
+        'ADMIN',
+        'TEACHER',
+        'STUDENT',
+        'PARENT'
+    ]:
         return redirect('login')
 
-    results = ExamResult.objects.all().order_by(
-        '-created_at'
-    )
+    if request.user.role == 'STUDENT':
+
+        student = request.user.student
+
+        results = ExamResult.objects.filter(
+            student=student
+        )
+
+    else:
+
+        results = ExamResult.objects.all()
 
     context = {
+
         'results': results
+
     }
 
     return render(
@@ -24,8 +39,6 @@ def result_list(request):
         'exams/result_list.html',
         context
     )
-
-
 @login_required
 def add_result(request):
 

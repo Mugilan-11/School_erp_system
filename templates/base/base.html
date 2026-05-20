@@ -138,15 +138,6 @@
             background: rgba(255,255,255,0.15);
         }
 
-        .sidebar-menu a.active {
-
-            background: white;
-
-            color: #4f46e5;
-
-            font-weight: 600;
-        }
-
         .sidebar-menu i {
 
             font-size: 20px;
@@ -364,13 +355,29 @@
 
         <li>
 
-            <a href="#">
+            {% if request.user.role == 'ADMIN' %}
 
-                <i class="bi bi-grid-fill"></i>
+                <a href="{% url 'admin_dashboard' %}">
 
-                Dashboard
+            {% elif request.user.role == 'TEACHER' %}
 
-            </a>
+                <a href="{% url 'teacher_dashboard' %}">
+
+            {% elif request.user.role == 'STUDENT' %}
+
+                <a href="{% url 'student_dashboard' %}">
+
+            {% elif request.user.role == 'PARENT' %}
+
+                <a href="{% url 'parent_dashboard' %}">
+
+            {% endif %}
+
+                    <i class="bi bi-grid-fill"></i>
+
+                    Dashboard
+
+                </a>
 
         </li>
 
@@ -438,7 +445,7 @@
 
         <li>
 
-            <a href="#">
+            <a href="{% url 'fee_list' %}">
 
                 <i class="bi bi-cash-stack"></i>
 

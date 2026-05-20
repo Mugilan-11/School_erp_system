@@ -66,3 +66,13 @@ class StudentForm(forms.ModelForm):
                 }
             ),
         }
+
+class ExcelUploadForm(forms.Form):
+
+    excel_file = forms.FileField(
+        widget=forms.FileInput(
+            attrs={
+                'class': 'form-control'
+            }
+        )
+    )

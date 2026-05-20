@@ -4,91 +4,132 @@
 
 <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <h1>
-        Fee Records
-    </h1>
+    <div>
+
+        <h2 class="fw-bold">
+
+            Fees Management
+
+        </h2>
+
+        <p class="text-muted">
+
+            Manage student fee records
+
+        </p>
+
+    </div>
+
+    {% if request.user.role == 'ADMIN' or request.user.role == 'TEACHER' %}
 
     <a
         href="{% url 'add_fee' %}"
-        class="btn btn-primary"
+        class="btn btn-primary px-4 py-2 rounded-4"
     >
+
+        <i class="bi bi-plus-circle-fill"></i>
+
         Add Fee
+
     </a>
+
+    {% endif %}
 
 </div>
 
-<table class="table table-bordered table-striped">
+<!-- TABLE -->
 
-    <thead class="table-dark">
+<div class="card dashboard-card">
 
-        <tr>
+    <div class="card-body">
 
-            <th>Student</th>
-            <th>Amount</th>
-            <th>Payment Date</th>
-            <th>Status</th>
-            <th>Remarks</th>
+        <div class="table-responsive">
 
-        </tr>
+            <table class="table align-middle">
 
-    </thead>
+                <thead>
 
-    <tbody>
+                    <tr>
 
-        {% for fee in fees %}
+                        <th>Student</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                        <th>Date</th>
 
-        <tr>
+                    </tr>
 
-            <td>
-                {{ fee.student }}
-            </td>
+                </thead>
 
-            <td>
-                ₹ {{ fee.amount }}
-            </td>
+                <tbody>
 
-            <td>
-                {{ fee.payment_date }}
-            </td>
+                    {% for fee in fees %}
 
-            <td>
+                    <tr>
 
-                {% if fee.status == 'Paid' %}
+                        <td>
 
-                    <span class="badge bg-success">
-                        Paid
-                    </span>
+                            {{ fee.student }}
 
-                {% else %}
+                        </td>
 
-                    <span class="badge bg-danger">
-                        Pending
-                    </span>
+                        <td>
 
-                {% endif %}
+                            ₹ {{ fee.amount }}
 
-            </td>
+                        </td>
 
-            <td>
-                {{ fee.remarks }}
-            </td>
+                        <td>
 
-        </tr>
+                            {% if fee.status == 'Paid' %}
 
-        {% empty %}
+                                <span class="badge bg-success">
 
-        <tr>
+                                    Paid
 
-            <td colspan="5" class="text-center">
-                No Fee Records
-            </td>
+                                </span>
 
-        </tr>
+                            {% else %}
 
-        {% endfor %}
+                                <span class="badge bg-danger">
 
-    </tbody>
+                                    Pending
 
-</table>
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+                        <td>
+
+                            {{ fee.date }}
+
+                        </td>
+
+                    </tr>
+
+                    {% empty %}
+
+                    <tr>
+
+                        <td colspan="4" class="text-center py-5">
+
+                            No fee records found
+
+                        </td>
+
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</div>
 
 {% endblock %}
