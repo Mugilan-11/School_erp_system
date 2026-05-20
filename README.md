@@ -101,4 +101,86 @@ school_erp/
 ├── config/
 ├── manage.py
 └── db.sqlite3
+```
+Installation
+1. Clone Repository
+git clone https://github.com/YOUR_USERNAME/bethal-erp.git
+2. Move Into Project
+cd bethal-erp
+3. Create Virtual Environment
+python -m venv env
+4. Activate Virtual Environment
+Windows
+env\Scripts\activate
+Linux / Mac
+source env/bin/activate
+5. Install Dependencies
+pip install django pillow
+6. Run Migrations
+python manage.py makemigrations
+python manage.py migrate
+7. Create Superuser
+python manage.py createsuperuser
+8. Run Server
+python manage.py runserver
+Default URL
+http://127.0.0.1:8000/
+Main Modules
+Module	Description
+Accounts	Authentication and role management
+Students	Student CRUD management
+Attendance	Attendance tracking system
+Fees	Fee collection and payment records
+Exams	Multi-subject result management
+Timetable	Class-wise timetable management
+Django Concepts Used
+Custom User Model
+Authentication System
+Role-Based Access
+CRUD Operations
+Model Forms
+Template Inheritance
+ForeignKey Relationships
+Pagination
+Media File Handling
+Dynamic URL Routing
+Django ORM
+Bootstrap UI Integration
+Current Features Completed
+Modern Login Page
+Professional ERP Dashboard
+Sidebar Navigation
+Student Management
+Attendance System
+Examination System
+Timetable System
+Report Card Printing
+Modern Responsive UI
+GitHub Integration
+Future Improvements
+Teacher Management Module
+Parent Portal
+Student Portal
+Assignment Upload System
+Notifications System
+Email/SMS Integration
+Analytics Charts
+Online Fee Payments
+PDF Exports
+API Integration
+Screenshots
+
+Add screenshots here later.
+
+Author
+
+Developed by B Mugilan
+
+License
+
+This project is for educational and learning purposes.
+
+
+
+
 
