@@ -142,9 +142,7 @@ source env/bin/activate
 ## 5. Install Dependencies
 
 ```bash
-pip install django pillow
-pip install crispy-bootstrap5
-pip install django-crispy-forms
+pip install -r requirements.txt -y
 ```
 
 ## 6. Run Migrations
