@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'exams',
     'crispy_forms',
     'crispy_bootstrap5',
+    'website',
     'timetable',
 ]
 

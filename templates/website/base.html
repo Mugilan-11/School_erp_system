@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+
+        Bethal School ERP
+
+    </title>
+
+    <!-- BOOTSTRAP -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- BOOTSTRAP ICONS -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    >
+
+    <!-- GOOGLE FONT -->
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
+
+    <style>
+
+        *{
+
+            font-family: 'Poppins', sans-serif;
+
+        }
+
+        body{
+
+            background: #f5f7fb;
+
+        }
+
+        /* NAVBAR */
+
+        .navbar{
+
+            background: white;
+
+            padding: 15px 0;
+
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+
+        }
+
+        .navbar-brand{
+
+            font-size: 28px;
+
+            font-weight: 700;
+
+            color: #1e3a8a !important;
+
+        }
+
+        .nav-link{
+
+            font-weight: 500;
+
+            margin-left: 15px;
+
+            color: #333 !important;
+
+        }
+
+        .nav-link:hover{
+
+            color: #2563eb !important;
+
+        }
+
+        /* HERO */
+
+        .hero{
+
+            min-height: 90vh;
+
+            display: flex;
+
+            align-items: center;
+
+            background:
+            linear-gradient(
+                rgba(0,0,0,0.6),
+                rgba(0,0,0,0.6)
+            ),
+            url('https://images.unsplash.com/photo-1509062522246-3755977927d7?q=80&w=2070&auto=format&fit=crop');
+
+            background-size: cover;
+
+            background-position: center;
+
+            color: white;
+
+        }
+
+        .hero h1{
+
+            font-size: 60px;
+
+            font-weight: 700;
+
+        }
+
+        .hero p{
+
+            font-size: 20px;
+
+            margin-top: 20px;
+
+        }
+
+        .hero-btn{
+
+            margin-top: 30px;
+
+            padding: 14px 35px;
+
+            border-radius: 12px;
+
+            font-weight: 600;
+
+        }
+
+        /* SECTION */
+
+        .section{
+
+            padding: 90px 0;
+
+        }
+
+        .section-title{
+
+            text-align: center;
+
+            margin-bottom: 60px;
+
+        }
+
+        .section-title h2{
+
+            font-size: 42px;
+
+            font-weight: 700;
+
+        }
+
+        .card-custom{
+
+            border: none;
+
+            border-radius: 20px;
+
+            padding: 35px;
+
+            background: white;
+
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+
+            transition: 0.3s;
+
+            height: 100%;
+
+        }
+
+        .card-custom:hover{
+
+            transform: translateY(-10px);
+
+        }
+
+        .stats{
+
+            background: #1e3a8a;
+
+            color: white;
+
+        }
+
+        .stats h2{
+
+            font-size: 48px;
+
+            font-weight: 700;
+
+        }
+
+        footer{
+
+            background: #111827;
+
+            color: white;
+
+            padding: 40px 0;
+
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+
+    <nav class="navbar navbar-expand-lg sticky-top">
+
+        <div class="container">
+
+            <a
+                class="navbar-brand"
+                href="/"
+            >
+
+                Bethal School
+
+            </a>
+
+            <button
+                class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav"
+            >
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div
+                class="collapse navbar-collapse"
+                id="navbarNav"
+            >
+
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="/"
+                        >
+
+                            Home
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="/about/"
+                        >
+
+                            About
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="/academics/"
+                        >
+
+                            Academics
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="/admissions/"
+                        >
+
+                            Admissions
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="/gallery/"
+                        >
+
+                            Gallery
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item">
+
+                        <a
+                            class="nav-link"
+                            href="/contact/"
+                        >
+
+                            Contact
+
+                        </a>
+
+                    </li>
+
+                    <li class="nav-item ms-lg-3">
+
+                        <a
+                            href="/login-options/"
+                            class="btn btn-primary px-4 py-2 rounded-4"
+                        >
+
+                            ERP Login
+
+                        </a>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </nav>
+
+    <!-- CONTENT -->
+
+    {% block content %}
+
+    {% endblock %}
+
+    <!-- FOOTER -->
+
+    <footer>
+
+        <div class="container">
+
+            <div class="row">
+
+                <div class="col-md-6">
+
+                    <h4 class="fw-bold">
+
+                        Bethal School ERP
+
+                    </h4>
+
+                    <p class="mt-3">
+
+                        Empowering education through technology
+                        and modern learning systems.
+
+                    </p>
+
+                </div>
+
+                <div class="col-md-6 text-md-end">
+
+                    <h5>
+
+                        Contact Us
+
+                    </h5>
+
+                    <p>
+
+                        bethalschool@gmail.com
+
+                    </p>
+
+                    <p>
+
+                        +91 9876543210
+
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+    <!-- BOOTSTRAP JS -->
+
+    <script
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    ></script>
+
+</body>
+
+</html>
