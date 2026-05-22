@@ -7,21 +7,21 @@ from django.conf.urls.static import static
 
 urlpatterns = [
 
-    # PUBLIC WEBSITE
+    # WEBSITE
 
     path(
         '',
         include('website.urls')
     ),
 
-    # ACCOUNTS
+    # AUTH
 
     path(
         '',
         include('accounts.urls')
     ),
 
-    # ERP MODULES
+    # ERP APPS
 
     path(
         '',

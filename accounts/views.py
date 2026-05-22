@@ -1,120 +1,252 @@
-from django.shortcuts import redirect, render
-from django.contrib.auth import authenticate, login, logout
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
 
-from students.models import Student
-from accounts.models import CustomUser
+from django.contrib.auth import (
+    authenticate,
+    login,
+    logout
+)
 
 
-def login_view(request):
+# =====================================
+# ADMIN LOGIN
+# =====================================
+
+def admin_login(request):
 
     if request.method == 'POST':
 
         username = request.POST.get('username')
+
         password = request.POST.get('password')
 
         user = authenticate(
+
             request,
+
             username=username,
+
             password=password
+
         )
 
-        if user is not None:
+        if user is not None and user.role == 'ADMIN':
 
             login(request, user)
 
-            if user.role == 'ADMIN':
-                return redirect('admin_dashboard')
+            return redirect(
+                'admin_dashboard'
+            )
 
-            elif user.role == 'TEACHER':
-                return redirect('teacher_dashboard')
+        return render(
 
-            elif user.role == 'STUDENT':
-                return redirect('student_dashboard')
+            request,
 
-            elif user.role == 'PARENT':
-                return redirect('parent_dashboard')
+            'accounts/admin_login.html',
 
-        else:
-            messages.error(request, 'Invalid Username or Password')
+            {
 
-    return render(request, 'accounts/login.html')
+                'error':
+
+                'Only admins can login here'
+
+            }
+
+        )
+
+    return render(
+        request,
+        'accounts/admin_login.html'
+    )
 
 
-@login_required
+# =====================================
+# TEACHER LOGIN
+# =====================================
+
+def teacher_login(request):
+
+    if request.method == 'POST':
+
+        username = request.POST.get('username')
+
+        password = request.POST.get('password')
+
+        user = authenticate(
+
+            request,
+
+            username=username,
+
+            password=password
+
+        )
+
+        if user is not None and user.role == 'TEACHER':
+
+            login(request, user)
+
+            return redirect(
+                'teacher_dashboard'
+            )
+
+        return render(
+
+            request,
+
+            'accounts/teacher_login.html',
+
+            {
+
+                'error':
+
+                'Only teachers can login here'
+
+            }
+
+        )
+
+    return render(
+        request,
+        'accounts/teacher_login.html'
+    )
+
+
+# =====================================
+# STUDENT LOGIN
+# =====================================
+
+def student_login(request):
+
+    if request.method == 'POST':
+
+        username = request.POST.get('username')
+
+        password = request.POST.get('password')
+
+        user = authenticate(
+
+            request,
+
+            username=username,
+
+            password=password
+
+        )
+
+        if user is not None and user.role == 'STUDENT':
+
+            login(request, user)
+
+            return redirect(
+                'student_dashboard'
+            )
+
+        return render(
+
+            request,
+
+            'accounts/student_login.html',
+
+            {
+
+                'error':
+
+                'Only students can login here'
+
+            }
+
+        )
+
+    return render(
+        request,
+        'accounts/student_login.html'
+    )
+
+
+# =====================================
+# PARENT LOGIN
+# =====================================
+
+def parent_login(request):
+
+    if request.method == 'POST':
+
+        username = request.POST.get('username')
+
+        password = request.POST.get('password')
+
+        user = authenticate(
+
+            request,
+
+            username=username,
+
+            password=password
+
+        )
+
+        if user is not None and user.role == 'PARENT':
+
+            login(request, user)
+
+            return redirect(
+                'parent_dashboard'
+            )
+
+        return render(
+
+            request,
+
+            'accounts/parent_login.html',
+
+            {
+
+                'error':
+
+                'Only parents can login here'
+
+            }
+
+        )
+
+    return render(
+        request,
+        'accounts/parent_login.html'
+    )
+
+
+# =====================================
+# LOGOUT
+# =====================================
+
 def logout_view(request):
 
     logout(request)
 
-    return redirect('login')
+    return redirect('home')
 
 
-@login_required
+# =====================================
+# DASHBOARDS
+# =====================================
+
 def admin_dashboard(request):
 
-    if request.user.role != 'ADMIN':
-        return redirect('login')
-
-    from students.models import Student
-    from accounts.models import CustomUser
-
-    total_students = Student.objects.count()
-
-    total_teachers = CustomUser.objects.filter(
-        role='TEACHER'
-    ).count()
-
-    total_admins = CustomUser.objects.filter(
-        role='ADMIN'
-    ).count()
-
-    recent_students = Student.objects.order_by(
-        '-id'
-    )[:5]
-
-    context = {
-
-        'total_students': total_students,
-        'total_teachers': total_teachers,
-        'total_admins': total_admins,
-        'recent_students': recent_students,
-    }
-
     return render(
         request,
-        'accounts/admin_dashboard.html',
-        context
+        'accounts/admin_dashboard.html'
     )
 
-@login_required
+
 def teacher_dashboard(request):
 
-    if request.user.role != 'TEACHER':
-        return redirect('login')
-
-    from students.models import Student
-
-    total_students = Student.objects.count()
-
-    context = {
-
-        'total_students': total_students,
-
-    }
-
     return render(
         request,
-        'accounts/teacher_dashboard.html',
-        context
+        'accounts/teacher_dashboard.html'
     )
 
 
-@login_required
 def student_dashboard(request):
-
-    if request.user.role != 'STUDENT':
-        return redirect('login')
 
     return render(
         request,
@@ -122,11 +254,7 @@ def student_dashboard(request):
     )
 
 
-@login_required
 def parent_dashboard(request):
-
-    if request.user.role != 'PARENT':
-        return redirect('login')
 
     return render(
         request,

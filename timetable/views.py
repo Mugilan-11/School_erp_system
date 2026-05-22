@@ -3,8 +3,6 @@ from django.contrib.auth.decorators import login_required
 
 import pandas as pd
 
-from teachers.models import Teacher
-
 from .models import Timetable
 
 from .forms import (
@@ -12,55 +10,31 @@ from .forms import (
     TimetableExcelUploadForm
 )
 
+from accounts.models import CustomUser
+
 
 @login_required
 def timetable_list(request):
 
     if request.user.role not in [
+
         'ADMIN',
         'TEACHER',
         'STUDENT',
         'PARENT'
+
     ]:
         return redirect('login')
 
-    # STUDENT VIEW
+    timetables = Timetable.objects.all()
 
-    if request.user.role == 'STUDENT':
+    class_filter = request.GET.get('class')
 
-        student = request.user.student
+    if class_filter:
 
-        timetables = Timetable.objects.filter(
-            class_name=student.student_class
+        timetables = timetables.filter(
+            student_class=class_filter
         )
-
-    # ADMIN VIEW
-
-    elif request.user.role == 'ADMIN':
-
-        timetables = Timetable.objects.all()
-
-        class_filter = request.GET.get('class')
-
-        if class_filter:
-
-            timetables = timetables.filter(
-                class_name=class_filter
-            )
-
-    # TEACHER VIEW
-
-    elif request.user.role == 'TEACHER':
-
-        teacher = request.user.teacher
-
-        timetables = Timetable.objects.filter(
-            class_name=teacher.assigned_class
-        )
-
-    else:
-
-        timetables = Timetable.objects.none()
 
     context = {
 
@@ -79,8 +53,10 @@ def timetable_list(request):
 def add_timetable(request):
 
     if request.user.role not in [
+
         'ADMIN',
         'TEACHER'
+
     ]:
         return redirect('login')
 
@@ -115,16 +91,20 @@ def add_timetable(request):
 def import_timetable(request):
 
     if request.user.role not in [
+
         'ADMIN',
         'TEACHER'
+
     ]:
         return redirect('login')
 
     if request.method == 'POST':
 
         form = TimetableExcelUploadForm(
+
             request.POST,
             request.FILES
+
         )
 
         if form.is_valid():
@@ -135,26 +115,29 @@ def import_timetable(request):
 
             for index, row in df.iterrows():
 
-                teacher_obj = Teacher.objects.get(
-                    first_name__icontains=
-                    row['teacher'].split()[0]
-                )
+                teacher = CustomUser.objects.filter(
 
-                Timetable.objects.create(
+                    username=row['teacher']
 
-                    class_name=row['class_name'],
+                ).first()
 
-                    subject=row['subject'],
+                if teacher:
 
-                    teacher=teacher_obj,
+                    Timetable.objects.create(
 
-                    day=row['day'],
+                        student_class=row['student_class'],
 
-                    start_time=row['start_time'],
+                        subject=row['subject'],
 
-                    end_time=row['end_time']
+                        teacher=teacher,
 
-                )
+                        day=row['day'],
+
+                        start_time=row['start_time'],
+
+                        end_time=row['end_time']
+
+                    )
 
             return redirect('timetable_list')
 

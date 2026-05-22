@@ -2,89 +2,71 @@
 
 {% block content %}
 
-<!-- PAGE HEADER -->
+<div class="container-fluid">
 
-<div class="mb-4">
+    <h1 class="fw-bold mb-4">
 
-    <h2 class="fw-bold">
         Student Dashboard
-    </h2>
 
-    <p class="text-muted">
-        Welcome back,
-        {{ request.user.username }}
-    </p>
+    </h1>
 
-</div>
+    <div class="row g-4 mb-4">
 
-<!-- TOP CARDS -->
+        <div class="col-md-4">
 
-<div class="row g-4 mb-4">
+            <div class="dashboard-card">
 
-    <!-- PROFILE CARD -->
+                <h5 class="text-muted">
 
-    <div class="col-md-4">
+                    Attendance
 
-        <div class="card dashboard-card p-4 text-center">
+                </h5>
 
-            {% if request.user.profile_picture %}
+                <h2 class="fw-bold text-success">
 
-                <img
-                    src="{{ request.user.profile_picture.url }}"
-                    class="rounded-circle mx-auto mb-3"
-                    width="120"
-                    height="120"
-                    style="object-fit: cover;"
-                >
+                    94%
 
-            {% else %}
+                </h2>
 
-                <div
-                    class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3"
-                    style="
-                        width:120px;
-                        height:120px;
-                        font-size:40px;
-                    "
-                >
+            </div>
 
-                    {{ request.user.username|slice:":1" }}
+        </div>
 
-                </div>
+        <div class="col-md-4">
 
-            {% endif %}
+            <div class="dashboard-card">
 
-            <h4 class="fw-bold">
+                <h5 class="text-muted">
 
-                {{ request.user.username }}
+                    Fees Due
 
-            </h4>
+                </h5>
 
-            <p class="text-muted">
+                <h2 class="fw-bold text-danger">
 
-                Student
+                    ₹5,000
 
-            </p>
+                </h2>
 
-            <hr>
+            </div>
 
-            <div class="text-start">
+        </div>
 
-                <p>
+        <div class="col-md-4">
 
-                    <strong>Email:</strong>
+            <div class="dashboard-card">
 
-                    {{ request.user.email }}
+                <h5 class="text-muted">
 
-                </p>
+                    Average Marks
 
-                <p>
+                </h5>
 
-                    <strong>Phone:</strong>
+                <h2 class="fw-bold text-primary">
 
-                    {{ request.user.phone_number }}
+                    87%
 
-                </p>
+                </h2>
 
             </div>
 
@@ -92,219 +74,118 @@
 
     </div>
 
-    <!-- ANALYTICS -->
+    <div class="row g-4">
 
-    <div class="col-md-8">
+        <div class="col-lg-8">
 
-        <div class="row g-4">
+            <div class="table-container">
 
-            <!-- ATTENDANCE -->
+                <h4 class="fw-bold mb-4">
 
-            <div class="col-md-6">
+                    Recent Results
 
-                <div class="card dashboard-card p-4">
+                </h4>
 
-                    <div class="d-flex justify-content-between align-items-center">
+                <table class="table">
 
-                        <div>
+                    <thead>
 
-                            <h6 class="text-muted">
+                        <tr>
 
-                                Attendance
+                            <th>
 
-                            </h6>
+                                Subject
 
-                            <h2 class="fw-bold text-success">
+                            </th>
 
-                                92%
+                            <th>
 
-                            </h2>
+                                Marks
 
-                        </div>
+                            </th>
 
-                        <div class="fs-1 text-success">
+                            <th>
 
-                            <i class="bi bi-calendar-check-fill"></i>
+                                Grade
 
-                        </div>
+                            </th>
 
-                    </div>
+                        </tr>
 
-                </div>
+                    </thead>
 
-            </div>
+                    <tbody>
 
-            <!-- RESULTS -->
+                        <tr>
 
-            <div class="col-md-6">
+                            <td>
 
-                <div class="card dashboard-card p-4">
+                                Mathematics
 
-                    <div class="d-flex justify-content-between align-items-center">
+                            </td>
 
-                        <div>
+                            <td>
 
-                            <h6 class="text-muted">
+                                95
 
-                                Average Grade
+                            </td>
 
-                            </h6>
+                            <td>
 
-                            <h2 class="fw-bold text-primary">
+                                A+
 
-                                A
+                            </td>
 
-                            </h2>
+                        </tr>
 
-                        </div>
+                    </tbody>
 
-                        <div class="fs-1 text-primary">
-
-                            <i class="bi bi-bar-chart-fill"></i>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-            <!-- TIMETABLE -->
-
-            <div class="col-md-6">
-
-                <div class="card dashboard-card p-4">
-
-                    <div class="d-flex justify-content-between align-items-center">
-
-                        <div>
-
-                            <h6 class="text-muted">
-
-                                Timetable
-
-                            </h6>
-
-                            <p class="mb-0">
-
-                                View class schedule
-
-                            </p>
-
-                        </div>
-
-                        <div class="fs-1 text-warning">
-
-                            <i class="bi bi-clock-fill"></i>
-
-                        </div>
-
-                    </div>
-
-                    <a
-                        href="{% url 'timetable_list' %}"
-                        class="btn btn-warning text-white mt-3"
-                    >
-
-                        Open Timetable
-
-                    </a>
-
-                </div>
-
-            </div>
-
-            <!-- RESULTS -->
-
-            <div class="col-md-6">
-
-                <div class="card dashboard-card p-4">
-
-                    <div class="d-flex justify-content-between align-items-center">
-
-                        <div>
-
-                            <h6 class="text-muted">
-
-                                Results
-
-                            </h6>
-
-                            <p class="mb-0">
-
-                                View exam performance
-
-                            </p>
-
-                        </div>
-
-                        <div class="fs-1 text-danger">
-
-                            <i class="bi bi-award-fill"></i>
-
-                        </div>
-
-                    </div>
-
-                    <a
-                        href="{% url 'result_list' %}"
-                        class="btn btn-danger mt-3"
-                    >
-
-                        View Results
-
-                    </a>
-
-                </div>
+                </table>
 
             </div>
 
         </div>
 
-    </div>
+        <div class="col-lg-4">
 
-</div>
+            <div class="dashboard-card">
 
-<!-- RECENT ACTIVITY -->
+                <h4 class="fw-bold mb-4">
 
-<div class="card dashboard-card">
+                    Quick Links
 
-    <div class="card-header bg-white border-0 pt-4">
+                </h4>
 
-        <h5 class="fw-bold">
+                <div class="d-grid gap-3">
 
-            Recent Activity
+                    <a
+                        href="/attendance-list/"
+                        class="btn btn-primary py-3"
+                    >
 
-        </h5>
+                        Attendance
 
-    </div>
+                    </a>
 
-    <div class="card-body">
+                    <a
+                        href="/result-list/"
+                        class="btn btn-success py-3"
+                    >
 
-        <div class="d-flex flex-column gap-3">
+                        Results
 
-            <div class="p-3 rounded bg-light">
+                    </a>
 
-                <i class="bi bi-check-circle-fill text-success"></i>
+                    <a
+                        href="/timetable-list/"
+                        class="btn btn-warning py-3"
+                    >
 
-                Attendance marked successfully
+                        Timetable
 
-            </div>
+                    </a>
 
-            <div class="p-3 rounded bg-light">
-
-                <i class="bi bi-award-fill text-primary"></i>
-
-                New exam results published
-
-            </div>
-
-            <div class="p-3 rounded bg-light">
-
-                <i class="bi bi-clock-fill text-warning"></i>
-
-                Timetable updated
+                </div>
 
             </div>
 

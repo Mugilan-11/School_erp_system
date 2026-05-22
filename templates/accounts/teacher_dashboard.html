@@ -2,91 +2,86 @@
 
 {% block content %}
 
-<!-- PAGE HEADER -->
+<div class="container-fluid">
 
-<div class="mb-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <h2 class="fw-bold">
-        Teacher Dashboard
-    </h2>
+        <div>
 
-    <p class="text-muted">
+            <h1 class="fw-bold">
 
-        Welcome back,
-        {{ request.user.username }}
+                Teacher Dashboard
 
-    </p>
-
-</div>
-
-<!-- TOP SECTION -->
-
-<div class="row g-4 mb-4">
-
-    <!-- PROFILE CARD -->
-
-    <div class="col-md-4">
-
-        <div class="card dashboard-card p-4 text-center">
-
-            {% if request.user.profile_picture %}
-
-                <img
-                    src="{{ request.user.profile_picture.url }}"
-                    class="rounded-circle mx-auto mb-3"
-                    width="120"
-                    height="120"
-                    style="object-fit: cover;"
-                >
-
-            {% else %}
-
-                <div
-                    class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center mx-auto mb-3"
-                    style="
-                        width:120px;
-                        height:120px;
-                        font-size:40px;
-                    "
-                >
-
-                    {{ request.user.username|slice:":1" }}
-
-                </div>
-
-            {% endif %}
-
-            <h4 class="fw-bold">
-
-                {{ request.user.username }}
-
-            </h4>
+            </h1>
 
             <p class="text-muted">
 
-                Teacher
+                Welcome back,
+                {{ request.user.username }}
 
             </p>
 
-            <hr>
+        </div>
 
-            <div class="text-start">
+    </div>
 
-                <p>
+    <div class="row g-4 mb-4">
 
-                    <strong>Email:</strong>
+        <div class="col-md-4">
 
-                    {{ request.user.email }}
+            <div class="dashboard-card">
 
-                </p>
+                <h5 class="text-muted">
 
-                <p>
+                    Classes Assigned
 
-                    <strong>Phone:</strong>
+                </h5>
 
-                    {{ request.user.phone_number }}
+                <h2 class="fw-bold">
 
-                </p>
+                    6
+
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="dashboard-card">
+
+                <h5 class="text-muted">
+
+                    Attendance Taken
+
+                </h5>
+
+                <h2 class="fw-bold text-success">
+
+                    92%
+
+                </h2>
+
+            </div>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <div class="dashboard-card">
+
+                <h5 class="text-muted">
+
+                    Results Uploaded
+
+                </h5>
+
+                <h2 class="fw-bold text-primary">
+
+                    124
+
+                </h2>
 
             </div>
 
@@ -94,303 +89,113 @@
 
     </div>
 
-    <!-- ANALYTICS -->
+    <div class="row g-4">
 
-    <div class="col-md-8">
+        <div class="col-lg-8">
 
-        <div class="row g-4">
+            <div class="table-container">
 
-            <!-- STUDENTS -->
+                <h4 class="fw-bold mb-4">
 
-            <div class="col-md-6">
+                    Recent Attendance
 
-                <div class="card dashboard-card p-4">
+                </h4>
 
-                    <div class="d-flex justify-content-between align-items-center">
+                <table class="table">
 
-                        <div>
+                    <thead>
 
-                            <h6 class="text-muted">
+                        <tr>
 
-                                Total Students
+                            <th>
 
-                            </h6>
+                                Student
 
-                            <h2 class="fw-bold text-primary">
+                            </th>
 
-                                {{ total_students }}
+                            <th>
 
-                            </h2>
+                                Class
 
-                        </div>
+                            </th>
 
-                        <div class="fs-1 text-primary">
+                            <th>
 
-                            <i class="bi bi-people-fill"></i>
+                                Status
 
-                        </div>
+                            </th>
 
-                    </div>
+                        </tr>
 
-                </div>
+                    </thead>
 
-            </div>
+                    <tbody>
 
-            <!-- ATTENDANCE -->
+                        <tr>
 
-            <div class="col-md-6">
+                            <td>
 
-                <div class="card dashboard-card p-4">
+                                Rahul Sharma
 
-                    <div class="d-flex justify-content-between align-items-center">
+                            </td>
 
-                        <div>
+                            <td>
 
-                            <h6 class="text-muted">
+                                10-A
 
-                                Attendance
+                            </td>
 
-                            </h6>
+                            <td>
 
-                            <h2 class="fw-bold text-success">
+                                <span class="badge bg-success">
 
-                                Active
+                                    Present
 
-                            </h2>
+                                </span>
 
-                        </div>
+                            </td>
 
-                        <div class="fs-1 text-success">
+                        </tr>
 
-                            <i class="bi bi-calendar-check-fill"></i>
+                    </tbody>
 
-                        </div>
-
-                    </div>
-
-                </div>
+                </table>
 
             </div>
 
-            <!-- TIMETABLE -->
+        </div>
 
-            <div class="col-md-6">
+        <div class="col-lg-4">
 
-                <div class="card dashboard-card p-4">
+            <div class="dashboard-card">
 
-                    <div class="d-flex justify-content-between align-items-center">
+                <h4 class="fw-bold mb-4">
 
-                        <div>
+                    Quick Actions
 
-                            <h6 class="text-muted">
+                </h4>
 
-                                Timetable
-
-                            </h6>
-
-                            <p class="mb-0">
-
-                                View class schedule
-
-                            </p>
-
-                        </div>
-
-                        <div class="fs-1 text-warning">
-
-                            <i class="bi bi-clock-fill"></i>
-
-                        </div>
-
-                    </div>
+                <div class="d-grid gap-3">
 
                     <a
-                        href="{% url 'timetable_list' %}"
-                        class="btn btn-warning text-white mt-3"
+                        href="/mark-attendance/"
+                        class="btn btn-success py-3"
                     >
 
-                        Open Timetable
+                        Mark Attendance
+
+                    </a>
+
+                    <a
+                        href="/add-result/"
+                        class="btn btn-primary py-3"
+                    >
+
+                        Upload Results
 
                     </a>
 
                 </div>
-
-            </div>
-
-            <!-- RESULTS -->
-
-            <div class="col-md-6">
-
-                <div class="card dashboard-card p-4">
-
-                    <div class="d-flex justify-content-between align-items-center">
-
-                        <div>
-
-                            <h6 class="text-muted">
-
-                                Results
-
-                            </h6>
-
-                            <p class="mb-0">
-
-                                Manage exam results
-
-                            </p>
-
-                        </div>
-
-                        <div class="fs-1 text-danger">
-
-                            <i class="bi bi-award-fill"></i>
-
-                        </div>
-
-                    </div>
-
-                    <a
-                        href="{% url 'result_list' %}"
-                        class="btn btn-danger mt-3"
-                    >
-
-                        View Results
-
-                    </a>
-
-                </div>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<!-- QUICK ACTIONS -->
-
-<div class="card dashboard-card mb-4">
-
-    <div class="card-header bg-white border-0 pt-4">
-
-        <h5 class="fw-bold">
-
-            Quick Actions
-
-        </h5>
-
-    </div>
-
-    <div class="card-body">
-
-        <div class="row g-3">
-
-            <div class="col-md-3">
-
-                <a
-                    href="{% url 'student_list' %}"
-                    class="btn btn-primary w-100"
-                >
-
-                    <i class="bi bi-mortarboard-fill"></i>
-
-                    Students
-
-                </a>
-
-            </div>
-
-            <div class="col-md-3">
-
-                <a
-                    href="{% url 'mark_attendance' %}"
-                    class="btn btn-success w-100"
-                >
-
-                    <i class="bi bi-calendar-check-fill"></i>
-
-                    Attendance
-
-                </a>
-
-            </div>
-
-            <div class="col-md-3">
-
-                <a
-                    href="{% url 'add_result' %}"
-                    class="btn btn-warning text-white w-100"
-                >
-
-                    <i class="bi bi-bar-chart-fill"></i>
-
-                    Results
-
-                </a>
-
-            </div>
-
-            <div class="col-md-3">
-
-                <a
-                    href="{% url 'timetable_list' %}"
-                    class="btn btn-dark w-100"
-                >
-
-                    <i class="bi bi-clock-fill"></i>
-
-                    Timetable
-
-                </a>
-
-            </div>
-
-        </div>
-
-    </div>
-
-</div>
-
-<!-- RECENT ACTIVITY -->
-
-<div class="card dashboard-card">
-
-    <div class="card-header bg-white border-0 pt-4">
-
-        <h5 class="fw-bold">
-
-            Recent Activity
-
-        </h5>
-
-    </div>
-
-    <div class="card-body">
-
-        <div class="d-flex flex-column gap-3">
-
-            <div class="p-3 rounded bg-light">
-
-                <i class="bi bi-calendar-check-fill text-success"></i>
-
-                Attendance updated successfully
-
-            </div>
-
-            <div class="p-3 rounded bg-light">
-
-                <i class="bi bi-award-fill text-primary"></i>
-
-                Exam results published
-
-            </div>
-
-            <div class="p-3 rounded bg-light">
-
-                <i class="bi bi-clock-fill text-warning"></i>
-
-                Timetable updated
 
             </div>
 

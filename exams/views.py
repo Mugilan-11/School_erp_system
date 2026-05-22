@@ -1,67 +1,40 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-import pandas as pd
-
-from students.models import Student
-
 from .models import ExamResult
 
 from .forms import (
-    ExamResultForm,
+    ResultForm,
     ResultExcelUploadForm
 )
+
+from students.models import Student
+
+import pandas as pd
 
 
 @login_required
 def result_list(request):
 
     if request.user.role not in [
+
         'ADMIN',
         'TEACHER',
         'STUDENT',
         'PARENT'
+
     ]:
         return redirect('login')
 
-    # STUDENT VIEW
+    results = ExamResult.objects.all()
 
-    if request.user.role == 'STUDENT':
+    class_filter = request.GET.get('class')
 
-        student = request.user.student
+    if class_filter:
 
-        results = ExamResult.objects.filter(
-            student=student
+        results = results.filter(
+            student__student_class=class_filter
         )
-
-    # ADMIN VIEW
-
-    elif request.user.role == 'ADMIN':
-
-        results = ExamResult.objects.all()
-
-        class_filter = request.GET.get('class')
-
-        if class_filter:
-
-            results = results.filter(
-                student__student_class=class_filter
-            )
-
-    # TEACHER VIEW
-
-    elif request.user.role == 'TEACHER':
-
-        teacher = request.user.teacher
-
-        results = ExamResult.objects.filter(
-            student__student_class=
-            teacher.assigned_class
-        )
-
-    else:
-
-        results = ExamResult.objects.none()
 
     context = {
 
@@ -80,14 +53,16 @@ def result_list(request):
 def add_result(request):
 
     if request.user.role not in [
+
         'ADMIN',
         'TEACHER'
+
     ]:
         return redirect('login')
 
     if request.method == 'POST':
 
-        form = ExamResultForm(request.POST)
+        form = ResultForm(request.POST)
 
         if form.is_valid():
 
@@ -97,7 +72,7 @@ def add_result(request):
 
     else:
 
-        form = ExamResultForm()
+        form = ResultForm()
 
     context = {
 
@@ -113,37 +88,23 @@ def add_result(request):
 
 
 @login_required
-def view_result(request, id):
-
-    result = ExamResult.objects.get(id=id)
-
-    context = {
-
-        'result': result
-
-    }
-
-    return render(
-        request,
-        'exams/view_result.html',
-        context
-    )
-
-
-@login_required
 def import_results(request):
 
     if request.user.role not in [
+
         'ADMIN',
         'TEACHER'
+
     ]:
         return redirect('login')
 
     if request.method == 'POST':
 
         form = ResultExcelUploadForm(
+
             request.POST,
             request.FILES
+
         )
 
         if form.is_valid():
@@ -162,11 +123,9 @@ def import_results(request):
 
                     student=student,
 
-                    exam_name=row['exam_name'],
+                    subject=row['subject'],
 
-                    total_marks=row['total_marks'],
-
-                    percentage=row['percentage'],
+                    marks=row['marks'],
 
                     grade=row['grade']
 

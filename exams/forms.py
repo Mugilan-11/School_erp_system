@@ -1,8 +1,13 @@
 from django import forms
+
 from .models import ExamResult
 
 
-class ExamResultForm(forms.ModelForm):
+# =====================================
+# RESULT FORM
+# =====================================
+
+class ResultForm(forms.ModelForm):
 
     class Meta:
 
@@ -13,46 +18,64 @@ class ExamResultForm(forms.ModelForm):
         widgets = {
 
             'student': forms.Select(
+
                 attrs={
-                    'class': 'form-select'
+
+                    'class': 'form-control'
+
                 }
+
             ),
 
-            'exam_name': forms.TextInput(
+            'subject': forms.TextInput(
+
                 attrs={
+
                     'class': 'form-control'
+
                 }
+
             ),
 
-            'total_marks': forms.NumberInput(
-                attrs={
-                    'class': 'form-control'
-                }
-            ),
+            'marks': forms.NumberInput(
 
-            'percentage': forms.NumberInput(
                 attrs={
+
                     'class': 'form-control'
+
                 }
+
             ),
 
             'grade': forms.TextInput(
+
                 attrs={
+
                     'class': 'form-control'
+
                 }
+
             ),
 
         }
 
+
+# =====================================
+# EXCEL IMPORT FORM
+# =====================================
 
 class ResultExcelUploadForm(forms.Form):
 
     excel_file = forms.FileField(
 
         widget=forms.FileInput(
+
             attrs={
+
                 'class': 'form-control'
+
             }
+
         )
 
     )

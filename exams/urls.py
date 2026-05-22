@@ -1,29 +1,37 @@
 from django.urls import path
-from .views import *
+
+from . import views
+
 
 urlpatterns = [
 
+    # =====================================
+    # RESULT LIST
+    # =====================================
+
     path(
         'result-list/',
-        result_list,
+        views.result_list,
         name='result_list'
     ),
 
+    # =====================================
+    # ADD RESULT
+    # =====================================
+
     path(
         'add-result/',
-        add_result,
+        views.add_result,
         name='add_result'
     ),
 
-    path(
-        'view-result/<int:id>/',
-        view_result,
-        name='view_result'
-    ),
+    # =====================================
+    # IMPORT RESULTS
+    # =====================================
 
     path(
         'import-results/',
-        import_results,
+        views.import_results,
         name='import_results'
     ),
 

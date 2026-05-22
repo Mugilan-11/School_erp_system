@@ -3,65 +3,37 @@ from django.contrib.auth.decorators import login_required
 
 import pandas as pd
 
-from students.models import Student
-
 from .models import Fee
-
 from .forms import (
     FeeForm,
     FeeExcelUploadForm
 )
+
+from students.models import Student
 
 
 @login_required
 def fee_list(request):
 
     if request.user.role not in [
+
         'ADMIN',
         'TEACHER',
         'STUDENT',
         'PARENT'
+
     ]:
         return redirect('login')
 
-    # STUDENT VIEW
+    fees = Fee.objects.all()
 
-    if request.user.role == 'STUDENT':
+    class_filter = request.GET.get('class')
 
-        student = request.user.student
+    if class_filter:
 
-        fees = Fee.objects.filter(
-            student=student
+        fees = fees.filter(
+            student__student_class=class_filter
         )
-
-    # ADMIN VIEW
-
-    elif request.user.role == 'ADMIN':
-
-        fees = Fee.objects.all()
-
-        class_filter = request.GET.get('class')
-
-        if class_filter:
-
-            fees = fees.filter(
-                student__student_class=class_filter
-            )
-
-    # TEACHER VIEW
-
-    elif request.user.role == 'TEACHER':
-
-        teacher = request.user.teacher
-
-        fees = Fee.objects.filter(
-            student__student_class=
-            teacher.assigned_class
-        )
-
-    else:
-
-        fees = Fee.objects.none()
 
     context = {
 
@@ -80,8 +52,10 @@ def fee_list(request):
 def add_fee(request):
 
     if request.user.role not in [
+
         'ADMIN',
         'TEACHER'
+
     ]:
         return redirect('login')
 
@@ -116,16 +90,20 @@ def add_fee(request):
 def import_fees(request):
 
     if request.user.role not in [
+
         'ADMIN',
         'TEACHER'
+
     ]:
         return redirect('login')
 
     if request.method == 'POST':
 
         form = FeeExcelUploadForm(
+
             request.POST,
             request.FILES
+
         )
 
         if form.is_valid():
@@ -146,9 +124,7 @@ def import_fees(request):
 
                     amount=row['amount'],
 
-                    status=row['status'],
-
-                    date=row['date']
+                    status=row['status']
 
                 )
 

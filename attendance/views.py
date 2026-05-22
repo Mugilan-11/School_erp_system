@@ -3,9 +3,8 @@ from django.contrib.auth.decorators import login_required
 
 import pandas as pd
 
-from students.models import Student
-
 from .models import Attendance
+from students.models import Student
 
 from .forms import (
     AttendanceForm,
@@ -17,10 +16,12 @@ from .forms import (
 def attendance_list(request):
 
     if request.user.role not in [
+
         'ADMIN',
         'TEACHER',
         'STUDENT',
         'PARENT'
+
     ]:
         return redirect('login')
 
@@ -33,8 +34,6 @@ def attendance_list(request):
         attendance_records = Attendance.objects.filter(
             student=student
         ).order_by('-date')
-
-    # ADMIN / TEACHER VIEW
 
     else:
 
@@ -65,8 +64,10 @@ def attendance_list(request):
 def mark_attendance(request):
 
     if request.user.role not in [
+
         'ADMIN',
         'TEACHER'
+
     ]:
         return redirect('login')
 
@@ -101,8 +102,10 @@ def mark_attendance(request):
 def import_attendance(request):
 
     if request.user.role not in [
+
         'ADMIN',
         'TEACHER'
+
     ]:
         return redirect('login')
 

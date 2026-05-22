@@ -2,37 +2,255 @@
 
 {% block content %}
 
-<h2 class="mb-4 fw-bold">
-    Admin Dashboard
-</h2>
+<div class="container-fluid">
 
-<!-- STAT CARDS -->
+    <!-- PAGE TITLE -->
 
-<div class="row g-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
 
-    <!-- STUDENTS -->
+        <div>
 
-    <div class="col-md-3">
+            <h1 class="fw-bold">
 
-        <div class="card dashboard-card p-4">
+                Admin Dashboard
 
-            <div class="d-flex justify-content-between align-items-center">
+            </h1>
 
-                <div>
+            <p class="text-muted">
 
-                    <h6 class="text-muted">
-                        Total Students
-                    </h6>
+                Welcome back,
+                {{ request.user.username }}
 
-                    <h2 class="fw-bold">
-                        {{ total_students }}
-                    </h2>
+            </p>
+
+        </div>
+
+        <div>
+
+            <button class="btn btn-primary">
+
+                <i class="bi bi-download"></i>
+
+                Generate Report
+
+            </button>
+
+        </div>
+
+    </div>
+
+    <!-- ANALYTICS -->
+
+    <div class="row g-4 mb-4">
+
+        <!-- STUDENTS -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="dashboard-card">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <p class="text-muted mb-2">
+
+                            Total Students
+
+                        </p>
+
+                        <h3>
+
+                            {{ total_students }}
+
+                        </h3>
+
+                    </div>
+
+                    <div
+                        class="bg-primary bg-opacity-10 p-4 rounded-circle"
+                    >
+
+                        <i class="bi bi-mortarboard-fill text-primary fs-2"></i>
+
+                    </div>
 
                 </div>
 
-                <div class="fs-1 text-primary">
+                <div class="mt-4">
 
-                    <i class="bi bi-mortarboard-fill"></i>
+                    <span class="text-success">
+
+                        <i class="bi bi-arrow-up"></i>
+
+                        12%
+
+                    </span>
+
+                    <span class="text-muted">
+
+                        from last month
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- TEACHERS -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="dashboard-card">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <p class="text-muted mb-2">
+
+                            Total Teachers
+
+                        </p>
+
+                        <h3>
+
+                            {{ total_teachers }}
+
+                        </h3>
+
+                    </div>
+
+                    <div
+                        class="bg-success bg-opacity-10 p-4 rounded-circle"
+                    >
+
+                        <i class="bi bi-person-workspace text-success fs-2"></i>
+
+                    </div>
+
+                </div>
+
+                <div class="mt-4">
+
+                    <span class="text-success">
+
+                        <i class="bi bi-arrow-up"></i>
+
+                        8%
+
+                    </span>
+
+                    <span class="text-muted">
+
+                        from last month
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- FEES -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="dashboard-card">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <p class="text-muted mb-2">
+
+                            Fees Collected
+
+                        </p>
+
+                        <h3>
+
+                            ₹2.4L
+
+                        </h3>
+
+                    </div>
+
+                    <div
+                        class="bg-warning bg-opacity-10 p-4 rounded-circle"
+                    >
+
+                        <i class="bi bi-cash-stack text-warning fs-2"></i>
+
+                    </div>
+
+                </div>
+
+                <div class="mt-4">
+
+                    <span class="text-success">
+
+                        <i class="bi bi-arrow-up"></i>
+
+                        18%
+
+                    </span>
+
+                    <span class="text-muted">
+
+                        this month
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- ATTENDANCE -->
+
+        <div class="col-lg-3 col-md-6">
+
+            <div class="dashboard-card">
+
+                <div class="d-flex justify-content-between align-items-center">
+
+                    <div>
+
+                        <p class="text-muted mb-2">
+
+                            Attendance
+
+                        </p>
+
+                        <h3>
+
+                            92%
+
+                        </h3>
+
+                    </div>
+
+                    <div
+                        class="bg-danger bg-opacity-10 p-4 rounded-circle"
+                    >
+
+                        <i class="bi bi-calendar-check-fill text-danger fs-2"></i>
+
+                    </div>
+
+                </div>
+
+                <div class="progress mt-4" style="height: 10px;">
+
+                    <div
+                        class="progress-bar bg-danger"
+                        style="width: 92%;"
+                    ></div>
 
                 </div>
 
@@ -42,235 +260,278 @@
 
     </div>
 
-    <!-- TEACHERS -->
+    <!-- SECOND ROW -->
 
-    <div class="col-md-3">
+    <div class="row g-4">
 
-        <div class="card dashboard-card p-4">
+        <!-- RECENT STUDENTS -->
 
-            <div class="d-flex justify-content-between align-items-center">
+        <div class="col-lg-8">
 
-                <div>
+            <div class="table-container">
 
-                    <h6 class="text-muted">
-                        Teachers
-                    </h6>
+                <div class="d-flex justify-content-between mb-4">
 
-                    <h2 class="fw-bold">
-                        {{ total_teachers }}
-                    </h2>
+                    <h4 class="fw-bold">
 
-                </div>
+                        Recent Students
 
-                <div class="fs-1 text-success">
+                    </h4>
 
-                    <i class="bi bi-person-workspace"></i>
+                    <a
+                        href="/student-list/"
+                        class="btn btn-primary"
+                    >
 
-                </div>
+                        View All
 
-            </div>
-
-        </div>
-
-    </div>
-
-    <!-- ADMINS -->
-
-    <div class="col-md-3">
-
-        <div class="card dashboard-card p-4">
-
-            <div class="d-flex justify-content-between align-items-center">
-
-                <div>
-
-                    <h6 class="text-muted">
-                        Admins
-                    </h6>
-
-                    <h2 class="fw-bold">
-                        {{ total_admins }}
-                    </h2>
+                    </a>
 
                 </div>
 
-                <div class="fs-1 text-danger">
+                <div class="table-responsive">
 
-                    <i class="bi bi-shield-lock-fill"></i>
+                    <table class="table align-middle">
 
-                </div>
+                        <thead>
 
-            </div>
+                            <tr>
 
-        </div>
+                                <th>
 
-    </div>
+                                    Name
 
-    <!-- ATTENDANCE -->
+                                </th>
 
-    <div class="col-md-3">
+                                <th>
 
-        <div class="card dashboard-card p-4">
+                                    Admission No
 
-            <div class="d-flex justify-content-between align-items-center">
+                                </th>
 
-                <div>
+                                <th>
 
-                    <h6 class="text-muted">
-                        Attendance
-                    </h6>
+                                    Class
 
-                    <h2 class="fw-bold">
-                        92%
-                    </h2>
+                                </th>
 
-                </div>
+                                <th>
 
-                <div class="fs-1 text-warning">
+                                    Status
 
-                    <i class="bi bi-calendar-check-fill"></i>
+                                </th>
 
-                </div>
+                            </tr>
 
-            </div>
+                        </thead>
 
-        </div>
+                        <tbody>
 
-    </div>
+                            {% for student in students %}
 
-</div>
+                            <tr>
 
-<!-- SECOND ROW -->
-
-<div class="row mt-4 g-4">
-
-    <!-- RECENT STUDENTS -->
-
-    <div class="col-md-8">
-
-        <div class="card dashboard-card">
-
-            <div class="card-header bg-white border-0 pt-4">
-
-                <h5 class="fw-bold">
-                    Recent Students
-                </h5>
-
-            </div>
-
-            <div class="card-body">
-
-                <table class="table align-middle">
-
-                    <thead>
-
-                        <tr>
-
-                            <th>Name</th>
-                            <th>Admission No</th>
-                            <th>Class</th>
-
-                        </tr>
-
-                    </thead>
-
-                    <tbody>
-
-                        {% for student in recent_students %}
-
-                        <tr>
-
-                            <td>
-
-                                <div class="d-flex align-items-center gap-2">
-
-                                    {% if student.profile_picture %}
-
-                                        <img
-                                            src="{{ student.profile_picture.url }}"
-                                            width="40"
-                                            height="40"
-                                            class="rounded-circle"
-                                        >
-
-                                    {% endif %}
+                                <td>
 
                                     {{ student.first_name }}
                                     {{ student.last_name }}
 
-                                </div>
+                                </td>
 
-                            </td>
+                                <td>
 
-                            <td>
-                                {{ student.admission_no }}
-                            </td>
+                                    {{ student.admission_no }}
 
-                            <td>
-                                {{ student.student_class }}
-                            </td>
+                                </td>
 
-                        </tr>
+                                <td>
 
-                        {% endfor %}
+                                    {{ student.student_class }}
 
-                    </tbody>
+                                </td>
 
-                </table>
+                                <td>
+
+                                    <span class="badge bg-success">
+
+                                        Active
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
 
             </div>
 
         </div>
 
-    </div>
+        <!-- QUICK ACTIONS -->
 
-    <!-- QUICK ACTIONS -->
+        <div class="col-lg-4">
 
-    <div class="col-md-4">
+            <div class="dashboard-card mb-4">
 
-        <div class="card dashboard-card">
+                <h4 class="fw-bold mb-4">
 
-            <div class="card-header bg-white border-0 pt-4">
-
-                <h5 class="fw-bold">
                     Quick Actions
-                </h5>
+
+                </h4>
+
+                <div class="d-grid gap-3">
+
+                    <a
+                        href="/add-student/"
+                        class="btn btn-primary py-3"
+                    >
+
+                        <i class="bi bi-person-plus-fill"></i>
+
+                        Add Student
+
+                    </a>
+
+                    <a
+                        href="/add-teacher/"
+                        class="btn btn-success py-3"
+                    >
+
+                        <i class="bi bi-person-workspace"></i>
+
+                        Add Teacher
+
+                    </a>
+
+                    <a
+                        href="/mark-attendance/"
+                        class="btn btn-warning py-3"
+                    >
+
+                        <i class="bi bi-calendar-check-fill"></i>
+
+                        Mark Attendance
+
+                    </a>
+
+                    <a
+                        href="/add-result/"
+                        class="btn btn-danger py-3"
+                    >
+
+                        <i class="bi bi-award-fill"></i>
+
+                        Add Result
+
+                    </a>
+
+                </div>
 
             </div>
 
-            <div class="card-body d-grid gap-3">
+            <!-- SYSTEM STATUS -->
 
-                <a
-                    href="{% url 'add_student' %}"
-                    class="btn btn-primary"
-                >
-                    <i class="bi bi-person-plus-fill"></i>
-                    Add Student
-                </a>
+            <div class="dashboard-card">
 
-                <a
-                    href="{% url 'mark_attendance' %}"
-                    class="btn btn-success"
-                >
-                    <i class="bi bi-calendar-check-fill"></i>
-                    Mark Attendance
-                </a>
+                <h4 class="fw-bold mb-4">
 
-                <a
-                    href="{% url 'add_result' %}"
-                    class="btn btn-warning text-white"
-                >
-                    <i class="bi bi-bar-chart-fill"></i>
-                    Add Result
-                </a>
+                    System Status
 
-                <a
-                    href="{% url 'add_fee' %}"
-                    class="btn btn-danger"
-                >
-                    <i class="bi bi-cash-stack"></i>
-                    Add Fee
-                </a>
+                </h4>
+
+                <div class="mb-4">
+
+                    <div class="d-flex justify-content-between mb-2">
+
+                        <span>
+
+                            Server Performance
+
+                        </span>
+
+                        <span>
+
+                            95%
+
+                        </span>
+
+                    </div>
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar bg-success"
+                            style="width: 95%;"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+                <div class="mb-4">
+
+                    <div class="d-flex justify-content-between mb-2">
+
+                        <span>
+
+                            Database Usage
+
+                        </span>
+
+                        <span>
+
+                            70%
+
+                        </span>
+
+                    </div>
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar bg-warning"
+                            style="width: 70%;"
+                        ></div>
+
+                    </div>
+
+                </div>
+
+                <div>
+
+                    <div class="d-flex justify-content-between mb-2">
+
+                        <span>
+
+                            Storage
+
+                        </span>
+
+                        <span>
+
+                            60%
+
+                        </span>
+
+                    </div>
+
+                    <div class="progress">
+
+                        <div
+                            class="progress-bar bg-primary"
+                            style="width: 60%;"
+                        ></div>
+
+                    </div>
+
+                </div>
 
             </div>
 
