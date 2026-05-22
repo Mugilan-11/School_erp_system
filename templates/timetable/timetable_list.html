@@ -2,8 +2,6 @@
 
 {% block content %}
 
-<!-- PAGE HEADER -->
-
 <div class="d-flex justify-content-between align-items-center mb-4">
 
     <div>
@@ -16,7 +14,7 @@
 
         <p class="text-muted">
 
-            Manage class schedules and subject timings
+            Manage class schedules
 
         </p>
 
@@ -26,27 +24,19 @@
 
     <div class="d-flex gap-2">
 
-        <!-- ADD TIMETABLE -->
-
         <a
             href="{% url 'add_timetable' %}"
             class="btn btn-primary px-4 py-2 rounded-4"
         >
 
-            <i class="bi bi-plus-circle-fill"></i>
-
             Add Timetable
 
         </a>
-
-        <!-- IMPORT EXCEL -->
 
         <a
             href="{% url 'import_timetable' %}"
             class="btn btn-success px-4 py-2 rounded-4"
         >
-
-            <i class="bi bi-file-earmark-excel-fill"></i>
 
             Import Excel
 
@@ -58,79 +48,72 @@
 
 </div>
 
-<!-- SUMMARY CARDS -->
+<!-- CLASS FILTER -->
 
-<div class="row g-4 mb-4">
+{% if request.user.role == 'ADMIN' %}
 
-    <!-- TOTAL SCHEDULES -->
+<div class="card dashboard-card mb-4">
 
-    <div class="col-md-4">
+    <div class="card-body">
 
-        <div class="card dashboard-card p-4">
+        <form method="GET">
 
-            <h6 class="text-muted">
+            <div class="row g-3">
 
-                Total Schedules
+                <div class="col-md-4">
 
-            </h6>
+                    <select
+                        name="class"
+                        class="form-select"
+                    >
 
-            <h2 class="fw-bold text-primary">
+                        <option value="">
 
-                {{ timetables|length }}
+                            All Classes
 
-            </h2>
+                        </option>
 
-        </div>
+                        {% for i in "123456789101112" %}
 
-    </div>
+                        <option
+                            value="{{ i }}"
+                            {% if request.GET.class == i %}
+                                selected
+                            {% endif %}
+                        >
 
-    <!-- ACTIVE CLASSES -->
+                            Class {{ i }}
 
-    <div class="col-md-4">
+                        </option>
 
-        <div class="card dashboard-card p-4">
+                        {% endfor %}
 
-            <h6 class="text-muted">
+                    </select>
 
-                Active Classes
+                </div>
 
-            </h6>
+                <div class="col-md-2">
 
-            <h2 class="fw-bold text-success">
+                    <button
+                        type="submit"
+                        class="btn btn-primary w-100"
+                    >
 
-                Running
+                        Filter
 
-            </h2>
+                    </button>
 
-        </div>
+                </div>
 
-    </div>
+            </div>
 
-    <!-- STATUS -->
-
-    <div class="col-md-4">
-
-        <div class="card dashboard-card p-4">
-
-            <h6 class="text-muted">
-
-                Timetable Status
-
-            </h6>
-
-            <h2 class="fw-bold text-warning">
-
-                Updated
-
-            </h2>
-
-        </div>
+        </form>
 
     </div>
 
 </div>
 
-<!-- TIMETABLE TABLE -->
+{% endif %}
 
 <div class="card dashboard-card">
 
@@ -148,8 +131,8 @@
                         <th>Subject</th>
                         <th>Teacher</th>
                         <th>Day</th>
-                        <th>Start Time</th>
-                        <th>End Time</th>
+                        <th>Start</th>
+                        <th>End</th>
 
                     </tr>
 
@@ -161,8 +144,6 @@
 
                     <tr>
 
-                        <!-- CLASS -->
-
                         <td>
 
                             <span class="badge bg-primary px-3 py-2 rounded-pill">
@@ -173,19 +154,11 @@
 
                         </td>
 
-                        <!-- SUBJECT -->
-
                         <td>
 
-                            <div class="fw-bold">
-
-                                {{ timetable.subject }}
-
-                            </div>
+                            {{ timetable.subject }}
 
                         </td>
-
-                        <!-- TEACHER -->
 
                         <td>
 
@@ -193,71 +166,17 @@
 
                         </td>
 
-                        <!-- DAY -->
-
                         <td>
 
-                            {% if timetable.day == 'Monday' %}
-
-                                <span class="badge bg-primary px-3 py-2 rounded-pill">
-
-                                    Monday
-
-                                </span>
-
-                            {% elif timetable.day == 'Tuesday' %}
-
-                                <span class="badge bg-success px-3 py-2 rounded-pill">
-
-                                    Tuesday
-
-                                </span>
-
-                            {% elif timetable.day == 'Wednesday' %}
-
-                                <span class="badge bg-warning text-dark px-3 py-2 rounded-pill">
-
-                                    Wednesday
-
-                                </span>
-
-                            {% elif timetable.day == 'Thursday' %}
-
-                                <span class="badge bg-info text-dark px-3 py-2 rounded-pill">
-
-                                    Thursday
-
-                                </span>
-
-                            {% elif timetable.day == 'Friday' %}
-
-                                <span class="badge bg-danger px-3 py-2 rounded-pill">
-
-                                    Friday
-
-                                </span>
-
-                            {% else %}
-
-                                <span class="badge bg-secondary px-3 py-2 rounded-pill">
-
-                                    {{ timetable.day }}
-
-                                </span>
-
-                            {% endif %}
+                            {{ timetable.day }}
 
                         </td>
-
-                        <!-- START TIME -->
 
                         <td>
 
                             {{ timetable.start_time }}
 
                         </td>
-
-                        <!-- END TIME -->
 
                         <td>
 
@@ -273,17 +192,7 @@
 
                         <td colspan="6" class="text-center py-5">
 
-                            <div class="text-muted">
-
-                                <i class="bi bi-clock-history fs-1"></i>
-
-                                <p class="mt-3">
-
-                                    No timetable records found
-
-                                </p>
-
-                            </div>
+                            No timetable records found
 
                         </td>
 

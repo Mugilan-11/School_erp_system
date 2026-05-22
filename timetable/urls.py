@@ -1,7 +1,6 @@
 from django.urls import path
 from .views import *
 
-
 urlpatterns = [
 
     path(
@@ -11,19 +10,15 @@ urlpatterns = [
     ),
 
     path(
-        'class-timetable/<str:class_name>/<str:section>/',
-        class_timetable,
-        name='class_timetable'
-    ),
-
-    path(
         'add-timetable/',
         add_timetable,
         name='add_timetable'
     ),
+
     path(
-    'import-timetable/',
-    import_timetable,
-    name='import_timetable'
-),
+        'import-timetable/',
+        import_timetable,
+        name='import_timetable'
+    ),
+
 ]

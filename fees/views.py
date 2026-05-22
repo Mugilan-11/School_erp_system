@@ -1,17 +1,116 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 
-from .models import Fee
-from .forms import FeeForm
-
 import pandas as pd
 
 from students.models import Student
+
+from .models import Fee
 
 from .forms import (
     FeeForm,
     FeeExcelUploadForm
 )
+
+
+@login_required
+def fee_list(request):
+
+    if request.user.role not in [
+        'ADMIN',
+        'TEACHER',
+        'STUDENT',
+        'PARENT'
+    ]:
+        return redirect('login')
+
+    # STUDENT VIEW
+
+    if request.user.role == 'STUDENT':
+
+        student = request.user.student
+
+        fees = Fee.objects.filter(
+            student=student
+        )
+
+    # ADMIN VIEW
+
+    elif request.user.role == 'ADMIN':
+
+        fees = Fee.objects.all()
+
+        class_filter = request.GET.get('class')
+
+        if class_filter:
+
+            fees = fees.filter(
+                student__student_class=class_filter
+            )
+
+    # TEACHER VIEW
+
+    elif request.user.role == 'TEACHER':
+
+        teacher = request.user.teacher
+
+        fees = Fee.objects.filter(
+            student__student_class=
+            teacher.assigned_class
+        )
+
+    else:
+
+        fees = Fee.objects.none()
+
+    context = {
+
+        'fees': fees
+
+    }
+
+    return render(
+        request,
+        'fees/fee_list.html',
+        context
+    )
+
+
+@login_required
+def add_fee(request):
+
+    if request.user.role not in [
+        'ADMIN',
+        'TEACHER'
+    ]:
+        return redirect('login')
+
+    if request.method == 'POST':
+
+        form = FeeForm(request.POST)
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect('fee_list')
+
+    else:
+
+        form = FeeForm()
+
+    context = {
+
+        'form': form
+
+    }
+
+    return render(
+        request,
+        'fees/add_fee.html',
+        context
+    )
+
 
 @login_required
 def import_fees(request):
@@ -68,66 +167,5 @@ def import_fees(request):
     return render(
         request,
         'fees/import_fees.html',
-        context
-    )
-
-@login_required
-def fee_list(request):
-
-    if request.user.role not in [
-        'ADMIN',
-        'TEACHER',
-        'STUDENT',
-        'PARENT'
-    ]:
-        return redirect('login')
-
-    fees = Fee.objects.all()
-
-    context = {
-
-        'fees': fees
-
-    }
-
-    return render(
-        request,
-        'fees/fee_list.html',
-        context
-    )
-
-
-@login_required
-def add_fee(request):
-
-    if request.user.role not in [
-        'ADMIN',
-        'TEACHER'
-    ]:
-        return redirect('login')
-
-    if request.method == 'POST':
-
-        form = FeeForm(request.POST)
-
-        if form.is_valid():
-
-            form.save()
-
-            return redirect('fee_list')
-
-    else:
-
-        form = FeeForm()
-
-    context = {
-
-        'form': form
-
-    }
-
-    return render(
-        request,
-        'fees/add_fee.html',
         context
     )

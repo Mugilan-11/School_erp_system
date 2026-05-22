@@ -1,17 +1,116 @@
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-
-from .models import ExamResult, SubjectMark
-from .forms import ExamResultForm
 
 import pandas as pd
 
 from students.models import Student
 
+from .models import ExamResult
+
 from .forms import (
     ExamResultForm,
     ResultExcelUploadForm
 )
+
+
+@login_required
+def result_list(request):
+
+    if request.user.role not in [
+        'ADMIN',
+        'TEACHER',
+        'STUDENT',
+        'PARENT'
+    ]:
+        return redirect('login')
+
+    # STUDENT VIEW
+
+    if request.user.role == 'STUDENT':
+
+        student = request.user.student
+
+        results = ExamResult.objects.filter(
+            student=student
+        )
+
+    # ADMIN VIEW
+
+    elif request.user.role == 'ADMIN':
+
+        results = ExamResult.objects.all()
+
+        class_filter = request.GET.get('class')
+
+        if class_filter:
+
+            results = results.filter(
+                student__student_class=class_filter
+            )
+
+    # TEACHER VIEW
+
+    elif request.user.role == 'TEACHER':
+
+        teacher = request.user.teacher
+
+        results = ExamResult.objects.filter(
+            student__student_class=
+            teacher.assigned_class
+        )
+
+    else:
+
+        results = ExamResult.objects.none()
+
+    context = {
+
+        'results': results
+
+    }
+
+    return render(
+        request,
+        'exams/result_list.html',
+        context
+    )
+
+
+@login_required
+def add_result(request):
+
+    if request.user.role not in [
+        'ADMIN',
+        'TEACHER'
+    ]:
+        return redirect('login')
+
+    if request.method == 'POST':
+
+        form = ExamResultForm(request.POST)
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect('result_list')
+
+    else:
+
+        form = ExamResultForm()
+
+    context = {
+
+        'form': form
+
+    }
+
+    return render(
+        request,
+        'exams/add_result.html',
+        context
+    )
+
 
 @login_required
 def view_result(request, id):
@@ -29,6 +128,8 @@ def view_result(request, id):
         'exams/view_result.html',
         context
     )
+
+
 @login_required
 def import_results(request):
 
@@ -86,124 +187,5 @@ def import_results(request):
     return render(
         request,
         'exams/import_results.html',
-        context
-    )
-
-@login_required
-def result_list(request):
-
-    if request.user.role not in [
-        'ADMIN',
-        'TEACHER',
-        'STUDENT',
-        'PARENT'
-    ]:
-        return redirect('login')
-
-    if request.user.role == 'STUDENT':
-
-        student = request.user.student
-
-        results = ExamResult.objects.filter(
-            student=student
-        )
-
-    else:
-
-        results = ExamResult.objects.all()
-
-    context = {
-
-        'results': results
-
-    }
-
-    return render(
-        request,
-        'exams/result_list.html',
-        context
-    )
-@login_required
-def add_result(request):
-
-    if request.user.role not in ['ADMIN', 'TEACHER']:
-        return redirect('login')
-
-    if request.method == 'POST':
-
-        form = ExamResultForm(request.POST)
-
-        if form.is_valid():
-
-            exam_result = form.save()
-
-            subject_names = request.POST.getlist(
-                'subject_name'
-            )
-
-            marks_obtained = request.POST.getlist(
-                'mark_obtained'
-            )
-
-            maximum_marks = request.POST.getlist(
-                'maximum_mark'
-            )
-
-            for i in range(len(subject_names)):
-
-                SubjectMark.objects.create(
-
-                    exam_result=exam_result,
-
-                    subject_name=subject_names[i],
-
-                    mark_obtained=marks_obtained[i],
-
-                    maximum_mark=maximum_marks[i],
-                )
-
-            exam_result.calculate_result()
-
-            return redirect('result_list')
-
-    else:
-
-        form = ExamResultForm()
-
-    context = {
-        'form': form
-    }
-
-    return render(
-        request,
-        'exams/add_result.html',
-        context
-    )
-
-
-@login_required
-def report_card(request, id):
-
-    if request.user.role not in ['ADMIN', 'TEACHER']:
-        return redirect('login')
-
-    result = get_object_or_404(
-        ExamResult,
-        id=id
-    )
-
-    subjects = SubjectMark.objects.filter(
-        exam_result=result
-    )
-
-    context = {
-
-        'result': result,
-        'subjects': subjects,
-    }
-
-    return render(
-        request,
-        'exams/report_card.html',
         context
     )
