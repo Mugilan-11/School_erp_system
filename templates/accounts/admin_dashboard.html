@@ -6,42 +6,25 @@
 
     <!-- PAGE TITLE -->
 
-    <div class="d-flex justify-content-between align-items-center mb-4">
+    <div class="mb-4">
 
-        <div>
+        <h1 class="fw-bold">
 
-            <h1 class="fw-bold">
+            Admin Dashboard
 
-                Admin Dashboard
+        </h1>
 
-            </h1>
+        <p class="text-muted">
 
-            <p class="text-muted">
+            Welcome to Bethal ERP analytics panel
 
-                Welcome back,
-                {{ request.user.username }}
-
-            </p>
-
-        </div>
-
-        <div>
-
-            <button class="btn btn-primary">
-
-                <i class="bi bi-download"></i>
-
-                Generate Report
-
-            </button>
-
-        </div>
+        </p>
 
     </div>
 
-    <!-- ANALYTICS -->
+    <!-- STATS CARDS -->
 
-    <div class="row g-4 mb-4">
+    <div class="row g-4 mb-5">
 
         <!-- STUDENTS -->
 
@@ -55,43 +38,26 @@
 
                         <p class="text-muted mb-2">
 
-                            Total Students
+                            Students
 
                         </p>
 
-                        <h3>
+                        <h1 class="fw-bold">
 
                             {{ total_students }}
 
-                        </h3>
+                        </h1>
 
                     </div>
 
                     <div
-                        class="bg-primary bg-opacity-10 p-4 rounded-circle"
+                        class="p-3 rounded-circle"
+                        style="background: rgba(79,70,229,0.1);"
                     >
 
-                        <i class="bi bi-mortarboard-fill text-primary fs-2"></i>
+                        <i class="bi bi-mortarboard-fill fs-1 text-primary"></i>
 
                     </div>
-
-                </div>
-
-                <div class="mt-4">
-
-                    <span class="text-success">
-
-                        <i class="bi bi-arrow-up"></i>
-
-                        12%
-
-                    </span>
-
-                    <span class="text-muted">
-
-                        from last month
-
-                    </span>
 
                 </div>
 
@@ -111,43 +77,26 @@
 
                         <p class="text-muted mb-2">
 
-                            Total Teachers
+                            Teachers
 
                         </p>
 
-                        <h3>
+                        <h1 class="fw-bold">
 
                             {{ total_teachers }}
 
-                        </h3>
+                        </h1>
 
                     </div>
 
                     <div
-                        class="bg-success bg-opacity-10 p-4 rounded-circle"
+                        class="p-3 rounded-circle"
+                        style="background: rgba(34,197,94,0.1);"
                     >
 
-                        <i class="bi bi-person-workspace text-success fs-2"></i>
+                        <i class="bi bi-person-workspace fs-1 text-success"></i>
 
                     </div>
-
-                </div>
-
-                <div class="mt-4">
-
-                    <span class="text-success">
-
-                        <i class="bi bi-arrow-up"></i>
-
-                        8%
-
-                    </span>
-
-                    <span class="text-muted">
-
-                        from last month
-
-                    </span>
 
                 </div>
 
@@ -155,7 +104,7 @@
 
         </div>
 
-        <!-- FEES -->
+        <!-- RESULTS -->
 
         <div class="col-lg-3 col-md-6">
 
@@ -167,43 +116,26 @@
 
                         <p class="text-muted mb-2">
 
-                            Fees Collected
+                            Results
 
                         </p>
 
-                        <h3>
+                        <h1 class="fw-bold">
 
-                            ₹2.4L
+                            {{ total_results }}
 
-                        </h3>
+                        </h1>
 
                     </div>
 
                     <div
-                        class="bg-warning bg-opacity-10 p-4 rounded-circle"
+                        class="p-3 rounded-circle"
+                        style="background: rgba(234,179,8,0.1);"
                     >
 
-                        <i class="bi bi-cash-stack text-warning fs-2"></i>
+                        <i class="bi bi-award-fill fs-1 text-warning"></i>
 
                     </div>
-
-                </div>
-
-                <div class="mt-4">
-
-                    <span class="text-success">
-
-                        <i class="bi bi-arrow-up"></i>
-
-                        18%
-
-                    </span>
-
-                    <span class="text-muted">
-
-                        this month
-
-                    </span>
 
                 </div>
 
@@ -211,7 +143,7 @@
 
         </div>
 
-        <!-- ATTENDANCE -->
+        <!-- TIMETABLES -->
 
         <div class="col-lg-3 col-md-6">
 
@@ -223,34 +155,26 @@
 
                         <p class="text-muted mb-2">
 
-                            Attendance
+                            Timetables
 
                         </p>
 
-                        <h3>
+                        <h1 class="fw-bold">
 
-                            92%
+                            {{ total_timetables }}
 
-                        </h3>
+                        </h1>
 
                     </div>
 
                     <div
-                        class="bg-danger bg-opacity-10 p-4 rounded-circle"
+                        class="p-3 rounded-circle"
+                        style="background: rgba(239,68,68,0.1);"
                     >
 
-                        <i class="bi bi-calendar-check-fill text-danger fs-2"></i>
+                        <i class="bi bi-clock-fill fs-1 text-danger"></i>
 
                     </div>
-
-                </div>
-
-                <div class="progress mt-4" style="height: 10px;">
-
-                    <div
-                        class="progress-bar bg-danger"
-                        style="width: 92%;"
-                    ></div>
 
                 </div>
 
@@ -260,34 +184,117 @@
 
     </div>
 
-    <!-- SECOND ROW -->
+    <!-- CHART + QUICK ACTIONS -->
 
     <div class="row g-4">
 
-        <!-- RECENT STUDENTS -->
+        <!-- CHART -->
 
         <div class="col-lg-8">
 
             <div class="table-container">
 
-                <div class="d-flex justify-content-between mb-4">
+                <div class="d-flex justify-content-between align-items-center mb-4">
 
                     <h4 class="fw-bold">
 
-                        Recent Students
+                        Student Performance
 
                     </h4>
 
+                    <span class="badge bg-primary">
+
+                        2026 Analytics
+
+                    </span>
+
+                </div>
+
+                <canvas id="performanceChart"></canvas>
+
+            </div>
+
+        </div>
+
+        <!-- QUICK ACTIONS -->
+
+        <div class="col-lg-4">
+
+            <div class="table-container">
+
+                <h4 class="fw-bold mb-4">
+
+                    Quick Actions
+
+                </h4>
+
+                <div class="d-grid gap-3">
+
                     <a
                         href="/student-list/"
-                        class="btn btn-primary"
+                        class="btn btn-primary btn-lg rounded-4"
                     >
 
-                        View All
+                        <i class="bi bi-mortarboard-fill me-2"></i>
+
+                        Manage Students
+
+                    </a>
+
+                    <a
+                        href="/teacher-list/"
+                        class="btn btn-success btn-lg rounded-4"
+                    >
+
+                        <i class="bi bi-person-workspace me-2"></i>
+
+                        Manage Teachers
+
+                    </a>
+
+                    <a
+                        href="/attendance-list/"
+                        class="btn btn-warning btn-lg rounded-4"
+                    >
+
+                        <i class="bi bi-calendar-check-fill me-2"></i>
+
+                        Attendance
+
+                    </a>
+
+                    <a
+                        href="/result-list/"
+                        class="btn btn-dark btn-lg rounded-4"
+                    >
+
+                        <i class="bi bi-award-fill me-2"></i>
+
+                        Results
 
                     </a>
 
                 </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- RECENT ACTIVITY -->
+
+    <div class="row mt-5">
+
+        <div class="col-12">
+
+            <div class="table-container">
+
+                <h4 class="fw-bold mb-4">
+
+                    Recent Activities
+
+                </h4>
 
                 <div class="table-responsive">
 
@@ -297,29 +304,11 @@
 
                             <tr>
 
-                                <th>
+                                <th>Activity</th>
 
-                                    Name
+                                <th>Status</th>
 
-                                </th>
-
-                                <th>
-
-                                    Admission No
-
-                                </th>
-
-                                <th>
-
-                                    Class
-
-                                </th>
-
-                                <th>
-
-                                    Status
-
-                                </th>
+                                <th>Date</th>
 
                             </tr>
 
@@ -327,26 +316,11 @@
 
                         <tbody>
 
-                            {% for student in students %}
-
                             <tr>
 
                                 <td>
 
-                                    {{ student.first_name }}
-                                    {{ student.last_name }}
-
-                                </td>
-
-                                <td>
-
-                                    {{ student.admission_no }}
-
-                                </td>
-
-                                <td>
-
-                                    {{ student.student_class }}
+                                    Student Attendance Updated
 
                                 </td>
 
@@ -354,15 +328,71 @@
 
                                     <span class="badge bg-success">
 
-                                        Active
+                                        Completed
 
                                     </span>
 
                                 </td>
 
+                                <td>
+
+                                    Today
+
+                                </td>
+
                             </tr>
 
-                            {% endfor %}
+                            <tr>
+
+                                <td>
+
+                                    Results Uploaded
+
+                                </td>
+
+                                <td>
+
+                                    <span class="badge bg-primary">
+
+                                        Updated
+
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    Yesterday
+
+                                </td>
+
+                            </tr>
+
+                            <tr>
+
+                                <td>
+
+                                    Fee Collection Updated
+
+                                </td>
+
+                                <td>
+
+                                    <span class="badge bg-warning text-dark">
+
+                                        Pending
+
+                                    </span>
+
+                                </td>
+
+                                <td>
+
+                                    2 Days Ago
+
+                                </td>
+
+                            </tr>
 
                         </tbody>
 
@@ -374,171 +404,74 @@
 
         </div>
 
-        <!-- QUICK ACTIONS -->
-
-        <div class="col-lg-4">
-
-            <div class="dashboard-card mb-4">
-
-                <h4 class="fw-bold mb-4">
-
-                    Quick Actions
-
-                </h4>
-
-                <div class="d-grid gap-3">
-
-                    <a
-                        href="/add-student/"
-                        class="btn btn-primary py-3"
-                    >
-
-                        <i class="bi bi-person-plus-fill"></i>
-
-                        Add Student
-
-                    </a>
-
-                    <a
-                        href="/add-teacher/"
-                        class="btn btn-success py-3"
-                    >
-
-                        <i class="bi bi-person-workspace"></i>
-
-                        Add Teacher
-
-                    </a>
-
-                    <a
-                        href="/mark-attendance/"
-                        class="btn btn-warning py-3"
-                    >
-
-                        <i class="bi bi-calendar-check-fill"></i>
-
-                        Mark Attendance
-
-                    </a>
-
-                    <a
-                        href="/add-result/"
-                        class="btn btn-danger py-3"
-                    >
-
-                        <i class="bi bi-award-fill"></i>
-
-                        Add Result
-
-                    </a>
-
-                </div>
-
-            </div>
-
-            <!-- SYSTEM STATUS -->
-
-            <div class="dashboard-card">
-
-                <h4 class="fw-bold mb-4">
-
-                    System Status
-
-                </h4>
-
-                <div class="mb-4">
-
-                    <div class="d-flex justify-content-between mb-2">
-
-                        <span>
-
-                            Server Performance
-
-                        </span>
-
-                        <span>
-
-                            95%
-
-                        </span>
-
-                    </div>
-
-                    <div class="progress">
-
-                        <div
-                            class="progress-bar bg-success"
-                            style="width: 95%;"
-                        ></div>
-
-                    </div>
-
-                </div>
-
-                <div class="mb-4">
-
-                    <div class="d-flex justify-content-between mb-2">
-
-                        <span>
-
-                            Database Usage
-
-                        </span>
-
-                        <span>
-
-                            70%
-
-                        </span>
-
-                    </div>
-
-                    <div class="progress">
-
-                        <div
-                            class="progress-bar bg-warning"
-                            style="width: 70%;"
-                        ></div>
-
-                    </div>
-
-                </div>
-
-                <div>
-
-                    <div class="d-flex justify-content-between mb-2">
-
-                        <span>
-
-                            Storage
-
-                        </span>
-
-                        <span>
-
-                            60%
-
-                        </span>
-
-                    </div>
-
-                    <div class="progress">
-
-                        <div
-                            class="progress-bar bg-primary"
-                            style="width: 60%;"
-                        ></div>
-
-                    </div>
-
-                </div>
-
-            </div>
-
-        </div>
-
     </div>
 
 </div>
+
+<!-- CHART JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx = document.getElementById('performanceChart');
+
+new Chart(ctx, {
+
+    type: 'bar',
+
+    data: {
+
+        labels: [
+
+            'Class 6',
+            'Class 7',
+            'Class 8',
+            'Class 9',
+            'Class 10'
+
+        ],
+
+        datasets: [{
+
+            label: 'Performance',
+
+            data: [
+
+                78,
+                85,
+                90,
+                76,
+                88
+
+            ],
+
+            borderWidth: 2,
+
+            borderRadius: 10
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+
+                display: true
+
+            }
+
+        }
+
+    }
+
+});
+
+</script>
 
 {% endblock %}
