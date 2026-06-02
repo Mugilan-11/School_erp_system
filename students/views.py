@@ -16,6 +16,22 @@ from .services import import_students_from_excel
     "ADMIN",
     "TEACHER",
 )
+def student_classes(request):
+
+    return render(
+        request,
+        "students/student_classes.html",
+        {
+            "class_choices":
+            Student.CLASS_CHOICES
+        },
+    )
+
+
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
 def student_list(request):
 
     students = Student.objects.all()
