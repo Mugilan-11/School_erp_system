@@ -1,5 +1,5 @@
+```html
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
@@ -11,27 +11,17 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>
-
-        Bethal ERP System
-
-    </title>
-
-    <!-- BOOTSTRAP -->
+    <title>Bethal ERP System</title>
 
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
         rel="stylesheet"
     >
 
-    <!-- ICONS -->
-
     <link
         rel="stylesheet"
         href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     >
-
-    <!-- FONT -->
 
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
@@ -40,23 +30,16 @@
 
     <style>
 
-        *{
-
+        * {
             font-family: 'Poppins', sans-serif;
-
         }
 
-        body{
-
+        body {
             background: #f4f7fe;
-
             overflow-x: hidden;
-
         }
 
-        /* SIDEBAR */
-
-        .sidebar{
+        .sidebar {
 
             width: 270px;
 
@@ -68,8 +51,7 @@
 
             left: 0;
 
-            background:
-            linear-gradient(
+            background: linear-gradient(
                 180deg,
                 #4f46e5,
                 #7c3aed
@@ -79,23 +61,40 @@
 
             color: white;
 
-            z-index: 1000;
-
             overflow-y: auto;
 
-            box-shadow: 0 0 30px rgba(0,0,0,0.1);
+            z-index: 1000;
 
+            box-shadow: 0 0 30px rgba(0,0,0,0.1);
         }
 
-        .sidebar h2{
+        .sidebar h2 {
 
             font-weight: 700;
 
             margin-bottom: 40px;
-
         }
 
-        .sidebar a{
+        .sidebar-section {
+
+            font-size: 11px;
+
+            font-weight: 700;
+
+            letter-spacing: 1px;
+
+            color: rgba(255,255,255,0.55);
+
+            margin-top: 25px;
+
+            margin-bottom: 10px;
+
+            padding-left: 18px;
+
+            text-transform: uppercase;
+        }
+
+        .sidebar a {
 
             display: flex;
 
@@ -116,30 +115,23 @@
             transition: 0.3s;
 
             font-weight: 500;
-
         }
 
-        .sidebar a:hover{
+        .sidebar a:hover {
 
             background: rgba(255,255,255,0.15);
 
             transform: translateX(5px);
-
         }
 
-        /* MAIN CONTENT */
-
-        .main-content{
+        .main-content {
 
             margin-left: 270px;
 
             padding: 30px;
-
         }
 
-        /* TOPBAR */
-
-        .topbar{
+        .topbar {
 
             background: white;
 
@@ -156,20 +148,18 @@
             margin-bottom: 30px;
 
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-
         }
 
-        .profile-box{
+        .profile-box {
 
             display: flex;
 
             align-items: center;
 
             gap: 20px;
-
         }
 
-        .profile-avatar{
+        .profile-avatar {
 
             width: 50px;
 
@@ -190,16 +180,13 @@
             font-weight: 700;
 
             font-size: 20px;
-
         }
 
-        .search-box{
-
+        .search-box {
             width: 300px;
-
         }
 
-        .search-box input{
+        .search-box input {
 
             border-radius: 12px;
 
@@ -208,12 +195,9 @@
             background: #f1f5f9;
 
             padding: 12px 20px;
-
         }
 
-        /* DASHBOARD CARDS */
-
-        .dashboard-card{
+        .dashboard-card {
 
             background: white;
 
@@ -224,18 +208,13 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
 
             transition: 0.3s;
-
         }
 
-        .dashboard-card:hover{
-
+        .dashboard-card:hover {
             transform: translateY(-6px);
-
         }
 
-        /* TABLE CONTAINER */
-
-        .table-container{
+        .table-container {
 
             background: white;
 
@@ -244,57 +223,37 @@
             padding: 30px;
 
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-
         }
 
-        /* BUTTON */
-
-        .btn-primary{
+        .btn-primary {
 
             background: #4f46e5;
 
             border: none;
 
             border-radius: 12px;
-
         }
 
-        .btn-primary:hover{
-
+        .btn-primary:hover {
             background: #4338ca;
-
         }
-
-        /* RESPONSIVE */
 
         @media(max-width: 992px){
 
             .sidebar{
-
                 width: 90px;
-
                 padding: 20px 10px;
-
             }
 
-            .sidebar h2{
-
-                display: none;
-
-            }
-
+            .sidebar h2,
+            .sidebar-section,
             .sidebar a span{
-
-                display: none;
-
+                display:none;
             }
 
             .main-content{
-
-                margin-left: 90px;
-
+                margin-left:90px;
             }
-
         }
 
     </style>
@@ -303,229 +262,134 @@
 
 <body>
 
-    <!-- SIDEBAR -->
+<div class="sidebar">
 
-    <div class="sidebar">
+    <h2>Bethal ERP</h2>
 
-        <h2>
-
-            Bethal ERP
-
-        </h2>
-
-        <!-- DASHBOARD -->
-
-        {% if request.user.role == 'ADMIN' %}
-
-            <a href="/admin-dashboard/">
-
-                <i class="bi bi-grid-fill"></i>
-
-                <span>Dashboard</span>
-
-            </a>
-
-        {% elif request.user.role == 'TEACHER' %}
-
-            <a href="/teacher-dashboard/">
-
-                <i class="bi bi-grid-fill"></i>
-
-                <span>Dashboard</span>
-
-            </a>
-
-        {% elif request.user.role == 'STUDENT' %}
-
-            <a href="/student-dashboard/">
-
-                <i class="bi bi-grid-fill"></i>
-
-                <span>Dashboard</span>
-
-            </a>
-
-        {% elif request.user.role == 'PARENT' %}
-
-            <a href="/parent-dashboard/">
-
-                <i class="bi bi-grid-fill"></i>
-
-                <span>Dashboard</span>
-
-            </a>
-
-        {% endif %}
-
-        <!-- ADMIN ONLY -->
-
-        {% if request.user.role == 'ADMIN' %}
-
-            <a href="/student-list/">
-
-                <i class="bi bi-mortarboard-fill"></i>
-
-                <span>Students</span>
-
-            </a>
-
-            <a href="/teacher-list/">
-
-                <i class="bi bi-person-workspace"></i>
-
-                <span>Teachers</span>
-
-            </a>
-
-        {% endif %}
-
-        <!-- ADMIN + TEACHER -->
-
-        {% if request.user.role == 'ADMIN' or request.user.role == 'TEACHER' %}
-
-            <a href="/mark-attendance/">
-
-                <i class="bi bi-calendar-check-fill"></i>
-
-                <span>Mark Attendance</span>
-
-            </a>
-
-            <a href="/add-fee/">
-
-                <i class="bi bi-cash-stack"></i>
-
-                <span>Add Fees</span>
-
-            </a>
-
-            <a href="/add-result/">
-
-                <i class="bi bi-award-fill"></i>
-
-                <span>Add Results</span>
-
-            </a>
-
-            <a href="/add-timetable/">
-
-                <i class="bi bi-clock-fill"></i>
-
-                <span>Add Timetable</span>
-
-            </a>
-
-        {% endif %}
-
-        <!-- COMMON PAGES -->
-
-        <a href="/attendance-list/">
-
-            <i class="bi bi-calendar-check-fill"></i>
-
-            <span>Attendance</span>
-
+    {% if request.user.role == 'ADMIN' %}
+        <a href="/admin-dashboard/">
+            <i class="bi bi-grid-fill"></i>
+            <span>Dashboard</span>
         </a>
-
-        <a href="/fee-list/">
-
-            <i class="bi bi-cash-stack"></i>
-
-            <span>Fees</span>
-
+    {% elif request.user.role == 'TEACHER' %}
+        <a href="/teacher-dashboard/">
+            <i class="bi bi-grid-fill"></i>
+            <span>Dashboard</span>
         </a>
-
-        <a href="/result-list/">
-
-            <i class="bi bi-award-fill"></i>
-
-            <span>Results</span>
-
+    {% elif request.user.role == 'STUDENT' %}
+        <a href="/student-dashboard/">
+            <i class="bi bi-grid-fill"></i>
+            <span>Dashboard</span>
         </a>
-
-        <a href="/timetable-list/">
-
-            <i class="bi bi-clock-fill"></i>
-
-            <span>Timetable</span>
-
+    {% elif request.user.role == 'PARENT' %}
+        <a href="/parent-dashboard/">
+            <i class="bi bi-grid-fill"></i>
+            <span>Dashboard</span>
         </a>
+    {% endif %}
 
-        <!-- LOGOUT -->
-
-        <a href="/logout/">
-
-            <i class="bi bi-box-arrow-right"></i>
-
-            <span>Logout</span>
-
-        </a>
-
+    <div class="sidebar-section">
+        Academic
     </div>
 
-    <!-- MAIN CONTENT -->
+    {% if request.user.role == 'ADMIN' %}
 
-    <div class="main-content">
+        <a href="/student-list/">
+            <i class="bi bi-mortarboard-fill"></i>
+            <span>Students</span>
+        </a>
 
-        <!-- TOPBAR -->
+        <a href="/teacher-list/">
+            <i class="bi bi-person-workspace"></i>
+            <span>Teachers</span>
+        </a>
 
-        <div class="topbar">
+    {% endif %}
 
-            <div>
+    <a href="/result-list/">
+        <i class="bi bi-award-fill"></i>
+        <span>Results</span>
+    </a>
 
-                <h3 class="fw-bold mb-1">
+    <a href="/timetable-list/">
+        <i class="bi bi-clock-fill"></i>
+        <span>Timetable</span>
+    </a>
 
-                    Welcome,
-                    {{ request.user.username }}
+    <div class="sidebar-section">
+        Operations
+    </div>
 
-                </h3>
+    <a href="/attendance-list/">
+        <i class="bi bi-calendar-check-fill"></i>
+        <span>Attendance</span>
+    </a>
 
-                <p class="text-muted mb-0">
+    <div class="sidebar-section">
+        Finance
+    </div>
 
-                    Bethal ERP Management System
+    <a href="/fee-list/">
+        <i class="bi bi-cash-stack"></i>
+        <span>Fees</span>
+    </a>
 
-                </p>
+    <div class="sidebar-section">
+        Account
+    </div>
+
+    <a href="/logout/">
+        <i class="bi bi-box-arrow-right"></i>
+        <span>Logout</span>
+    </a>
+
+</div>
+
+<div class="main-content">
+
+    <div class="topbar">
+
+        <div>
+
+            <h3 class="fw-bold mb-1">
+                Welcome, {{ request.user.username }}
+            </h3>
+
+            <p class="text-muted mb-0">
+                Bethal ERP Management System
+            </p>
+
+        </div>
+
+        <div class="profile-box">
+
+            <div class="search-box">
+
+                <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search..."
+                >
 
             </div>
 
-            <div class="profile-box">
+            <i class="bi bi-bell-fill fs-4"></i>
 
-                <div class="search-box">
-
-                    <input
-                        type="text"
-                        class="form-control"
-                        placeholder="Search..."
-                    >
-
-                </div>
-
-                <i class="bi bi-bell-fill fs-4"></i>
-
-                <div class="profile-avatar">
-
-                    {{ request.user.username|first|upper }}
-
-                </div>
-
+            <div class="profile-avatar">
+                {{ request.user.username|first|upper }}
             </div>
 
         </div>
 
-        <!-- PAGE CONTENT -->
-
-        {% block content %}
-
-        {% endblock %}
-
     </div>
 
-    <!-- JS -->
+    {% block content %}
+    {% endblock %}
 
-    <script
-        src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-    ></script>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
-
 </html>
+```

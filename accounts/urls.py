@@ -2,83 +2,55 @@ from django.urls import path
 
 from . import views
 
-
 urlpatterns = [
-
-    # =====================================
-    # COMMON LOGIN
-    # =====================================
-
     path(
-        'login/',
+        "login/",
         views.student_login,
-        name='login'
+        name="login",
     ),
-
-    # =====================================
-    # ROLE BASED LOGIN
-    # =====================================
-
     path(
-        'admin-login/',
+        "admin-login/",
         views.admin_login,
-        name='admin_login'
+        name="admin_login",
     ),
-
     path(
-        'teacher-login/',
+        "teacher-login/",
         views.teacher_login,
-        name='teacher_login'
+        name="teacher_login",
     ),
-
     path(
-        'student-login/',
+        "student-login/",
         views.student_login,
-        name='student_login'
+        name="student_login",
     ),
-
     path(
-        'parent-login/',
+        "parent-login/",
         views.parent_login,
-        name='parent_login'
+        name="parent_login",
     ),
-
-    # =====================================
-    # LOGOUT
-    # =====================================
-
     path(
-        'logout/',
+        "logout/",
         views.logout_view,
-        name='logout'
+        name="logout",
     ),
-
-    # =====================================
-    # DASHBOARDS
-    # =====================================
-
     path(
-        'admin-dashboard/',
+        "admin-dashboard/",
         views.admin_dashboard,
-        name='admin_dashboard'
+        name="admin_dashboard",
     ),
-
     path(
-        'teacher-dashboard/',
+        "teacher-dashboard/",
         views.teacher_dashboard,
-        name='teacher_dashboard'
+        name="teacher_dashboard",
     ),
-
     path(
-        'student-dashboard/',
+        "student-dashboard/",
         views.student_dashboard,
-        name='student_dashboard'
+        name="student_dashboard",
     ),
-
     path(
-        'parent-dashboard/',
+        "parent-dashboard/",
         views.parent_dashboard,
-        name='parent_dashboard'
+        name="parent_dashboard",
     ),
-
 ]

@@ -1,136 +1,127 @@
-from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
-
 from django.core.paginator import Paginator
+from django.db.models import Q
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
+from django.shortcuts import render
 
-import pandas as pd
+from accounts.decorators import role_required
 
+from .forms import ExcelUploadForm
+from .forms import StudentForm
 from .models import Student
+from .services import import_students_from_excel
 
-from .forms import (
-    StudentForm,
-    ExcelUploadForm
+
+@role_required(
+    "ADMIN",
+    "TEACHER",
 )
-
-
-@login_required
 def student_list(request):
 
-    if request.user.role not in [
-        'ADMIN',
-        'TEACHER'
-    ]:
-        return redirect('login')
+    students = Student.objects.all()
 
-    students = Student.objects.all().order_by('first_name')
-
-    # SEARCH
-
-    search_query = request.GET.get('search')
+    search_query = request.GET.get(
+        "search",
+        "",
+    ).strip()
 
     if search_query:
-
         students = students.filter(
-            first_name__icontains=search_query
+            Q(first_name__icontains=search_query)
+            | Q(last_name__icontains=search_query)
+            | Q(admission_no__icontains=search_query)
         )
 
-    # CLASS FILTER
-
-    class_filter = request.GET.get('class')
+    class_filter = request.GET.get(
+        "class",
+        "",
+    ).strip()
 
     if class_filter:
-
         students = students.filter(
             student_class=class_filter
         )
 
-    # PAGINATION
-
     paginator = Paginator(
         students,
-        10
+        10,
     )
 
-    page_number = request.GET.get('page')
+    page_number = request.GET.get(
+        "page"
+    )
 
-    page_obj = paginator.get_page(page_number)
-
-    context = {
-
-        'page_obj': page_obj
-
-    }
+    page_obj = paginator.get_page(
+        page_number
+    )
 
     return render(
         request,
-        'students/student_list.html',
-        context
+        "students/student_list.html",
+        {
+            "page_obj": page_obj,
+            "search_query": search_query,
+            "class_filter": class_filter,
+        },
     )
 
 
-@login_required
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
 def add_student(request):
 
-    if request.user.role not in [
-        'ADMIN',
-        'TEACHER'
-    ]:
-        return redirect('login')
-
-    if request.method == 'POST':
-
-        form = StudentForm(
-            request.POST,
-            request.FILES
-        )
-
-        if form.is_valid():
-
-            form.save()
-
-            return redirect('student_list')
-
-    else:
-
-        form = StudentForm()
-
-    context = {
-
-        'form': form
-
-    }
-
-    return render(
-        request,
-        'students/add_student.html',
-        context
-    )
-
-
-@login_required
-def edit_student(request, id):
-
-    if request.user.role != 'ADMIN':
-        return redirect('login')
-
-    student = get_object_or_404(
-        Student,
-        id=id
-    )
-
-    if request.method == 'POST':
+    if request.method == "POST":
 
         form = StudentForm(
             request.POST,
             request.FILES,
-            instance=student
         )
 
         if form.is_valid():
-
             form.save()
+            return redirect(
+                "student_list"
+            )
 
-            return redirect('student_list')
+    else:
+        form = StudentForm()
+
+    return render(
+        request,
+        "students/add_student.html",
+        {
+            "form": form
+        },
+    )
+
+
+@role_required("ADMIN")
+def edit_student(
+    request,
+    id,
+):
+
+    student = get_object_or_404(
+        Student,
+        id=id,
+    )
+
+    if request.method == "POST":
+
+        form = StudentForm(
+            request.POST,
+            request.FILES,
+            instance=student,
+        )
+
+        if form.is_valid():
+            form.save()
+            return redirect(
+                "student_list"
+            )
 
     else:
 
@@ -138,93 +129,73 @@ def edit_student(request, id):
             instance=student
         )
 
-    context = {
-
-        'form': form
-
-    }
-
     return render(
         request,
-        'students/add_student.html',
-        context
+        "students/add_student.html",
+        {
+            "form": form
+        },
     )
 
 
-@login_required
-def delete_student(request, id):
-
-    if request.user.role != 'ADMIN':
-        return redirect('login')
+@role_required("ADMIN")
+def delete_student(
+    request,
+    id,
+):
 
     student = get_object_or_404(
         Student,
-        id=id
+        id=id,
     )
 
-    student.delete()
+    if request.method == "POST":
+        student.delete()
+        return redirect(
+            "student_list"
+        )
 
-    return redirect('student_list')
+    return render(
+        request,
+        "students/delete_student.html",
+        {
+            "student": student
+        },
+    )
 
 
-@login_required
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
 def import_students(request):
 
-    if request.user.role not in [
-        'ADMIN',
-        'TEACHER'
-    ]:
-        return redirect('login')
-
-    if request.method == 'POST':
+    if request.method == "POST":
 
         form = ExcelUploadForm(
             request.POST,
-            request.FILES
+            request.FILES,
         )
 
         if form.is_valid():
 
-            excel_file = request.FILES['excel_file']
+            import_students_from_excel(
+                request.FILES[
+                    "excel_file"
+                ]
+            )
 
-            df = pd.read_excel(excel_file)
-
-            for index, row in df.iterrows():
-
-                Student.objects.create(
-
-                    first_name=row['first_name'],
-
-                    last_name=row['last_name'],
-
-                    admission_no=row['admission_no'],
-
-                    student_class=str(
-                        row['student_class']
-                    ),
-
-                    gender=row['gender'],
-
-                    date_of_birth=row['date_of_birth'],
-
-                    address=row['address']
-
-                )
-
-            return redirect('student_list')
+            return redirect(
+                "student_list"
+            )
 
     else:
-
         form = ExcelUploadForm()
-
-    context = {
-
-        'form': form
-
-    }
 
     return render(
         request,
-        'students/import_students.html',
-        context
+        "students/import_students.html",
+        {
+            "form": form
+        },
     )

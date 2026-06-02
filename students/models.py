@@ -1,61 +1,64 @@
-from django.db import models
 from django.conf import settings
+from django.core.exceptions import ValidationError
+from django.db import models
+from django.utils import timezone
 
 
 class Student(models.Model):
 
     CLASS_CHOICES = [
-
-        ('1', 'Class 1'),
-        ('2', 'Class 2'),
-        ('3', 'Class 3'),
-        ('4', 'Class 4'),
-        ('5', 'Class 5'),
-        ('6', 'Class 6'),
-        ('7', 'Class 7'),
-        ('8', 'Class 8'),
-        ('9', 'Class 9'),
-        ('10', 'Class 10'),
-        ('11', 'Class 11'),
-        ('12', 'Class 12'),
-
+        ("1", "Class 1"),
+        ("2", "Class 2"),
+        ("3", "Class 3"),
+        ("4", "Class 4"),
+        ("5", "Class 5"),
+        ("6", "Class 6"),
+        ("7", "Class 7"),
+        ("8", "Class 8"),
+        ("9", "Class 9"),
+        ("10", "Class 10"),
+        ("11", "Class 11"),
+        ("12", "Class 12"),
     ]
 
     GENDER_CHOICES = [
-
-        ('Male', 'Male'),
-        ('Female', 'Female'),
-
+        ("Male", "Male"),
+        ("Female", "Female"),
     ]
 
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
         null=True,
-        blank=True
+        blank=True,
+        related_name="student_profile",
     )
 
     first_name = models.CharField(
-        max_length=100
+        max_length=100,
+        db_index=True,
     )
 
     last_name = models.CharField(
-        max_length=100
+        max_length=100,
+        db_index=True,
     )
 
     admission_no = models.CharField(
         max_length=100,
-        unique=True
+        unique=True,
+        db_index=True,
     )
 
     student_class = models.CharField(
         max_length=10,
-        choices=CLASS_CHOICES
+        choices=CLASS_CHOICES,
+        db_index=True,
     )
 
     gender = models.CharField(
         max_length=10,
-        choices=GENDER_CHOICES
+        choices=GENDER_CHOICES,
     )
 
     date_of_birth = models.DateField()
@@ -63,11 +66,54 @@ class Student(models.Model):
     address = models.TextField()
 
     profile_picture = models.ImageField(
-        upload_to='students/',
+        upload_to="students/",
         null=True,
-        blank=True
+        blank=True,
     )
 
-    def __str__(self):
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
 
-        return f"{self.first_name} {self.last_name}"
+    updated_at = models.DateTimeField(
+        auto_now=True,
+    )
+
+    class Meta:
+        ordering = [
+            "first_name",
+            "last_name",
+        ]
+        verbose_name = "Student"
+        verbose_name_plural = "Students"
+
+    @property
+    def full_name(self):
+        return (
+            f"{self.first_name} "
+            f"{self.last_name}"
+        ).strip()
+
+    def clean(self):
+
+        if (
+            self.date_of_birth
+            and self.date_of_birth > timezone.now().date()
+        ):
+            raise ValidationError(
+                {
+                    "date_of_birth":
+                    "Date of birth cannot be in the future."
+                }
+            )
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return (
+            f"{self.admission_no}"
+            f" - "
+            f"{self.full_name}"
+        )
