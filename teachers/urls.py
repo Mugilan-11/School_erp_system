@@ -14,5 +14,16 @@ urlpatterns = [
         add_teacher,
         name='add_teacher'
     ),
+    path(
+        "edit-teacher/<int:id>/",
+        edit_teacher,
+        name="edit_teacher",
+    ),
+
+    path(
+        "delete-teacher/<int:id>/",
+        delete_teacher,
+        name="delete_teacher",
+    ),
 
 ]

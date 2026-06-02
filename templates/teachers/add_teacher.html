@@ -1,3 +1,4 @@
+```html
 {% extends 'base/base.html' %}
 
 {% block content %}
@@ -6,25 +7,25 @@
 
     <div class="card-body p-4">
 
-        <!-- HEADER -->
-
         <div class="mb-4">
 
             <h2 class="fw-bold">
 
-                Add Teacher
+                {% if teacher %}
+                    Edit Teacher
+                {% else %}
+                    Add Teacher
+                {% endif %}
 
             </h2>
 
             <p class="text-muted">
 
-                Create new teacher profile
+                Create and manage teacher profiles
 
             </p>
 
         </div>
-
-        <!-- FORM -->
 
         <form
             method="POST"
@@ -35,126 +36,132 @@
 
             <div class="row g-4">
 
-                <!-- USER -->
-
                 <div class="col-md-6">
 
                     <label class="form-label fw-semibold">
-
                         User Account
-
                     </label>
 
                     {{ form.user }}
 
-                </div>
+                    {% if form.user.errors %}
+                        <div class="text-danger small">
+                            {{ form.user.errors }}
+                        </div>
+                    {% endif %}
 
-                <!-- EMPLOYEE ID -->
+                </div>
 
                 <div class="col-md-6">
 
                     <label class="form-label fw-semibold">
-
                         Employee ID
-
                     </label>
 
                     {{ form.employee_id }}
 
-                </div>
+                    {% if form.employee_id.errors %}
+                        <div class="text-danger small">
+                            {{ form.employee_id.errors }}
+                        </div>
+                    {% endif %}
 
-                <!-- FIRST NAME -->
+                </div>
 
                 <div class="col-md-6">
 
                     <label class="form-label fw-semibold">
-
                         First Name
-
                     </label>
 
                     {{ form.first_name }}
 
                 </div>
 
-                <!-- LAST NAME -->
-
                 <div class="col-md-6">
 
                     <label class="form-label fw-semibold">
-
                         Last Name
-
                     </label>
 
                     {{ form.last_name }}
 
                 </div>
 
-                <!-- SUBJECT -->
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        Email Address
+                    </label>
+
+                    {{ form.email }}
+
+                </div>
 
                 <div class="col-md-6">
 
                     <label class="form-label fw-semibold">
-
                         Subject
-
                     </label>
 
                     {{ form.subject }}
 
                 </div>
 
-                <!-- GENDER -->
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
+                        Qualification
+                    </label>
+
+                    {{ form.qualification }}
+
+                </div>
 
                 <div class="col-md-6">
 
                     <label class="form-label fw-semibold">
+                        Joining Date
+                    </label>
 
+                    {{ form.joining_date }}
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <label class="form-label fw-semibold">
                         Gender
-
                     </label>
 
                     {{ form.gender }}
 
                 </div>
 
-                <!-- PHONE -->
-
                 <div class="col-md-6">
 
                     <label class="form-label fw-semibold">
-
                         Phone Number
-
                     </label>
 
                     {{ form.phone }}
 
                 </div>
 
-                <!-- PROFILE -->
-
                 <div class="col-md-6">
 
                     <label class="form-label fw-semibold">
-
                         Profile Picture
-
                     </label>
 
                     {{ form.profile_picture }}
 
                 </div>
 
-                <!-- ADDRESS -->
-
                 <div class="col-12">
 
                     <label class="form-label fw-semibold">
-
                         Address
-
                     </label>
 
                     {{ form.address }}
@@ -163,20 +170,29 @@
 
             </div>
 
-            <!-- BUTTON -->
-
-            <div class="mt-4">
+            <div class="mt-4 d-flex gap-2">
 
                 <button
                     type="submit"
                     class="btn btn-primary px-4 py-2 rounded-4"
                 >
 
-                    <i class="bi bi-check-circle-fill"></i>
+                    <i class="bi bi-check-circle-fill me-2"></i>
 
-                    Save Teacher
+                    {% if teacher %}
+                        Update Teacher
+                    {% else %}
+                        Save Teacher
+                    {% endif %}
 
                 </button>
+
+                <a
+                    href="{% url 'teacher_list' %}"
+                    class="btn btn-secondary px-4 py-2 rounded-4"
+                >
+                    Cancel
+                </a>
 
             </div>
 
@@ -187,3 +203,4 @@
 </div>
 
 {% endblock %}
+```
