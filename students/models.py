@@ -7,18 +7,18 @@ from django.utils import timezone
 class Student(models.Model):
 
     CLASS_CHOICES = [
-        ("1", "Class 1"),
-        ("2", "Class 2"),
-        ("3", "Class 3"),
-        ("4", "Class 4"),
-        ("5", "Class 5"),
-        ("6", "Class 6"),
-        ("7", "Class 7"),
-        ("8", "Class 8"),
-        ("9", "Class 9"),
-        ("10", "Class 10"),
-        ("11", "Class 11"),
-        ("12", "Class 12"),
+        ("1", "SKG"),
+        ("2", "JKG"),
+        ("3", " Grade IA"),
+        ("4", "Grade IB"),
+        ("5", "Grade II"),
+        ("6", "Grade III"),
+        ("7", "Grade IV"),
+        ("8", "Grade V"),
+        ("9", "Grade VI"),
+        ("10", "Grade VII"),
+        ("11", "Grade VIII"),
+        ("12", "Grade IX"),
     ]
 
     GENDER_CHOICES = [

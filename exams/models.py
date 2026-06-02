@@ -1,4 +1,6 @@
+from django.core.exceptions import ValidationError
 from django.db import models
+
 from students.models import Student
 
 
@@ -6,33 +8,59 @@ class ExamResult(models.Model):
 
     student = models.ForeignKey(
         Student,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="exam_results",
     )
 
     exam_name = models.CharField(
-        max_length=100
+        max_length=100,
+        db_index=True,
     )
 
     total_marks = models.IntegerField(
-        default=0
+        default=0,
     )
 
     percentage = models.FloatField(
-        default=0
+        default=0,
     )
 
     grade = models.CharField(
         max_length=5,
-        blank=True
+        blank=True,
     )
 
     created_at = models.DateTimeField(
-        auto_now_add=True
+        auto_now_add=True,
     )
+
+    updated_at = models.DateTimeField(
+        auto_now=True,
+        null=True,
+        blank=True,
+    )
+
+    class Meta:
+
+        ordering = [
+            "-created_at",
+        ]
+
+        constraints = [
+            models.UniqueConstraint(
+                fields=[
+                    "student",
+                    "exam_name",
+                ],
+                name="unique_student_exam",
+            )
+        ]
 
     def calculate_result(self):
 
-        subject_marks = self.subjectmark_set.all()
+        subject_marks = (
+            self.subject_marks.all()
+        )
 
         total_obtained = sum(
             subject.mark_obtained
@@ -48,40 +76,42 @@ class ExamResult(models.Model):
 
         if total_maximum > 0:
 
-            self.percentage = (
-                total_obtained / total_maximum
-            ) * 100
-
-        if self.percentage >= 90:
-            self.grade = 'A+'
-
-        elif self.percentage >= 80:
-            self.grade = 'A'
-
-        elif self.percentage >= 70:
-            self.grade = 'B'
-
-        elif self.percentage >= 60:
-            self.grade = 'C'
-
-        elif self.percentage >= 50:
-            self.grade = 'D'
+            self.percentage = round(
+                (
+                    total_obtained
+                    / total_maximum
+                ) * 100,
+                2,
+            )
 
         else:
-            self.grade = 'F'
 
-        self.save()
+            self.percentage = 0
 
-    def __str__(self):
+        if self.percentage >= 90:
+            self.grade = "A+"
 
-        return f"{self.student} - {self.exam_name}"
+        elif self.percentage >= 80:
+            self.grade = "A"
 
+        elif self.percentage >= 70:
+            self.grade = "B"
+
+        elif self.percentage >= 60:
+            self.grade = "C"
+
+        elif self.percentage >= 50:
+            self.grade = "D"
+
+        else:
+            self.grade = "F"
 
 class SubjectMark(models.Model):
 
     exam_result = models.ForeignKey(
         ExamResult,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name="subject_marks",
     )
 
     subject_name = models.CharField(
@@ -95,5 +125,4 @@ class SubjectMark(models.Model):
     )
 
     def __str__(self):
-
-        return f"{self.subject_name}"
+        return self.subject_name

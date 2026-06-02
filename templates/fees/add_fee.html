@@ -1,35 +1,128 @@
+```html
 {% extends 'base/base.html' %}
 
 {% block content %}
 
 <div class="row justify-content-center">
 
-    <div class="col-md-6">
+    <div class="col-lg-8">
 
-        <div class="card shadow">
+        <div class="card dashboard-card">
 
-            <div class="card-header">
+            <div class="card-body p-4">
 
-                <h3>
-                    Add Fee Record
-                </h3>
+                <div class="mb-4">
 
-            </div>
+                    <h2 class="fw-bold">
+                        Add Fee Record
+                    </h2>
 
-            <div class="card-body">
+                    <p class="text-muted mb-0">
+                        Create and manage student fee payments
+                    </p>
+
+                </div>
+
+                {% if form.errors %}
+
+                <div class="alert alert-danger">
+
+                    <strong>
+                        Please fix the following errors:
+                    </strong>
+
+                    {{ form.errors }}
+
+                </div>
+
+                {% endif %}
 
                 <form method="POST">
 
                     {% csrf_token %}
 
-                    {{ form.as_p }}
+                    <div class="row g-4">
 
-                    <button
-                        type="submit"
-                        class="btn btn-success"
-                    >
-                        Save Fee
-                    </button>
+                        <div class="col-md-6">
+
+                            <label class="form-label fw-semibold">
+                                Student
+                            </label>
+
+                            {{ form.student }}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label fw-semibold">
+                                Amount
+                            </label>
+
+                            {{ form.amount }}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label fw-semibold">
+                                Payment Date
+                            </label>
+
+                            {{ form.payment_date }}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label fw-semibold">
+                                Due Date
+                            </label>
+
+                            {{ form.due_date }}
+
+                        </div>
+
+                        <div class="col-md-6">
+
+                            <label class="form-label fw-semibold">
+                                Status
+                            </label>
+
+                            {{ form.status }}
+
+                        </div>
+
+                        <div class="col-12">
+
+                            <label class="form-label fw-semibold">
+                                Remarks
+                            </label>
+
+                            {{ form.remarks }}
+
+                        </div>
+
+                    </div>
+
+                    <div class="mt-4 d-flex gap-2">
+
+                        <button
+                            type="submit"
+                            class="btn btn-success px-4"
+                        >
+                            <i class="bi bi-check-circle-fill me-2"></i>
+                            Save Fee
+                        </button>
+
+                        <a
+                            href="{% url 'fee_list' %}"
+                            class="btn btn-secondary px-4"
+                        >
+                            Cancel
+                        </a>
+
+                    </div>
 
                 </form>
 
@@ -41,4 +134,5 @@
 
 </div>
 
-{% endblock %}  
+{% endblock %}
+```

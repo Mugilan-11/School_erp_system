@@ -1,60 +1,76 @@
 import pandas as pd
+from datetime import date
 
 from .models import Student
 
 
 def import_students_from_excel(excel_file):
 
-    df = pd.read_excel(excel_file)
+    if excel_file.name.endswith(".csv"):
+        df = pd.read_csv(excel_file)
+    else:
+        df = pd.read_excel(excel_file)
 
-    students = []
-
-    existing_admission_numbers = set(
-        Student.objects.values_list(
-            "admission_no",
-            flat=True,
-        )
+    df.columns = (
+        df.columns
+        .str.strip()
+        .str.lower()
+        .str.replace(" ", "_")
     )
+
+    created_count = 0
+    updated_count = 0
 
     for _, row in df.iterrows():
 
         admission_no = str(
-            row["admission_no"]
+            row.get("admission_no", "")
         ).strip()
 
-        if admission_no in existing_admission_numbers:
+        if not admission_no:
             continue
 
-        students.append(
-            Student(
-                first_name=str(
-                    row["first_name"]
-                ).strip(),
+        defaults = {
+            "first_name": str(
+                row.get("first_name", "")
+            ).strip(),
 
-                last_name=str(
-                    row["last_name"]
-                ).strip(),
+            "last_name": str(
+                row.get("last_name", "")
+            ).strip(),
 
-                admission_no=admission_no,
+            # Default Grade IA
+            "student_class": str(
+                row.get("student_class", "3")
+            ).strip(),
 
-                student_class=str(
-                    row["student_class"]
-                ).strip(),
+            "gender": str(
+                row.get("gender", "Male")
+            ).strip(),
 
-                gender=str(
-                    row["gender"]
-                ).strip(),
+            # Default DOB
+            "date_of_birth": row.get(
+                "date_of_birth",
+                date(2018, 1, 1)
+            ),
 
-                date_of_birth=row[
-                    "date_of_birth"
-                ],
+            # Default address
+            "address": str(
+                row.get("address", "Not Available")
+            ).strip(),
+        }
 
-                address=str(
-                    row["address"]
-                ).strip(),
-            )
+        student, created = Student.objects.update_or_create(
+            admission_no=admission_no,
+            defaults=defaults,
         )
 
-    Student.objects.bulk_create(students)
+        if created:
+            created_count += 1
+        else:
+            updated_count += 1
 
-    return len(students)
+    return {
+        "created": created_count,
+        "updated": updated_count,
+    }

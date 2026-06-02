@@ -1,33 +1,46 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.db.models import Q
+from django.shortcuts import redirect
+from django.shortcuts import render
 
 import pandas as pd
 
-from .models import Fee
-from .forms import (
-    FeeForm,
-    FeeExcelUploadForm
-)
+from accounts.decorators import role_required
 
 from students.models import Student
 
+from .forms import (
+    FeeForm,
+    FeeExcelUploadForm,
+)
+from .models import Fee
 
-@login_required
+
+@role_required(
+    "ADMIN",
+    "TEACHER",
+    "STUDENT",
+    "PARENT",
+)
 def fee_list(request):
 
-    if request.user.role not in [
+    fees = (
+        Fee.objects
+        .select_related("student")
+        .all()
+        .order_by("-payment_date")
+    )
 
-        'ADMIN',
-        'TEACHER',
-        'STUDENT',
-        'PARENT'
+    if request.user.role == "STUDENT":
 
-    ]:
-        return redirect('login')
+        fees = fees.filter(
+            student=request.user.student
+        )
 
-    fees = Fee.objects.all()
-
-    class_filter = request.GET.get('class')
+    class_filter = request.GET.get(
+        "class",
+        ""
+    )
 
     if class_filter:
 
@@ -35,113 +48,155 @@ def fee_list(request):
             student__student_class=class_filter
         )
 
-    context = {
+    search_query = request.GET.get(
+        "search",
+        ""
+    ).strip()
 
-        'fees': fees
+    if search_query:
 
-    }
+        fees = fees.filter(
+            Q(
+                student__first_name__icontains=search_query
+            )
+            |
+            Q(
+                student__last_name__icontains=search_query
+            )
+            |
+            Q(
+                student__admission_no__icontains=search_query
+            )
+        )
+
+    paginator = Paginator(
+        fees,
+        15,
+    )
+
+    page_number = request.GET.get(
+        "page"
+    )
+
+    page_obj = paginator.get_page(
+        page_number
+    )
 
     return render(
         request,
-        'fees/fee_list.html',
-        context
+        "fees/fee_list.html",
+        {
+            "page_obj": page_obj,
+            "search_query": search_query,
+        },
     )
 
 
-@login_required
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
 def add_fee(request):
 
-    if request.user.role not in [
+    if request.method == "POST":
 
-        'ADMIN',
-        'TEACHER'
-
-    ]:
-        return redirect('login')
-
-    if request.method == 'POST':
-
-        form = FeeForm(request.POST)
+        form = FeeForm(
+            request.POST
+        )
 
         if form.is_valid():
 
             form.save()
 
-            return redirect('fee_list')
+            return redirect(
+                "fee_list"
+            )
 
     else:
 
         form = FeeForm()
 
-    context = {
-
-        'form': form
-
-    }
-
     return render(
         request,
-        'fees/add_fee.html',
-        context
+        "fees/add_fee.html",
+        {
+            "form": form
+        },
     )
 
 
-@login_required
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
 def import_fees(request):
 
-    if request.user.role not in [
-
-        'ADMIN',
-        'TEACHER'
-
-    ]:
-        return redirect('login')
-
-    if request.method == 'POST':
+    if request.method == "POST":
 
         form = FeeExcelUploadForm(
-
             request.POST,
-            request.FILES
-
+            request.FILES,
         )
 
         if form.is_valid():
 
-            excel_file = request.FILES['excel_file']
+            excel_file = request.FILES[
+                "excel_file"
+            ]
 
-            df = pd.read_excel(excel_file)
+            df = pd.read_excel(
+                excel_file
+            )
 
-            for index, row in df.iterrows():
+            for _, row in df.iterrows():
 
-                student = Student.objects.get(
-                    admission_no=row['admission_no']
-                )
+                try:
 
-                Fee.objects.create(
+                    student = Student.objects.get(
+                        admission_no=str(
+                            row[
+                                "admission_no"
+                            ]
+                        ).strip()
+                    )
 
-                    student=student,
+                    Fee.objects.create(
 
-                    amount=row['amount'],
+                        student=student,
 
-                    status=row['status']
+                        amount=row[
+                            "amount"
+                        ],
 
-                )
+                        payment_date=row.get(
+                            "payment_date"
+                        ),
 
-            return redirect('fee_list')
+                        status=row[
+                            "status"
+                        ],
+
+                        remarks=row.get(
+                            "remarks",
+                            "",
+                        ),
+                    )
+
+                except Student.DoesNotExist:
+                    continue
+
+            return redirect(
+                "fee_list"
+            )
 
     else:
 
         form = FeeExcelUploadForm()
 
-    context = {
-
-        'form': form
-
-    }
-
     return render(
         request,
-        'fees/import_fees.html',
-        context
+        "fees/import_fees.html",
+        {
+            "form": form
+        },
     )

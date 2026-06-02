@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
@@ -27,10 +26,21 @@ def student_list(request):
     ).strip()
 
     if search_query:
+
         students = students.filter(
-            Q(first_name__icontains=search_query)
-            | Q(last_name__icontains=search_query)
-            | Q(admission_no__icontains=search_query)
+
+            Q(
+                first_name__icontains=search_query
+            )
+            |
+            Q(
+                last_name__icontains=search_query
+            )
+            |
+            Q(
+                admission_no__icontains=search_query
+            )
+
         )
 
     class_filter = request.GET.get(
@@ -39,6 +49,7 @@ def student_list(request):
     ).strip()
 
     if class_filter:
+
         students = students.filter(
             student_class=class_filter
         )
@@ -63,6 +74,7 @@ def student_list(request):
             "page_obj": page_obj,
             "search_query": search_query,
             "class_filter": class_filter,
+            "class_choices": Student.CLASS_CHOICES,
         },
     )
 
@@ -81,19 +93,22 @@ def add_student(request):
         )
 
         if form.is_valid():
+
             form.save()
+
             return redirect(
                 "student_list"
             )
 
     else:
+
         form = StudentForm()
 
     return render(
         request,
         "students/add_student.html",
         {
-            "form": form
+            "form": form,
         },
     )
 
@@ -118,7 +133,9 @@ def edit_student(
         )
 
         if form.is_valid():
+
             form.save()
+
             return redirect(
                 "student_list"
             )
@@ -133,7 +150,8 @@ def edit_student(
         request,
         "students/add_student.html",
         {
-            "form": form
+            "form": form,
+            "student": student,
         },
     )
 
@@ -150,7 +168,9 @@ def delete_student(
     )
 
     if request.method == "POST":
+
         student.delete()
+
         return redirect(
             "student_list"
         )
@@ -159,7 +179,7 @@ def delete_student(
         request,
         "students/delete_student.html",
         {
-            "student": student
+            "student": student,
         },
     )
 
@@ -190,12 +210,13 @@ def import_students(request):
             )
 
     else:
+
         form = ExcelUploadForm()
 
     return render(
         request,
         "students/import_students.html",
         {
-            "form": form
+            "form": form,
         },
     )
