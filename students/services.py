@@ -41,7 +41,7 @@ def import_students_from_excel(excel_file):
 
             # Default Grade IA
             "student_class": str(
-                row.get("student_class", "3")
+                row.get("student_class", "")
             ).strip(),
 
             "gender": str(

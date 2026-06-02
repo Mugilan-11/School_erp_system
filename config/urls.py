@@ -52,6 +52,12 @@ urlpatterns = [
         '',
         include('timetable.urls')
     ),
+    path(
+    "",
+    include(
+        "extractor.urls"
+    )
+),
 
     # ADMIN
 
@@ -59,6 +65,7 @@ urlpatterns = [
         'admin/',
         admin.site.urls
     ),
+
 
 ]
 

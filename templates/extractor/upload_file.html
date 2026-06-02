@@ -1,0 +1,35 @@
+    {% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="table-container">
+
+    <h2>
+
+        Data Extractor
+
+    </h2>
+
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+    >
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button
+            type="submit"
+            class="btn btn-primary"
+        >
+
+            Upload File
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

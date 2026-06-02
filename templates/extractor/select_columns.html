@@ -1,0 +1,73 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="table-container">
+
+    <h2>
+
+        Select Columns
+
+    </h2>
+
+    <form
+        method="POST"
+        action="{% url 'export_data' %}"
+    >
+
+        {% csrf_token %}
+
+        {% for column in columns %}
+
+            <div class="form-check">
+
+                <input
+                    type="checkbox"
+                    name="columns"
+                    value="{{ column }}"
+                    checked
+                >
+
+                {{ column }}
+
+            </div>
+
+        {% endfor %}
+
+        <hr>
+
+        <select
+            name="format"
+            class="form-select"
+        >
+
+            <option value="xlsx">
+
+                Excel
+
+            </option>
+
+            <option value="csv">
+
+                CSV
+
+            </option>
+
+        </select>
+
+        <br>
+
+        <button
+            type="submit"
+            class="btn btn-success"
+        >
+
+            Download Extracted File
+
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

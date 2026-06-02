@@ -1,0 +1,43 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="table-container">
+
+    <h2>
+
+        Choose Rows
+
+    </h2>
+
+    <p>
+
+        Select the header row and student data range.
+
+    </p>
+
+    <div class="mb-4">
+
+        {{ preview|safe }}
+
+    </div>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        {{ form.as_p }}
+
+        <button
+            type="submit"
+            class="btn btn-primary"
+        >
+
+            Continue
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}
