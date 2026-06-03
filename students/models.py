@@ -49,6 +49,19 @@ class Student(models.Model):
         unique=True,
         db_index=True,
     )
+    name = models.CharField(
+        max_length=200,
+        blank=True,
+        db_index=True,
+    )
+
+    student_id = models.CharField(
+        max_length=100,
+        blank=True,
+        unique=True,
+        null=True,
+        db_index=True,
+    )
 
     student_class = models.CharField(
         max_length=10,
@@ -89,11 +102,15 @@ class Student(models.Model):
 
     @property
     def full_name(self):
+
+        if self.name:
+            return self.name
+
         return (
             f"{self.first_name} "
             f"{self.last_name}"
-        ).strip()
-
+            ).strip()
+    
     def clean(self):
 
         if (
@@ -113,7 +130,7 @@ class Student(models.Model):
 
     def __str__(self):
         return (
-            f"{self.admission_no}"
-            f" - "
-            f"{self.full_name}"
-        )
+        f"{self.student_id or self.admission_no}"
+        f" - "
+        f"{self.full_name}"
+    )

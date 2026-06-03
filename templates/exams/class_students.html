@@ -1,0 +1,113 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="card dashboard-card p-4">
+
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+
+            <h2 class="fw-bold">
+                {{ class_name }}
+            </h2>
+
+            <p class="text-muted">
+                Select a student to enter examination results
+            </p>
+
+        </div>
+
+        <a
+            href="{% url 'select_class' %}"
+            class="btn btn-secondary"
+        >
+            Back to Classes
+        </a>
+
+    </div>
+
+    <div class="table-responsive">
+
+        <table class="table align-middle">
+
+            <thead>
+
+                <tr>
+
+                    <th>
+                        Student ID
+                    </th>
+
+                    <th>
+                        Student Name
+                    </th>
+
+                    <th>
+                        Class
+                    </th>
+
+                    <th>
+                        Action
+                    </th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for student in students %}
+
+                <tr>
+
+                    <td>
+                        {{ student.student_id }}
+                    </td>
+
+                    <td>
+                        <strong>
+                            {{ student.name }}
+                        </strong>
+                    </td>
+
+                    <td>
+                        {{ student.student_class }}
+                    </td>
+
+                    <td>
+
+                        <a
+                            href="{% url 'add_student_result' student.id %}"
+                            class="btn btn-success btn-sm"
+                        >
+                            Add Result
+                        </a>
+
+                    </td>
+
+                </tr>
+
+                {% empty %}
+
+                <tr>
+
+                    <td colspan="4" class="text-center">
+
+                        No students found in this class.
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+</div>
+
+{% endblock %}

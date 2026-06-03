@@ -2,6 +2,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.shortcuts import render
+from django.shortcuts import get_object_or_404
 
 import pandas as pd
 
@@ -13,7 +14,11 @@ from .forms import (
     ResultForm,
     ResultExcelUploadForm,
 )
-from .models import ExamResult
+
+from .models import (
+    ExamResult,
+    SubjectMark,
+)
 
 
 @role_required(
@@ -57,15 +62,11 @@ def result_list(request):
 
         results = results.filter(
             Q(
-                student__first_name__icontains=search_query
+                student__name__icontains=search_query
             )
             |
             Q(
-                student__last_name__icontains=search_query
-            )
-            |
-            Q(
-                student__admission_no__icontains=search_query
+                student__student_id__icontains=search_query
             )
             |
             Q(
@@ -92,6 +93,7 @@ def result_list(request):
         {
             "page_obj": page_obj,
             "search_query": search_query,
+            "student_classes": Student.CLASS_CHOICES,
         },
     )
 
@@ -113,6 +115,8 @@ def add_result(request):
             result = form.save()
 
             result.calculate_result()
+
+            result.save()
 
             return redirect(
                 "result_list"
@@ -159,10 +163,8 @@ def import_results(request):
                 try:
 
                     student = Student.objects.get(
-                        admission_no=str(
-                            row[
-                                "admission_no"
-                            ]
+                        student_id=str(
+                            row["student_id"]
                         ).strip()
                     )
 
@@ -210,5 +212,123 @@ def import_results(request):
         "exams/import_results.html",
         {
             "form": form,
+        },
+    )
+
+
+# ==================================================
+# NEW CLASS → STUDENT → RESULT WORKFLOW
+# ==================================================
+
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
+def select_class(request):
+
+    classes = Student.CLASS_CHOICES
+
+    return render(
+        request,
+        "exams/select_class.html",
+        {
+            "classes": classes,
+        },
+    )
+
+
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
+def class_students(
+    request,
+    class_name,
+):
+
+    students = Student.objects.filter(
+        student_class=class_name
+    ).order_by(
+        "name"
+    )
+
+    return render(
+        request,
+        "exams/class_students.html",
+        {
+            "students": students,
+            "class_name": class_name,
+        },
+    )
+
+
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
+def add_student_result(
+    request,
+    student_id,
+):
+
+    student = get_object_or_404(
+        Student,
+        id=student_id,
+    )
+
+    if request.method == "POST":
+
+        exam_name = request.POST.get(
+            "exam_name"
+        )
+
+        result = ExamResult.objects.create(
+            student=student,
+            exam_name=exam_name,
+        )
+
+        subjects = [
+            "English",
+            "Tamil",
+            "Maths",
+            "Science",
+            "Social",
+        ]
+
+        for subject in subjects:
+
+            mark = request.POST.get(
+                subject,
+                0
+            )
+
+            try:
+
+                mark = int(mark)
+
+            except ValueError:
+
+                mark = 0
+
+            SubjectMark.objects.create(
+                exam_result=result,
+                subject_name=subject,
+                mark_obtained=mark,
+                maximum_mark=100,
+            )
+
+        result.calculate_result()
+
+        result.save()
+
+        return redirect(
+            "result_list"
+        )
+
+    return render(
+        request,
+        "exams/add_student_result.html",
+        {
+            "student": student,
         },
     )

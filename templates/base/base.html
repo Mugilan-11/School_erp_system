@@ -340,19 +340,30 @@
 
     <!-- EXAMS -->
 
-    <div class="sidebar-section">
-        Exams
-    </div>
+    <!-- EXAMS -->
 
-    <a href="/result-list/">
-        <i class="bi bi-award-fill"></i>
-        <span>Results</span>
-    </a>
+<div class="sidebar-section">
+    Exams
+</div>
 
-    <a href="/timetable-list/">
-        <i class="bi bi-clock-fill"></i>
-        <span>Timetable</span>
-    </a>
+<a href="/result-list/">
+    <i class="bi bi-award-fill"></i>
+    <span>Results</span>
+</a>
+
+{% if request.user.role == 'ADMIN' or request.user.role == 'TEACHER' %}
+
+<a href="/select-class/">
+    <i class="bi bi-pencil-square"></i>
+    <span>Enter Results</span>
+</a>
+
+{% endif %}
+
+<a href="/timetable-list/">
+    <i class="bi bi-clock-fill"></i>
+    <span>Timetable</span>
+</a>
 
     <!-- OPERATIONS -->
 

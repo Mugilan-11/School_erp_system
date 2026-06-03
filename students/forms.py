@@ -22,10 +22,10 @@ class StudentForm(forms.ModelForm):
                     "placeholder": "Enter last name",
                 }
             ),
-            "admission_no": forms.TextInput(
+            "student_id": forms.TextInput(
                 attrs={
                     "class": "form-control",
-                    "placeholder": "Enter admission number",
+                    "placeholder": "Enter student ID",
                 }
             ),
             "student_class": forms.Select(
@@ -54,6 +54,19 @@ class StudentForm(forms.ModelForm):
             "profile_picture": forms.FileInput(
                 attrs={
                     "class": "form-control",
+                }
+            ),
+            "name": forms.TextInput(
+                attrs={
+                "class": "form-control",
+                "placeholder": "Enter Student Name",
+                }   
+            ),
+
+            "student_id": forms.TextInput(
+                attrs={
+                "class": "form-control",
+                "placeholder": "Enter Student ID",
                 }
             ),
         }

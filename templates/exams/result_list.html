@@ -76,15 +76,15 @@
                             All Classes
                         </option>
 
-                        {% for i in "123456789101112" %}
+                        {% for value,label in student_classes %}
 
                         <option
-                            value="{{ i }}"
-                            {% if request.GET.class == i %}
+                            value="{{ value }}"
+                            {% if request.GET.class == value %}
                                 selected
                             {% endif %}
                         >
-                            Class {{ i }}
+                            {{ label }}
                         </option>
 
                         {% endfor %}

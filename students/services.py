@@ -1,4 +1,5 @@
 import pandas as pd
+
 from datetime import date
 
 from .models import Student
@@ -23,45 +24,98 @@ def import_students_from_excel(excel_file):
 
     for _, row in df.iterrows():
 
-        admission_no = str(
-            row.get("admission_no", "")
+        # Student ID
+        student_id = str(
+            row.get(
+                "student_id",
+                row.get(
+                    "admission_no",
+                    ""
+                )
+            )
         ).strip()
 
-        if not admission_no:
+        if not student_id:
             continue
 
+        # Student Name
+        student_name = str(
+            row.get(
+                "student_name",
+                row.get(
+                    "name",
+                    ""
+                )
+            )
+        ).strip()
+
+        if not student_name:
+            continue
+
+        # Class
+        student_class = str(
+            row.get(
+                "student_class",
+                ""
+            )
+        ).strip()
+
+        # Fix numeric classes
+        class_mapping = {
+            "1": "Grade IA",
+            "2": "Grade II",
+            "3": "Grade III",
+            "4": "Grade IV",
+            "5": "Grade V",
+            "6": "Grade VI",
+            "7": "Grade VII",
+            "8": "Grade VIII",
+            "9": "Grade IX",
+        }
+
+        if student_class in class_mapping:
+            student_class = class_mapping[
+                student_class
+            ]
+
         defaults = {
-            "first_name": str(
-                row.get("first_name", "")
-            ).strip(),
 
-            "last_name": str(
-                row.get("last_name", "")
-            ).strip(),
+            # New Fields
+            "name": student_name,
 
-            # Default Grade IA
-            "student_class": str(
-                row.get("student_class", "")
-            ).strip(),
+            "student_class": student_class,
 
             "gender": str(
-                row.get("gender", "Male")
+                row.get(
+                    "gender",
+                    "Male"
+                )
             ).strip(),
 
-            # Default DOB
             "date_of_birth": row.get(
                 "date_of_birth",
                 date(2018, 1, 1)
             ),
 
-            # Default address
             "address": str(
-                row.get("address", "Not Available")
+                row.get(
+                    "address",
+                    "Not Available"
+                )
             ).strip(),
+
+            # Compatibility Fields
+            "first_name": student_name,
+
+            "last_name": "-",
+
+            "admission_no": student_id,
+
+            "student_id": student_id,
         }
 
         student, created = Student.objects.update_or_create(
-            admission_no=admission_no,
+            student_id=student_id,
             defaults=defaults,
         )
 

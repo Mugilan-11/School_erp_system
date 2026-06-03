@@ -45,19 +45,15 @@ def student_list(request):
 
         students = students.filter(
 
-            Q(
-                first_name__icontains=search_query
-            )
-            |
-            Q(
-                last_name__icontains=search_query
-            )
-            |
-            Q(
-                admission_no__icontains=search_query
-            )
-
+        Q(
+            name__icontains=search_query
         )
+        |
+        Q(
+            student_id__icontains=search_query
+        )
+
+    )
 
     class_filter = request.GET.get(
         "class",

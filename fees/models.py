@@ -108,6 +108,6 @@ class Fee(models.Model):
     def __str__(self):
 
         return (
-            f"{self.student.full_name}"
+            f"{self.student.name}"
             f" - ₹{self.amount}"
         )

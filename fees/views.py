@@ -56,17 +56,8 @@ def fee_list(request):
     if search_query:
 
         fees = fees.filter(
-            Q(
-                student__first_name__icontains=search_query
-            )
-            |
-            Q(
-                student__last_name__icontains=search_query
-            )
-            |
-            Q(
-                student__admission_no__icontains=search_query
-            )
+            Q(student__name__icontains=search_query) |
+            Q(student__student_id__icontains=search_query)
         )
 
     paginator = Paginator(
@@ -153,12 +144,10 @@ def import_fees(request):
                 try:
 
                     student = Student.objects.get(
-                        admission_no=str(
-                            row[
-                                "admission_no"
-                            ]
+                        student_id=str(
+                            row["student_id"]
                         ).strip()
-                    )
+                )
 
                     Fee.objects.create(
 

@@ -1,0 +1,132 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="card dashboard-card p-4">
+
+    <h2 class="fw-bold mb-4">
+        Add Result
+    </h2>
+
+    <div class="alert alert-info">
+
+        <strong>Student:</strong>
+        {{ student.name }}
+
+        <br>
+
+        <strong>Student ID:</strong>
+        {{ student.student_id }}
+
+    </div>
+
+    <form method="post">
+
+        {% csrf_token %}
+
+        <div class="mb-3">
+
+            <label class="form-label">
+                Exam Name
+            </label>
+
+            <input
+                type="text"
+                name="exam_name"
+                class="form-control"
+                required
+            >
+
+        </div>
+
+        <div class="row">
+
+            <div class="col-md-6 mb-3">
+
+                <label>English</label>
+
+                <input
+                    type="number"
+                    name="English"
+                    class="form-control"
+                    min="0"
+                    max="100"
+                    required
+                >
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <label>Tamil</label>
+
+                <input
+                    type="number"
+                    name="Tamil"
+                    class="form-control"
+                    min="0"
+                    max="100"
+                    required
+                >
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <label>Maths</label>
+
+                <input
+                    type="number"
+                    name="Maths"
+                    class="form-control"
+                    min="0"
+                    max="100"
+                    required
+                >
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <label>Science</label>
+
+                <input
+                    type="number"
+                    name="Science"
+                    class="form-control"
+                    min="0"
+                    max="100"
+                    required
+                >
+
+            </div>
+
+            <div class="col-md-6 mb-3">
+
+                <label>Social</label>
+
+                <input
+                    type="number"
+                    name="Social"
+                    class="form-control"
+                    min="0"
+                    max="100"
+                    required
+                >
+
+            </div>
+
+        </div>
+
+        <button
+            type="submit"
+            class="btn btn-primary"
+        >
+            Save Result
+        </button>
+
+    </form>
+
+</div>
+
+{% endblock %}

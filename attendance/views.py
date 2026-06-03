@@ -75,7 +75,7 @@ def attendance_list(request):
                     )
                     |
                     Q(
-                        student__admission_no__icontains=search_query
+                        student__student_id__icontains=search_query
                     )
                 )
             )
@@ -169,9 +169,9 @@ def import_attendance(request):
                 try:
 
                     student = Student.objects.get(
-                        admission_no=str(
+                        student_id=str(
                             row[
-                                "admission_no"
+                                "student_id"
                             ]
                         ).strip()
                     )
