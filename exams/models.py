@@ -126,3 +126,28 @@ class SubjectMark(models.Model):
 
     def __str__(self):
         return self.subject_name
+    
+class ClassSubject(models.Model):
+
+    student_class = models.CharField(
+        max_length=20,
+        choices=Student.CLASS_CHOICES,
+    )
+
+    subject_name = models.CharField(
+        max_length=100,
+    )
+
+    class Meta:
+
+        ordering = [
+            "student_class",
+            "subject_name",
+        ]
+
+    def __str__(self):
+
+        return (
+            f"{self.student_class} - "
+            f"{self.subject_name}"
+        )

@@ -37,11 +37,15 @@ class Student(models.Model):
     first_name = models.CharField(
         max_length=100,
         db_index=True,
+        null=True, 
+        blank=True,
     )
 
     last_name = models.CharField(
         max_length=100,
         db_index=True,
+        null=True,
+        blank=True,
     )
 
     admission_no = models.CharField(
@@ -53,6 +57,7 @@ class Student(models.Model):
         max_length=200,
         blank=True,
         db_index=True,
+    
     )
 
     student_id = models.CharField(
@@ -67,16 +72,26 @@ class Student(models.Model):
         max_length=10,
         choices=CLASS_CHOICES,
         db_index=True,
+        null=True,
+        blank=True,
     )
 
     gender = models.CharField(
         max_length=10,
         choices=GENDER_CHOICES,
+        null=True,
+        blank=True,
     )
 
-    date_of_birth = models.DateField()
+    date_of_birth = models.DateField(
+        null=True,
+        blank=True,
+    )
 
-    address = models.TextField()
+    address = models.TextField(
+        null=True,
+        blank=True, 
+    )
 
     profile_picture = models.ImageField(
         upload_to="students/",

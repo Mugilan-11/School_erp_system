@@ -1,3 +1,5 @@
+from urllib import request
+
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import redirect
@@ -18,6 +20,7 @@ from .forms import (
 from .models import (
     ExamResult,
     SubjectMark,
+    ClassSubject,
 )
 
 
@@ -287,18 +290,14 @@ def add_student_result(
             exam_name=exam_name,
         )
 
-        subjects = [
-            "English",
-            "Tamil",
-            "Maths",
-            "Science",
-            "Social",
-        ]
+        subjects = ClassSubject.objects.filter(
+    student_class=student.student_class
+)
 
         for subject in subjects:
 
             mark = request.POST.get(
-                subject,
+                subject.subject_name,
                 0
             )
 
@@ -312,7 +311,7 @@ def add_student_result(
 
             SubjectMark.objects.create(
                 exam_result=result,
-                subject_name=subject,
+                subject_name=subject.subject_name,
                 mark_obtained=mark,
                 maximum_mark=100,
             )
@@ -325,10 +324,15 @@ def add_student_result(
             "result_list"
         )
 
+    subjects = ClassSubject.objects.filter(
+    student_class=student.student_class
+)
+
     return render(
-        request,
-        "exams/add_student_result.html",
-        {
-            "student": student,
-        },
-    )
+    request,
+    "exams/add_student_result.html",
+    {
+        "student": student,
+        "subjects": subjects,
+    },
+)

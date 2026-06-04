@@ -79,41 +79,39 @@ def import_students_from_excel(excel_file):
             ]
 
         defaults = {
+    "name": student_name,
 
-            # New Fields
-            "name": student_name,
+    "student_class": (
+        student_class
+        if student_class
+        else None
+    ),
 
-            "student_class": student_class,
+    "gender": (
+        str(row.get("gender")).strip()
+        if row.get("gender")
+        else None
+    ),
 
-            "gender": str(
-                row.get(
-                    "gender",
-                    "Male"
-                )
-            ).strip(),
+    "date_of_birth": row.get(
+        "date_of_birth",
+        None
+    ),
 
-            "date_of_birth": row.get(
-                "date_of_birth",
-                date(2018, 1, 1)
-            ),
+    "address": (
+        str(row.get("address")).strip()
+        if row.get("address")
+        else None
+    ),
 
-            "address": str(
-                row.get(
-                    "address",
-                    "Not Available"
-                )
-            ).strip(),
+    "first_name": student_name,
 
-            # Compatibility Fields
-            "first_name": student_name,
+    "last_name": "",
 
-            "last_name": "-",
+    "admission_no": student_id,
 
-            "admission_no": student_id,
-
-            "student_id": student_id,
-        }
-
+    "student_id": student_id,
+}
         student, created = Student.objects.update_or_create(
             student_id=student_id,
             defaults=defaults,

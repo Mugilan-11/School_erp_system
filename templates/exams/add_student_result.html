@@ -41,82 +41,28 @@
 
         <div class="row">
 
-            <div class="col-md-6 mb-3">
+    {% for subject in subjects %}
 
-                <label>English</label>
+    <div class="col-md-6 mb-3">
 
-                <input
-                    type="number"
-                    name="English"
-                    class="form-control"
-                    min="0"
-                    max="100"
-                    required
-                >
+        <label>
+            {{ subject.subject_name }}
+        </label>
 
-            </div>
+        <input
+            type="number"
+            name="{{ subject.subject_name }}"
+            class="form-control"
+            min="0"
+            max="100"
+            required
+        >
 
-            <div class="col-md-6 mb-3">
+    </div>
 
-                <label>Tamil</label>
+    {% endfor %}
 
-                <input
-                    type="number"
-                    name="Tamil"
-                    class="form-control"
-                    min="0"
-                    max="100"
-                    required
-                >
-
-            </div>
-
-            <div class="col-md-6 mb-3">
-
-                <label>Maths</label>
-
-                <input
-                    type="number"
-                    name="Maths"
-                    class="form-control"
-                    min="0"
-                    max="100"
-                    required
-                >
-
-            </div>
-
-            <div class="col-md-6 mb-3">
-
-                <label>Science</label>
-
-                <input
-                    type="number"
-                    name="Science"
-                    class="form-control"
-                    min="0"
-                    max="100"
-                    required
-                >
-
-            </div>
-
-            <div class="col-md-6 mb-3">
-
-                <label>Social</label>
-
-                <input
-                    type="number"
-                    name="Social"
-                    class="form-control"
-                    min="0"
-                    max="100"
-                    required
-                >
-
-            </div>
-
-        </div>
+</div>
 
         <button
             type="submit"
