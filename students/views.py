@@ -233,3 +233,42 @@ def import_students(request):
             "form": form,
         },
     )
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
+def student_dashboard(
+    request,
+    class_name,
+):
+
+    return render(
+        request,
+        "students/student_dashboard.html",
+        {
+            "class_name": class_name,
+        },
+    )
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
+def class_student_list(
+    request,
+    class_name,
+):
+
+    students = Student.objects.filter(
+        student_class=class_name
+    ).order_by(
+        "name"
+    )
+
+    return render(
+        request,
+        "students/class_student_list.html",
+        {
+            "students": students,
+            "class_name": class_name,
+        },
+    )

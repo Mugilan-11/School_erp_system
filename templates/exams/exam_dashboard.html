@@ -1,0 +1,86 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="dashboard-hero mb-5">
+
+        <div>
+
+            <h2 class="fw-bold">
+                {{ class_name }}
+            </h2>
+
+            <p class="mb-0">
+                {{ exam_name }}
+            </p>
+
+        </div>
+
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+
+            <a
+                href="{% url 'class_students' class_name exam_name %}"
+                class="text-decoration-none"
+            >
+
+                <div class="dashboard-card text-center">
+
+                    <h3>➕</h3>
+
+                    <h5>Add Result</h5>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <a
+                href="{% url 'import_exam_results' class_name exam_name %}"
+                class="text-decoration-none"
+            >
+
+                <div class="dashboard-card text-center">
+
+                    <h3>📤</h3>
+
+                    <h5>Import Results</h5>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <a
+                href="{% url 'class_exam_results' class_name exam_name %}"
+                class="text-decoration-none"
+            >
+
+                <div class="dashboard-card text-center">
+
+                    <h3>📊</h3>
+
+                    <h5>View Results</h5>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

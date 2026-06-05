@@ -1,0 +1,86 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="dashboard-hero mb-5">
+
+        <h2 class="fw-bold">
+
+            {{ class_name }}
+
+        </h2>
+
+        <p>
+
+            Student Management
+
+        </p>
+
+    </div>
+
+    <div class="row g-4">
+
+        <div class="col-md-4">
+
+            <a
+                href="/add-student/"
+                class="text-decoration-none"
+            >
+
+                <div class="dashboard-card text-center">
+
+                    <h2>➕</h2>
+
+                    <h5>Add Student</h5>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <a
+                href="/import-students/"
+                class="text-decoration-none"
+            >
+
+                <div class="dashboard-card text-center">
+
+                    <h2>📤</h2>
+
+                    <h5>Import Students</h5>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        <div class="col-md-4">
+
+            <a
+                href="{% url 'class_student_list' class_name %}"
+                class="text-decoration-none"
+            >
+
+                <div class="dashboard-card text-center">
+
+                    <h2>👥</h2>
+
+                    <h5>View Students</h5>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

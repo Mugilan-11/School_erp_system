@@ -1,0 +1,51 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="dashboard-card p-4">
+
+        <h2 class="fw-bold mb-3">
+
+            Import Results
+
+        </h2>
+
+        <p>
+
+            Class:
+            <strong>{{ class_name }}</strong>
+
+            |
+
+            Exam:
+            <strong>{{ exam_name }}</strong>
+
+        </p>
+
+        <form
+            method="post"
+            enctype="multipart/form-data"
+        >
+
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button
+                type="submit"
+                class="btn btn-success"
+            >
+
+                Import Results
+
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

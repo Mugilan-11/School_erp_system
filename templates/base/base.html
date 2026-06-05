@@ -461,17 +461,14 @@
     Exams
 </div>
 
-<a href="/result-list/">
+<a href="{% url 'result_classes' %}">
     <i class="bi bi-award-fill"></i>
     <span>Results</span>
 </a>
 
 {% if request.user.role == 'ADMIN' or request.user.role == 'TEACHER' %}
 
-<a href="/select-class/">
-    <i class="bi bi-pencil-square"></i>
-    <span>Enter Results</span>
-</a>
+
 
 {% endif %}
 

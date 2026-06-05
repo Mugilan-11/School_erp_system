@@ -1,0 +1,81 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <div class="dashboard-card p-4 mb-4">
+
+        <h2 class="fw-bold">
+
+            {{ result.student.name }}
+
+        </h2>
+
+        <p>
+
+            {{ result.exam_name }}
+
+        </p>
+
+    </div>
+
+    <div class="dashboard-card p-4">
+
+        <table class="table">
+
+            <thead>
+
+                <tr>
+
+                    <th>Subject</th>
+                    <th>Mark</th>
+
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for mark in subject_marks %}
+
+                <tr>
+
+                    <td>
+                        {{ mark.subject_name }}
+                    </td>
+
+                    <td>
+                        {{ mark.mark_obtained }}
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+        <hr>
+
+        <h5>
+            Total :
+            {{ result.total_marks }}
+        </h5>
+
+        <h5>
+            Percentage :
+            {{ result.percentage }}%
+        </h5>
+
+        <h5>
+            Grade :
+            {{ result.grade }}
+        </h5>
+
+    </div>
+
+</div>
+
+{% endblock %}

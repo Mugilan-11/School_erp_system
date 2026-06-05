@@ -21,6 +21,7 @@ from .models import (
     ExamResult,
     SubjectMark,
     ClassSubject,
+    ClassExam,
 )
 
 
@@ -270,6 +271,7 @@ def select_class(request):
 def class_students(
     request,
     class_name,
+    exam_name,
 ):
 
     students = Student.objects.filter(
@@ -284,6 +286,7 @@ def class_students(
         {
             "students": students,
             "class_name": class_name,
+             "exam_name": exam_name,
         },
     )
 
@@ -295,6 +298,7 @@ def class_students(
 def add_student_result(
     request,
     student_id,
+    exam_name,
 ):
 
     student = get_object_or_404(
@@ -316,9 +320,7 @@ def add_student_result(
 
     if request.method == "POST":
 
-        exam_name = request.POST.get(
-            "exam_name"
-        )
+        exam_name = exam_name
 
         result = ExamResult.objects.create(
             student=student,
@@ -358,5 +360,215 @@ def add_student_result(
         {
             "student": student,
             "subjects": subjects,
+            "exam_name": exam_name,
+        },
+    )
+    
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
+def result_classes(request):
+
+    return render(
+        request,
+        "exams/result_classes.html",
+        {
+            "classes": Student.CLASS_CHOICES,
+        },
+    )
+    
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
+def result_exams(
+    request,
+    class_name,
+):
+
+    exams = ClassExam.objects.filter(
+        student_class=class_name
+    )
+
+    return render(
+        request,
+        "exams/result_exams.html",
+        {
+            "class_name": class_name,
+            "exams": exams,
+        },
+    )
+    
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
+def class_exam_results(
+    request,
+    class_name,
+    exam_name,
+):
+
+    results = ExamResult.objects.filter(
+        student__student_class=class_name,
+        exam_name=exam_name,
+    )
+
+    return render(
+        request,
+        "exams/class_exam_results.html",
+        {
+            "results": results,
+            "class_name": class_name,
+            "exam_name": exam_name,
+        },
+    )
+    
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
+def exam_dashboard(
+    request,
+    class_name,
+    exam_name,
+):
+
+    return render(
+        request,
+        "exams/exam_dashboard.html",
+        {
+            "class_name": class_name,
+            "exam_name": exam_name,
+        },
+    )
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
+def import_exam_results(
+    request,
+    class_name,
+    exam_name,
+):
+
+    if request.method == "POST":
+
+        form = ResultExcelUploadForm(
+            request.POST,
+            request.FILES,
+        )
+
+        if form.is_valid():
+
+            excel_file = request.FILES[
+                "excel_file"
+            ]
+
+            df = pd.read_excel(
+                excel_file
+            )
+
+            df.columns = (
+                df.columns
+                .str.strip()
+            )
+
+            for _, row in df.iterrows():
+
+                try:
+
+                    student = Student.objects.get(
+                        student_id=str(
+                            row["student_id"]
+                        ).strip()
+                    )
+
+                except Student.DoesNotExist:
+
+                    continue
+
+                result, created = (
+                    ExamResult.objects.get_or_create(
+                        student=student,
+                        exam_name=exam_name,
+                    )
+                )
+
+                result.subject_marks.all().delete()
+
+                for column in df.columns:
+
+                    if column == "student_id":
+                        continue
+
+                    mark = row[column]
+
+                    if pd.isna(mark):
+                        continue
+
+                    try:
+                        mark = int(mark)
+
+                    except (ValueError, TypeError):
+                        continue
+
+                    SubjectMark.objects.create(
+                        exam_result=result,
+                        subject_name=column,
+                        mark_obtained=mark,
+                        maximum_mark=100,
+                    )
+
+                result.calculate_result()
+                result.save()
+
+            return redirect(
+                "class_exam_results",
+                class_name=class_name,
+                exam_name=exam_name,
+            )
+
+    else:
+
+        form = ResultExcelUploadForm()
+
+    return render(
+        request,
+        "exams/import_exam_results.html",
+        {
+            "form": form,
+            "class_name": class_name,
+            "exam_name": exam_name,
+        },
+    )
+    
+@role_required(
+    "ADMIN",
+    "TEACHER",
+    "STUDENT",
+    "PARENT",
+)
+def student_result_detail(
+    request,
+    result_id,
+):
+
+    result = get_object_or_404(
+        ExamResult,
+        id=result_id,
+    )
+
+    subject_marks = (
+        result.subject_marks.all()
+    )
+
+    return render(
+        request,
+        "exams/student_result_detail.html",
+        {
+            "result": result,
+            "subject_marks": subject_marks,
         },
     )

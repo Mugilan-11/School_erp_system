@@ -151,3 +151,33 @@ class ClassSubject(models.Model):
     def __str__(self):
 
         return self.student_class
+    
+class ClassExam(models.Model):
+
+    student_class = models.CharField(
+        max_length=20,
+        choices=Student.CLASS_CHOICES,
+    )
+
+    exam_name = models.CharField(
+        max_length=100,
+    )
+
+    class Meta:
+
+        unique_together = (
+            "student_class",
+            "exam_name",
+        )
+
+        ordering = [
+            "student_class",
+            "exam_name",
+        ]
+
+    def __str__(self):
+
+        return (
+            f"{self.student_class} - "
+            f"{self.exam_name}"
+        )

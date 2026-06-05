@@ -5,7 +5,9 @@ from .models import (
     SubjectMark,
     ClassSubject,
 )
+from .models import ClassExam
 
+admin.site.register(ClassExam)
 
 admin.site.register(ExamResult)
 admin.site.register(SubjectMark)
