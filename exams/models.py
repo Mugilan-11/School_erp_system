@@ -89,7 +89,7 @@ class ExamResult(models.Model):
             self.percentage = 0
 
         if self.percentage >= 90:
-            self.grade = "A+"
+            self.grade = "O"
 
         elif self.percentage >= 80:
             self.grade = "A"
@@ -132,22 +132,22 @@ class ClassSubject(models.Model):
     student_class = models.CharField(
         max_length=20,
         choices=Student.CLASS_CHOICES,
+        unique=True,
     )
 
-    subject_name = models.CharField(
-        max_length=100,
+    subjects = models.TextField(
+        help_text=
+        "Comma separated subjects"
     )
 
-    class Meta:
+    def get_subject_list(self):
 
-        ordering = [
-            "student_class",
-            "subject_name",
+        return [
+            s.strip()
+            for s in self.subjects.split(",")
+            if s.strip()
         ]
 
     def __str__(self):
 
-        return (
-            f"{self.student_class} - "
-            f"{self.subject_name}"
-        )
+        return self.student_class

@@ -111,6 +111,7 @@ def add_student(request):
             return redirect(
                 "student_list"
             )
+        print(form.errors)
 
     else:
 

@@ -37,7 +37,7 @@
             background: #f4f7fe;
             overflow-x: hidden;
         }
-
+        
         .sidebar {
 
             width: 270px;
@@ -93,6 +93,7 @@
             text-transform: uppercase;
         }
 
+
         .sidebar a {
 
             display: flex;
@@ -115,6 +116,20 @@
 
             font-weight: 500;
         }
+        .profile-avatar-img{
+
+        width:50px;
+
+        height:50px;
+
+        border-radius:50%;
+
+        object-fit:cover;
+
+        border:3px solid white;
+
+        box-shadow:0 4px 15px rgba(0,0,0,0.15);
+        }
 
         .sidebar a:hover {
 
@@ -122,6 +137,34 @@
 
             transform: translateX(5px);
         }
+  .dashboard-hero{
+
+    background:linear-gradient(
+        135deg,
+        #4f46e5,
+        #7c3aed
+    );
+
+    color:white;
+
+    padding:35px;
+
+    border-radius:24px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    box-shadow:
+    0 15px 40px rgba(
+        79,
+        70,
+        229,
+        0.25
+    );
+}
 
         .main-content {
 
@@ -196,21 +239,55 @@
             padding: 12px 20px;
         }
 
-        .dashboard-card {
+      .dashboard-card{
 
-            background: white;
+    background:white;
 
-            border-radius: 24px;
+    border:none;
 
-            padding: 30px;
+    border-radius:24px;
 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    padding:30px;
 
-            transition: 0.3s;
-        }
+    box-shadow:
+    0 15px 35px rgba(
+        0,
+        0,
+        0,
+        0.06
+    );
 
-        .dashboard-card:hover {
-            transform: translateY(-6px);
+    transition:.3s;
+
+    overflow:hidden;
+
+    position:relative;
+}
+
+.dashboard-card::before{
+
+    content:"";
+
+    position:absolute;
+
+    left:0;
+
+    top:0;
+
+    width:100%;
+
+    height:5px;
+
+    background:linear-gradient(
+        90deg,
+        #4f46e5,
+        #7c3aed
+        );
+    }
+
+    .dashboard-card:hover{
+
+        transform:translateY(-8px);
         }
 
         .table-container {
@@ -237,6 +314,44 @@
             background: #4338ca;
         }
 
+        .dashboard-hero{
+
+    background:linear-gradient(
+        135deg,
+        #4f46e5,
+        #7c3aed
+    );
+
+    color:white;
+
+    padding:35px;
+
+    border-radius:24px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    box-shadow:
+    0 15px 40px rgba(
+        79,
+        70,
+        229,
+        0.25
+    );
+}
+
+.table tbody tr{
+
+    transition:.3s;
+}
+
+.table tbody tr:hover{
+
+    background:#f8fafc;
+}
         @media(max-width: 992px){
 
             .sidebar{
@@ -442,10 +557,20 @@
 
             <i class="bi bi-bell-fill fs-4"></i>
 
-            <div class="profile-avatar">
-                {{ request.user.username|first|upper }}
-            </div>
+{% if request.user.profile_picture %}
 
+<img
+    src="{{ request.user.profile_picture.url }}"
+    alt="Profile"
+    class="profile-avatar-img"
+>
+{% else %}
+
+<div class="profile-avatar">
+    {{ request.user.username|first|upper }}
+</div>
+
+{% endif %}
         </div>
 
     </div>

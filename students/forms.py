@@ -7,7 +7,15 @@ class StudentForm(forms.ModelForm):
 
     class Meta:
         model = Student
-        fields = "__all__"
+        fields = [
+    "name",
+    "student_id",
+    "student_class",
+    "gender",
+    "date_of_birth",
+    "address",
+    "profile_picture",
+]
 
         widgets = {
             "first_name": forms.TextInput(
@@ -52,7 +60,7 @@ class StudentForm(forms.ModelForm):
                 }
             ),
             "profile_picture": forms.FileInput(
-                attrs={
+                    attrs={
                     "class": "form-control",
                 }
             ),
@@ -70,6 +78,26 @@ class StudentForm(forms.ModelForm):
                 }
             ),
         }
+        def save(self, commit=True):
+
+            student = super().save(commit=False)
+
+            student.admission_no = (
+            student.student_id
+            )
+
+            if student.name:
+                student.first_name = (
+                student.name
+            )
+
+            if not student.last_name:
+                student.last_name = ""
+
+            if commit:
+                student.save()
+
+            return student
 
 
 class ExcelUploadForm(forms.Form):

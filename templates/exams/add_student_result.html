@@ -41,26 +41,26 @@
 
         <div class="row">
 
-    {% for subject in subjects %}
+   {% for subject in subjects %}
 
-    <div class="col-md-6 mb-3">
+<div class="col-md-6 mb-3">
 
-        <label>
-            {{ subject.subject_name }}
-        </label>
+    <label class="form-label fw-bold">
+        {{ subject }}
+    </label>
 
-        <input
-            type="number"
-            name="{{ subject.subject_name }}"
-            class="form-control"
-            min="0"
-            max="100"
-            required
-        >
+    <input
+        type="number"
+        name="{{ subject }}"
+        class="form-control"
+        min="0"
+        max="100"
+        required
+    >
 
-    </div>
+</div>
 
-    {% endfor %}
+{% endfor %}
 
 </div>
 

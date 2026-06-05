@@ -55,7 +55,6 @@ class Student(models.Model):
     )
     name = models.CharField(
         max_length=200,
-        blank=True,
         db_index=True,
     
     )
@@ -140,7 +139,18 @@ class Student(models.Model):
             )
 
     def save(self, *args, **kwargs):
+
+        if self.student_id and not self.admission_no:
+            self.admission_no = self.student_id
+
+        if self.name and not self.first_name:
+            self.first_name = self.name
+
+        if not self.last_name:
+            self.last_name = ""
+
         self.full_clean()
+
         super().save(*args, **kwargs)
 
     def __str__(self):

@@ -1,87 +1,64 @@
 {% extends 'website/base.html' %}
 
+{% load static %}
+
 {% block content %}
+<section class="hero-video-section">
 
-<!-- HERO SECTION -->
+    <video
+        autoplay
+        muted
+        loop
+        playsinline
+        class="hero-video"
+    >
 
-<section
-    class="py-5"
-    style="
-        background:
-        linear-gradient(
-            135deg,
-            #4f46e5,
-            #7c3aed
-        );
-        color: white;
-        min-height: 90vh;
-        display: flex;
-        align-items: center;
-    "
->
+        <source
+            src="{% static 'videos/school.mp4' %}"
+            type="video/mp4"
+        >
 
-    <div class="container">
+    </video>
 
-        <div class="row align-items-center">
+    <div class="hero-overlay">
 
-            <div class="col-lg-6">
+        <div class="hero-content">
 
-                <h1
-                    class="display-3 fw-bold mb-4"
+            <h1>
+                Smart School
+                Management System
+            </h1>
+
+            <p>
+                Modern ERP platform for students,
+                teachers, parents and administrators.
+            </p>
+
+            <div class="hero-buttons">
+
+                <a
+                    href="/login/"
+                    class="btn btn-light btn-lg"
                 >
+                    ERP Login
+                </a>
 
-                    Smart School
-                    Management System
-
-                </h1>
-
-                <p
-                    class="fs-4 mb-4"
+                <a
+                    href="#about"
+                    class="btn btn-outline-light btn-lg"
                 >
-
-                    Modern ERP platform for
-                    students, teachers,
-                    parents and administrators.
-
-                </p>
-
-                <div class="d-flex gap-3">
-
-                    <a
-                        href="/login-options/"
-                        class="btn btn-light btn-lg px-5 py-3 rounded-4"
-                    >
-
-                        ERP Login
-
-                    </a>
-
-                    <a
-                        href="/about/"
-                        class="btn btn-outline-light btn-lg px-5 py-3 rounded-4"
-                    >
-
-                        Learn More
-
-                    </a>
-
-                </div>
-
-            </div>
-
-            <div class="col-lg-6 text-center">
-
-                <img
-                    src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png"
-                    class="img-fluid"
-                    style="max-height: 500px;"
-                >
+                    Learn More
+                </a>
 
             </div>
 
         </div>
 
     </div>
+
+</section>
+
+
 
 </section>
 

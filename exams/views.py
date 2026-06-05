@@ -161,6 +161,11 @@ def import_results(request):
                 excel_file
             )
 
+            df.columns = (
+                df.columns
+                .str.strip()
+            )
+
             for _, row in df.iterrows():
 
                 try:
@@ -171,36 +176,54 @@ def import_results(request):
                         ).strip()
                     )
 
-                    ExamResult.objects.get_or_create(
-
-                        student=student,
-
-                        exam_name=row[
-                            "exam_name"
-                        ],
-
-                        defaults={
-
-                            "total_marks": row.get(
-                                "total_marks",
-                                0,
-                            ),
-
-                            "percentage": row.get(
-                                "percentage",
-                                0,
-                            ),
-
-                            "grade": row.get(
-                                "grade",
-                                "",
-                            ),
-                        },
-                    )
-
                 except Student.DoesNotExist:
 
                     continue
+
+                exam_name = str(
+                    row["exam_name"]
+                ).strip()
+
+                result, created = (
+                    ExamResult.objects.get_or_create(
+                        student=student,
+                        exam_name=exam_name,
+                    )
+                )
+
+                # Delete old marks if re-importing
+                result.subject_marks.all().delete()
+
+                excluded_columns = [
+                    "student_id",
+                    "exam_name",
+                ]
+
+                for column in df.columns:
+
+                    if column in excluded_columns:
+                        continue
+
+                    mark = row[column]
+
+                    if pd.isna(mark):
+                        continue
+                    
+                    try:
+                        mark = int(mark)
+
+                    except (ValueError, TypeError):
+                        continue
+
+                    SubjectMark.objects.create(
+                        exam_result=result,
+                        subject_name=column,
+                        mark_obtained=int(mark),
+                        maximum_mark=100,
+                    )
+
+                result.calculate_result()
+                result.save()
 
             return redirect(
                 "result_list"
@@ -279,6 +302,18 @@ def add_student_result(
         id=student_id,
     )
 
+    try:
+
+        class_subject = ClassSubject.objects.get(
+            student_class=student.student_class
+        )
+
+        subjects = class_subject.get_subject_list()
+
+    except ClassSubject.DoesNotExist:
+
+        subjects = []
+
     if request.method == "POST":
 
         exam_name = request.POST.get(
@@ -290,49 +325,38 @@ def add_student_result(
             exam_name=exam_name,
         )
 
-        subjects = ClassSubject.objects.filter(
-    student_class=student.student_class
-)
-
         for subject in subjects:
 
             mark = request.POST.get(
-                subject.subject_name,
+                subject,
                 0
             )
 
             try:
-
                 mark = int(mark)
 
             except ValueError:
-
                 mark = 0
 
             SubjectMark.objects.create(
                 exam_result=result,
-                subject_name=subject.subject_name,
+                subject_name=subject,
                 mark_obtained=mark,
                 maximum_mark=100,
             )
 
         result.calculate_result()
-
         result.save()
 
         return redirect(
             "result_list"
         )
 
-    subjects = ClassSubject.objects.filter(
-    student_class=student.student_class
-)
-
     return render(
-    request,
-    "exams/add_student_result.html",
-    {
-        "student": student,
-        "subjects": subjects,
-    },
-)
+        request,
+        "exams/add_student_result.html",
+        {
+            "student": student,
+            "subjects": subjects,
+        },
+    )

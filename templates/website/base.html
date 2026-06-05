@@ -65,19 +65,22 @@
 
         .navbar{
 
-            background: white;
+        position:absolute;
 
-            padding: 18px 0;
+        top:0;
 
-            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        left:0;
 
-            position: sticky;
+        width:100%;
 
-            top: 0;
+        z-index:1000;
 
-            z-index: 1000;
+        background:transparent;
 
-        }
+        box-shadow:none;
+
+        padding:25px 0;
+         }
 
         .navbar-brand{
 
@@ -85,7 +88,7 @@
 
             font-weight: 800;
 
-            color: #4f46e5 !important;
+            color:white !important;
 
         }
 
@@ -95,7 +98,7 @@
 
             margin-left: 15px;
 
-            color: #111827 !important;
+            color:white !important;
 
             transition: 0.3s;
 
@@ -220,16 +223,102 @@
         }
 
         /* RESPONSIVE */
+        .hero-video-section{
 
-        @media(max-width: 768px){
+        position:relative;
 
-            .navbar-brand{
+        height:100vh;
 
-                font-size: 24px;
-
-            }
-
+        overflow:hidden;
         }
+
+        .hero-video{
+
+            position:absolute;
+
+            top:0;
+
+            left:0;
+
+            width:100%;
+
+            height:100%;
+
+            object-fit:cover;
+
+            z-index:1;
+        }
+
+        .hero-overlay{
+
+            position:absolute;
+
+            top:0;
+
+            left:0;
+
+            width:100%;
+
+            height:100%;
+
+            background:
+            rgba(
+                0,
+                0,
+                0,
+                0.45
+            );
+
+            z-index:2;
+
+            display:flex;
+
+            align-items:center;
+        }
+
+        .hero-content{
+
+            max-width:700px;
+
+            margin-left:8%;
+
+            color:white;
+        }
+
+        .hero-content h1{
+
+            font-size:5rem;
+
+            font-weight:800;
+
+            line-height:1.1;
+        }
+
+        .hero-content p{
+
+            font-size:1.4rem;
+
+            margin-top:20px;
+
+            margin-bottom:30px;
+        }
+
+        .hero-buttons{
+
+            display:flex;
+
+            gap:15px;
+        }
+
+                @media(max-width: 768px){
+
+                    .navbar-brand{
+
+                        font-size: 24px;
+
+                    }
+
+                }
 
     </style>
 
