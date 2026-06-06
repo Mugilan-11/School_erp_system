@@ -2,6 +2,7 @@ from django.urls import path
 
 
 from .views import (
+    import_class_students,
     student_classes,
     student_list,
     add_student,
@@ -60,5 +61,11 @@ path(
     class_student_list,
     name="class_student_list",
 ),
+path(
+    "students/<str:class_name>/import/",
+    import_class_students,
+    name="import_class_students",
+),
+
 
 ]

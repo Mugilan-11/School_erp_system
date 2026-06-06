@@ -6,17 +6,17 @@
 
     <div class="dashboard-hero mb-5">
 
-        <h2 class="fw-bold">
+        <div>
 
-            {{ class_name }}
+            <h2 class="fw-bold">
+                {{ class_name }}
+            </h2>
 
-        </h2>
+            <p class="mb-0">
+                Fee Management
+            </p>
 
-        <p>
-
-            Student Management
-
-        </p>
+        </div>
 
     </div>
 
@@ -25,15 +25,15 @@
         <div class="col-md-4">
 
             <a
-                href="/add-student/"
+                href="{% url 'add_fee' %}"
                 class="text-decoration-none"
             >
 
                 <div class="dashboard-card text-center">
 
-                    <h2>➕</h2>
+                    <h3>💰</h3>
 
-                    <h5>Add Student</h5>
+                    <h5>Add Fee</h5>
 
                 </div>
 
@@ -44,15 +44,15 @@
         <div class="col-md-4">
 
             <a
-                href="{% url 'import_class_students' class_name %}"
+                href="{% url 'import_fees' %}"
                 class="text-decoration-none"
             >
 
                 <div class="dashboard-card text-center">
 
-                    <h2>📤</h2>
+                    <h3>📤</h3>
 
-                    <h5>Import Students</h5>
+                    <h5>Import Fees</h5>
 
                 </div>
 
@@ -63,15 +63,15 @@
         <div class="col-md-4">
 
             <a
-                href="{% url 'class_student_list' class_name %}"
+                href="{% url 'class_fee_list' class_name %}"
                 class="text-decoration-none"
             >
 
                 <div class="dashboard-card text-center">
 
-                    <h2>👥</h2>
+                    <h3>📋</h3>
 
-                    <h5>View Students</h5>
+                    <h5>View Fees</h5>
 
                 </div>
 

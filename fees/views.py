@@ -189,3 +189,58 @@ def import_fees(request):
             "form": form
         },
     )
+    
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
+def fee_classes(request):
+
+    return render(
+        request,
+        "fees/fee_classes.html",
+        {
+            "classes": Student.CLASS_CHOICES,
+        },
+    )
+
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
+def class_fee_list(
+    request,
+    class_name,
+):
+
+    fees = Fee.objects.filter(
+        student__student_class=class_name
+    ).select_related(
+        "student"
+    )
+
+    return render(
+        request,
+        "fees/class_fee_list.html",
+        {
+            "fees": fees,
+            "class_name": class_name,
+        },
+    )
+    
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
+def fee_dashboard(
+    request,
+    class_name,
+):
+
+    return render(
+        request,
+        "fees/fee_dashboard.html",
+        {
+            "class_name": class_name,
+        },
+    )

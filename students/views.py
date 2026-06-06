@@ -214,7 +214,7 @@ def import_students(request):
 
             import_students_from_excel(
                 request.FILES[
-                    "excel_file"
+                    "excel_file",
                 ]
             )
 
@@ -269,6 +269,88 @@ def class_student_list(
         "students/class_student_list.html",
         {
             "students": students,
+            "class_name": class_name,
+        },
+    )
+    
+    
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
+def import_class_students(
+    request,
+    class_name,
+):
+
+    if request.method == "POST":
+
+        form = ExcelUploadForm(
+            request.POST,
+            request.FILES,
+        )
+
+        if form.is_valid():
+
+            import_students_from_excel(
+                request.FILES["excel_file"]
+            )
+
+            return redirect(
+                "class_student_list",
+                class_name=class_name,
+            )
+
+    else:
+
+        form = ExcelUploadForm()
+
+    return render(
+        request,
+        "students/import_students.html",
+        {
+            "form": form,
+            "class_name": class_name,
+        },
+    )
+    
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
+def import_class_students(
+    request,
+    class_name,
+):
+
+    if request.method == "POST":
+
+        form = ExcelUploadForm(
+            request.POST,
+            request.FILES,
+        )
+
+        if form.is_valid():
+
+            import_students_from_excel(
+                request.FILES["excel_file"],
+                selected_class=class_name,
+            )
+
+            return redirect(
+                "class_student_list",
+                class_name=class_name,
+            )
+
+    else:
+
+        form = ExcelUploadForm()
+
+    return render(
+        request,
+        "students/import_students.html",
+        {
+            "form": form,
             "class_name": class_name,
         },
     )

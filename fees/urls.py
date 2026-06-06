@@ -19,5 +19,22 @@ urlpatterns = [
     'import-fees/',
     import_fees,
     name='import_fees'
-),
+    ),
+    path(
+    "fees/",
+    fee_classes,
+    name="fee_classes",
+    ),
+
+    path(
+        "fees/<str:class_name>/",
+        fee_dashboard,
+        name="fee_dashboard",
+    ),
+
+    path(
+        "fees/<str:class_name>/view/",
+        class_fee_list,
+        name="class_fee_list",
+    ),
 ]

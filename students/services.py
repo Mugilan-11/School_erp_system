@@ -5,7 +5,7 @@ from datetime import date
 from .models import Student
 
 
-def import_students_from_excel(excel_file):
+def import_students_from_excel(excel_file,selected_class=None):
 
     if excel_file.name.endswith(".csv"):
         df = pd.read_csv(excel_file)
@@ -40,43 +40,23 @@ def import_students_from_excel(excel_file):
 
         # Student Name
         student_name = str(
+    row.get(
+        "student_name",
+        row.get(
+            "name",
             row.get(
-                "student_name",
-                row.get(
-                    "name",
-                    ""
-                )
+                "names",
+                ""
             )
-        ).strip()
+        )
+    )
+).strip()
 
         if not student_name:
             continue
 
         # Class
-        student_class = str(
-            row.get(
-                "student_class",
-                ""
-            )
-        ).strip()
-
-        # Fix numeric classes
-        class_mapping = {
-            "1": "Grade IA",
-            "2": "Grade II",
-            "3": "Grade III",
-            "4": "Grade IV",
-            "5": "Grade V",
-            "6": "Grade VI",
-            "7": "Grade VII",
-            "8": "Grade VIII",
-            "9": "Grade IX",
-        }
-
-        if student_class in class_mapping:
-            student_class = class_mapping[
-                student_class
-            ]
+        student_class = selected_class
 
         defaults = {
     "name": student_name,
