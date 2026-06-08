@@ -244,3 +244,52 @@ def fee_dashboard(
             "class_name": class_name,
         },
     )
+    
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
+def add_class_fee(
+    request,
+    class_name,
+):
+
+    if request.method == "POST":
+
+        form = FeeForm(
+            request.POST
+        )
+
+        form.fields[
+            "student"
+        ].queryset = Student.objects.filter(
+            student_class=class_name
+        )
+
+        if form.is_valid():
+
+            form.save()
+
+            return redirect(
+                "class_fee_list",
+                class_name=class_name,
+            )
+
+    else:
+
+        form = FeeForm()
+
+        form.fields[
+            "student"
+        ].queryset = Student.objects.filter(
+            student_class=class_name
+        )
+
+    return render(
+        request,
+        "fees/add_fee.html",
+        {
+            "form": form,
+            "class_name": class_name,
+        },
+    )

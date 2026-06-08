@@ -157,27 +157,21 @@ class ClassExam(models.Model):
     student_class = models.CharField(
         max_length=20,
         choices=Student.CLASS_CHOICES,
+        unique=True,
     )
 
-    exam_name = models.CharField(
-        max_length=100,
+    exams = models.TextField(
+        help_text="Comma separated exams"
     )
 
-    class Meta:
+    def get_exam_list(self):
 
-        unique_together = (
-            "student_class",
-            "exam_name",
-        )
-
-        ordering = [
-            "student_class",
-            "exam_name",
+        return [
+            exam.strip()
+            for exam in self.exams.split(",")
+            if exam.strip()
         ]
 
     def __str__(self):
 
-        return (
-            f"{self.student_class} - "
-            f"{self.exam_name}"
-        )
+        return self.student_class

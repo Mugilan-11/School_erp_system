@@ -387,9 +387,19 @@ def result_exams(
     class_name,
 ):
 
-    exams = ClassExam.objects.filter(
-        student_class=class_name
-    )
+    exams = []
+
+    try:
+
+        class_exam = ClassExam.objects.get(
+            student_class=class_name
+        )
+
+        exams = class_exam.get_exam_list()
+
+    except ClassExam.DoesNotExist:
+
+        pass
 
     return render(
         request,
@@ -399,7 +409,6 @@ def result_exams(
             "exams": exams,
         },
     )
-    
 @role_required(
     "ADMIN",
     "TEACHER",

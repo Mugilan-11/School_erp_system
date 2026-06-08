@@ -83,7 +83,12 @@
 
                                 <strong>
 
-                                    {{ student.name }}
+                                    <a
+                                    href="{% url 'student_profile' student.id %}"
+                                    class="fw-bold text-decoration-none"
+                                    >
+                                        {{ student.name }}
+                                    </a>
 
                                 </strong>
 

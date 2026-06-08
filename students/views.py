@@ -10,6 +10,76 @@ from .forms import ExcelUploadForm
 from .forms import StudentForm
 from .models import Student
 from .services import import_students_from_excel
+from attendance.models import Attendance
+from exams.models import ExamResult
+from fees.models import Fee
+
+
+@role_required(
+    "ADMIN",
+    "TEACHER",
+)
+def student_profile(
+    request,
+    student_id,
+):
+
+    student = get_object_or_404(
+        Student,
+        id=student_id,
+    )
+
+    results = ExamResult.objects.filter(
+        student=student
+    ).order_by(
+        "-created_at"
+    )
+
+    attendance_records = Attendance.objects.filter(
+        student=student
+    )
+
+    fees = Fee.objects.filter(
+        student=student
+    )
+
+    total_attendance = attendance_records.count()
+
+    present_count = attendance_records.filter(
+        status="Present"
+    ).count()
+
+    attendance_percentage = 0
+
+    if total_attendance > 0:
+
+        attendance_percentage = round(
+            (
+                present_count
+                /
+                total_attendance
+            ) * 100,
+            2,
+        )
+
+    pending_fee = fees.filter(
+        status="Pending"
+    )
+
+    return render(
+        request,
+        "students/student_profile.html",
+        {
+            "student": student,
+            "results": results,
+            "attendance_records": attendance_records,
+            "fees": fees,
+            "attendance_percentage":
+            attendance_percentage,
+            "pending_fee_count":
+            pending_fee.count(),
+        },
+    )
 
 
 @role_required(

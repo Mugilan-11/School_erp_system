@@ -31,6 +31,11 @@ urlpatterns = [
         fee_dashboard,
         name="fee_dashboard",
     ),
+    path(
+    "fees/<str:class_name>/add/",
+    add_class_fee,
+    name="add_class_fee",
+),
 
     path(
         "fees/<str:class_name>/view/",

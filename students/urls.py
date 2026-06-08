@@ -11,6 +11,7 @@ from .views import (
     import_students,
     student_dashboard,
     class_student_list,
+    student_profile,
 )
 
 urlpatterns = [
@@ -65,6 +66,11 @@ path(
     "students/<str:class_name>/import/",
     import_class_students,
     name="import_class_students",
+),
+path(
+    "student-profile/<int:student_id>/",
+    student_profile,
+    name="student_profile",
 ),
 
 
