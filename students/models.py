@@ -2,7 +2,7 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils import timezone
-
+from academics.models import AcademicYear
 
 class Student(models.Model):
 
@@ -25,7 +25,7 @@ class Student(models.Model):
         ("Male", "Male"),
         ("Female", "Female"),
     ]
-
+    
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -33,6 +33,14 @@ class Student(models.Model):
         blank=True,
         related_name="student_profile",
     )
+    academic_year = models.ForeignKey(
+    AcademicYear,
+    on_delete=models.CASCADE,
+    null=True,
+    blank=True,
+    related_name="students",
+    )
+
 
     first_name = models.CharField(
         max_length=100,
@@ -159,3 +167,46 @@ class Student(models.Model):
         f" - "
         f"{self.full_name}"
     )
+class StudentEnrollment(models.Model):
+
+    student = models.ForeignKey(
+        Student,
+        on_delete=models.CASCADE,
+        related_name="enrollments",
+    )
+
+    academic_year = models.ForeignKey(
+        AcademicYear,
+        on_delete=models.CASCADE,
+        related_name="enrollments",
+    )
+
+    student_class = models.CharField(
+        max_length=20,
+        choices=Student.CLASS_CHOICES,
+    )
+
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    class Meta:
+
+        unique_together = (
+            "student",
+            "academic_year",
+        )
+
+        ordering = [
+            "-academic_year",
+        ]
+
+    def __str__(self):
+
+        return (
+            f"{self.student.full_name}"
+            f" - "
+            f"{self.academic_year}"
+            f" - "
+            f"{self.student_class}"
+        )

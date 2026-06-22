@@ -12,15 +12,21 @@ from .views import (
     student_dashboard,
     class_student_list,
     student_profile,
+    student_years,
 )
 
 urlpatterns = [
 
     path(
         "students/",
-        student_classes,
-        name="student_classes",
+        student_years,
+        name="student_years",
     ),
+    path(
+    "students/<int:year_id>/",
+    student_classes,
+    name="student_classes",
+),
 
     path(
         "student-list/",
@@ -52,18 +58,18 @@ urlpatterns = [
         name="import_students",
     ),
     path(
-    "students/<str:class_name>/",
+    "students/<int:year_id>/<str:class_name>/",
     student_dashboard,
     name="student_dashboard",
 ),
 
 path(
-    "students/<str:class_name>/view/",
+    "students/<int:year_id>/<str:class_name>/view/",
     class_student_list,
     name="class_student_list",
 ),
 path(
-    "students/<str:class_name>/import/",
+    "students/<int:year_id>/<str:class_name>/import/",
     import_class_students,
     name="import_class_students",
 ),

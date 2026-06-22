@@ -6,6 +6,8 @@ from django.shortcuts import render
 
 from accounts.decorators import role_required
 
+from .models import StudentEnrollment
+
 from .forms import ExcelUploadForm
 from .forms import StudentForm
 from .models import Student
@@ -13,7 +15,7 @@ from .services import import_students_from_excel
 from attendance.models import Attendance
 from exams.models import ExamResult
 from fees.models import Fee
-
+from academics.models import AcademicYear
 
 @role_required(
     "ADMIN",
@@ -86,17 +88,26 @@ def student_profile(
     "ADMIN",
     "TEACHER",
 )
-def student_classes(request):
+def student_classes(
+    request,
+    year_id,
+):
+
+    year = get_object_or_404(
+        AcademicYear,
+        id=year_id,
+    )
 
     return render(
         request,
         "students/student_classes.html",
         {
             "class_choices":
-            Student.CLASS_CHOICES
+            Student.CLASS_CHOICES,
+
+            "year": year,
         },
     )
-
 
 @role_required(
     "ADMIN",
@@ -105,6 +116,13 @@ def student_classes(request):
 def student_list(request):
 
     students = Student.objects.all()
+
+    enrollments = StudentEnrollment.objects.filter(
+    academic_year_id=year_id,
+    student_class=class_name,
+).select_related(
+    "student"
+)
 
     search_query = request.GET.get(
         "search",
@@ -309,78 +327,55 @@ def import_students(request):
 )
 def student_dashboard(
     request,
+    year_id,
     class_name,
 ):
+
+    year = get_object_or_404(
+        AcademicYear,
+        id=year_id,
+    )
 
     return render(
         request,
         "students/student_dashboard.html",
         {
             "class_name": class_name,
+            "year": year,
         },
     )
 @role_required(
     "ADMIN",
     "TEACHER",
 )
+
 def class_student_list(
     request,
+    year_id,
     class_name,
 ):
 
-    students = Student.objects.filter(
-        student_class=class_name
+    enrollments = StudentEnrollment.objects.filter(
+        academic_year_id=year_id,
+        student_class=class_name,
+    ).select_related(
+        "student"
     ).order_by(
-        "name"
+        "student__name"
+    )
+
+    year = get_object_or_404(
+        AcademicYear,
+        id=year_id,
     )
 
     return render(
         request,
         "students/class_student_list.html",
         {
-            "students": students,
+            "enrollments": enrollments,
             "class_name": class_name,
-        },
-    )
-    
-    
-@role_required(
-    "ADMIN",
-    "TEACHER",
-)
-def import_class_students(
-    request,
-    class_name,
-):
-
-    if request.method == "POST":
-
-        form = ExcelUploadForm(
-            request.POST,
-            request.FILES,
-        )
-
-        if form.is_valid():
-
-            import_students_from_excel(
-                request.FILES["excel_file"]
-            )
-
-            return redirect(
-                "class_student_list",
-                class_name=class_name,
-            )
-
-    else:
-
-        form = ExcelUploadForm()
-
-    return render(
-        request,
-        "students/import_students.html",
-        {
-            "form": form,
-            "class_name": class_name,
+            "year": year,
         },
     )
     
@@ -390,8 +385,14 @@ def import_class_students(
 )
 def import_class_students(
     request,
+    year_id,
     class_name,
 ):
+
+    year = get_object_or_404(
+        AcademicYear,
+        id=year_id,
+    )
 
     if request.method == "POST":
 
@@ -405,10 +406,12 @@ def import_class_students(
             import_students_from_excel(
                 request.FILES["excel_file"],
                 selected_class=class_name,
+                academic_year=year,
             )
 
             return redirect(
                 "class_student_list",
+                year_id=year.id,
                 class_name=class_name,
             )
 
@@ -422,5 +425,17 @@ def import_class_students(
         {
             "form": form,
             "class_name": class_name,
+            "year": year,
+        },
+    )
+def student_years(request):
+
+    years = AcademicYear.objects.all()
+
+    return render(
+        request,
+        "students/student_years.html",
+        {
+            "years": years,
         },
     )

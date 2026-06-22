@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     'website',
     'timetable',
     'extractor',
+    'academics',
 ]
 
 MIDDLEWARE = [

@@ -2,10 +2,14 @@ import pandas as pd
 
 from datetime import date
 
-from .models import Student
+from .models import Student, StudentEnrollment
 
 
-def import_students_from_excel(excel_file,selected_class=None):
+def import_students_from_excel(
+    excel_file,
+    selected_class=None,
+    academic_year=None,
+):
 
     if excel_file.name.endswith(".csv"):
         df = pd.read_csv(excel_file)
@@ -58,14 +62,9 @@ def import_students_from_excel(excel_file,selected_class=None):
         # Class
         student_class = selected_class
 
+
         defaults = {
     "name": student_name,
-
-    "student_class": (
-        student_class
-        if student_class
-        else None
-    ),
 
     "gender": (
         str(row.get("gender")).strip()
@@ -92,10 +91,17 @@ def import_students_from_excel(excel_file,selected_class=None):
 
     "student_id": student_id,
 }
+        StudentEnrollment.objects.get_or_create(
+    student=student,
+    academic_year=academic_year,
+    defaults={
+        "student_class": student_class,
+    },
+)
         student, created = Student.objects.update_or_create(
-            student_id=student_id,
-            defaults=defaults,
-        )
+    student_id=student_id,
+    defaults=defaults,
+)
 
         if created:
             created_count += 1

@@ -1,0 +1,44 @@
+{% extends 'base/base.html' %}
+
+{% block content %}
+
+<div class="container-fluid">
+
+    <h2 class="fw-bold mb-4">
+
+        Select Academic Year
+
+    </h2>
+
+    <div class="row g-4">
+
+        {% for year in years %}
+
+        <div class="col-lg-3 col-md-4">
+
+            <a
+                href="{% url 'student_classes' year.id %}"
+                class="text-decoration-none"
+            >
+
+                <div class="dashboard-card text-center">
+
+                    <h4 class="fw-bold">
+
+                        {{ year.year_name }}
+
+                    </h4>
+
+                </div>
+
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

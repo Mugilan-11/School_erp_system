@@ -44,7 +44,7 @@
         <div class="col-md-4">
 
             <a
-                href="{% url 'import_class_students' class_name %}"
+                href="{% url 'import_class_students' year.id class_name %}"
                 class="text-decoration-none"
             >
 
@@ -63,7 +63,7 @@
         <div class="col-md-4">
 
             <a
-                href="{% url 'class_student_list' class_name %}"
+                href="{% url 'class_student_list' year.id class_name %}"
                 class="text-decoration-none"
             >
 

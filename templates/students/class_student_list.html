@@ -48,7 +48,7 @@
 
                     <tbody>
 
-                        {% for student in students %}
+                        {% for enrollment in enrollments %}
 
                         <tr>
 
@@ -57,7 +57,7 @@
                                 {% if student.profile_picture %}
 
                                     <img
-                                        src="{{ student.profile_picture.url }}"
+                                        src="{{ enrollment.student.profile_picture.url }}"
                                         width="50"
                                         height="50"
                                         class="rounded-circle"
@@ -71,7 +71,7 @@
                                         style="width:50px;height:50px;"
                                     >
 
-                                        {{ student.name|slice:":1" }}
+                                        {{ enrollment.student.name|slice:":1" }}
 
                                     </div>
 
@@ -84,10 +84,10 @@
                                 <strong>
 
                                     <a
-                                    href="{% url 'student_profile' student.id %}"
+                                    href="{% url 'student_profile' enrollment.student.id %}"
                                     class="fw-bold text-decoration-none"
                                     >
-                                        {{ student.name }}
+                                        {{ enrollment.student.name }}
                                     </a>
 
                                 </strong>
@@ -96,20 +96,20 @@
 
                             <td>
 
-                                {{ student.student_id }}
+                                {{ enrollment.student.student_id }}
 
                             </td>
 
                             <td>
 
-                                {{ student.gender }}
+                                {{ enrollment.student.gender }}
 
                             </td>
 
                             <td>
 
                                 <a
-                                    href="{% url 'edit_student' student.id %}"
+                                    href="{% url 'edit_student' enrollment.student.id %}"
                                     class="btn btn-warning btn-sm"
                                 >
 
